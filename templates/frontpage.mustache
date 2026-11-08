@@ -100,4 +100,40 @@ M.util.js_pending('theme_boost/loader');
 require(['theme_boost/loader'], function(Loader) {
     M.util.js_complete('theme_boost/loader');
 });
+
+// Frontpage standard course cards enhancement if core content is shown
+(function() {
+    function enrichFrontpageCourseCards() {
+        document.querySelectorAll('.coursebox').forEach(function(box) {
+            if (!box.querySelector('.course-tag')) {
+                var boxCat = box.querySelector('.coursecat a, .category-name');
+                if (boxCat && boxCat.textContent.trim()) {
+                    var tag = document.createElement('span');
+                    tag.className = 'course-tag';
+                    tag.textContent = boxCat.textContent.trim();
+                    box.appendChild(tag);
+                }
+            }
+
+            if (!box.dataset.theeduClickAttached) {
+                box.dataset.theeduClickAttached = 'true';
+                box.addEventListener('click', function(e) {
+                    if (e.target.closest('a') || e.target.closest('button')) {
+                        return;
+                    }
+                    var link = box.querySelector('.coursename a');
+                    if (link && link.href) {
+                        window.location.href = link.href;
+                    }
+                });
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', enrichFrontpageCourseCards);
+    } else {
+        enrichFrontpageCourseCards();
+    }
+})();
 {{/js}}

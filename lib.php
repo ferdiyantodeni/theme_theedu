@@ -1047,6 +1047,7 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
     padding: 0 !important;
     margin: 0 !important;
     height: 100% !important;
+    cursor: pointer !important;
 }
 .coursebox:hover {
     transform: translateY(-5px) !important;
@@ -1062,11 +1063,34 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
     display: contents !important;
 }
 
-/* 1. TOP BANNER: Course Image (when uploaded) - Fills the entire header area */
-.coursebox .courseimage {
+/* Category Tag Pill on Thumbnail */
+.coursebox .course-tag {
+    position: absolute !important;
+    top: 1rem !important;
+    left: 1rem !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    color: var(--theedu-navbar-text, #2D3436) !important;
+    font-size: 0.78rem !important;
+    font-weight: 700 !important;
+    padding: 5px 14px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+    z-index: 3 !important;
+    pointer-events: none !important;
+    border: 1px solid rgba(0, 0, 0, 0.04) !important;
+}
+
+/* 1. TOP BANNER: Course Image (Fix max-width: 100px Moodle Boost bug!) */
+.coursebox .courseimage,
+.coursebox .content .courseimage {
     order: 1 !important;
     width: 100% !important;
     height: 180px !important;
+    max-width: 100% !important;
+    max-height: 180px !important;
+    min-width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
     overflow: hidden !important;
@@ -1076,9 +1100,16 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
     border-top-left-radius: 1.25rem !important;
     border-top-right-radius: 1.25rem !important;
 }
-.coursebox .courseimage img {
+.coursebox .courseimage img,
+.coursebox .content .courseimage img,
+#page-course-index-category .coursebox .courseimage img,
+.category-browse .coursebox .courseimage img {
     width: 100% !important;
     height: 100% !important;
+    max-width: 100% !important;
+    max-height: none !important;
+    min-width: 100% !important;
+    min-height: 100% !important;
     object-fit: cover !important;
     display: block !important;
     transition: transform 0.3s ease !important;
@@ -1173,6 +1204,7 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
+    width: 100% !important;
 }
 .coursebox .teachers li {
     font-size: 0.85rem !important;
@@ -1180,21 +1212,22 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
     color: #64748B !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 0.5rem !important;
+    gap: 0.75rem !important;
+    margin: 0 !important;
 }
 .coursebox .teachers li::before {
     content: \"\f51b\" !important;
     font-family: \"Font Awesome 6 Free\" !important;
     font-weight: 900 !important;
-    width: 32px !important;
-    height: 32px !important;
+    width: 36px !important;
+    height: 36px !important;
     border-radius: 50% !important;
     background: rgba(108, 92, 231, 0.12) !important;
     color: var(--theedu-primary, #6C5CE7) !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: 0.85rem !important;
+    font-size: 0.9rem !important;
     flex-shrink: 0 !important;
 }
 .coursebox .teachers li .font-weight-bold {
@@ -1203,13 +1236,66 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
 .coursebox .teachers li a {
     color: var(--theedu-navbar-text, #2D3436) !important;
     text-decoration: none !important;
-    max-width: 170px !important;
-    white-space: nowrap !important;
-    overflow: hidden !important;
-    text-overflow: ellipsis !important;
+    font-weight: 600 !important;
+    font-size: 0.92rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    line-height: 1.2 !important;
+}
+.coursebox .teachers li a::after {
+    content: \"Teacher\" !important;
+    font-size: 0.75rem !important;
+    font-weight: 400 !important;
+    color: #64748B !important;
+    margin-top: 2px !important;
 }
 .coursebox .teachers li a:hover {
     color: var(--theedu-primary, #6C5CE7) !important;
+}
+
+/* Arrow button on the right */
+.coursebox .teachers::after {
+    content: \"\f061\" !important;
+    font-family: \"Font Awesome 6 Free\" !important;
+    font-weight: 900 !important;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    background: rgba(108, 92, 231, 0.08) !important;
+    color: var(--theedu-primary, #6C5CE7) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.85rem !important;
+    flex-shrink: 0 !important;
+    margin-left: auto !important;
+    transition: all 0.25s ease !important;
+}
+.coursebox:hover .teachers::after {
+    background: var(--theedu-primary, #6C5CE7) !important;
+    color: #FFFFFF !important;
+    transform: translateX(4px) !important;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3) !important;
+}
+
+[data-theme=\"dark\"] .coursebox .course-tag {
+    background: rgba(30, 38, 56, 0.92) !important;
+    color: #C4B5FD !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+[data-theme=\"dark\"] .coursebox .teachers::after {
+    background: rgba(142, 124, 255, 0.15) !important;
+    color: #C4B5FD !important;
+}
+[data-theme=\"dark\"] .coursebox:hover .teachers::after {
+    background: var(--theedu-primary, #8E7CFF) !important;
+    color: #121824 !important;
+}
+[data-theme=\"dark\"] .coursebox .teachers li a {
+    color: #CBD5E1 !important;
+}
+[data-theme=\"dark\"] .coursebox .teachers li a::after {
+    color: #94A3B8 !important;
 }
 [data-theme=\"dark\"] .course_category_tree .subcategories .category {
     background: #1E2638 !important;

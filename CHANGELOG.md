@@ -6,6 +6,31 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.4.5] - 2026-11-08 (Build 2026110815)
+
+### 🎯 Masalah yang Diselesaikan
+- Pada halaman kategori kursus (`/course/index.php`), tampilan kartu kursus masih berbeda dengan kartu "My Enrolled Courses" di Beranda:
+  1. **Gambar terpotong/kecil (100x100px):** Pada kursus bergambar (misal: Horenso), gambar muncul terpotong kecil di sebelah kiri dengan area gradien kosong di sebelah kanannya.
+     *Root cause:* CSS bawaan Moodle Boost core memiliki aturan spesifik `.coursebox .content .courseimage img { max-width: 100px; max-height: 100px; }` yang membatasi gambar secara paksa sehingga mengabaikan `width: 100%`.
+  2. **Badge Tag Kategori Absen:** Pada halaman kategori, Moodle tidak merender badge tag kategori di pojok kiri atas gambar seperti pada "My Enrolled Courses".
+  3. **Footer Guru Belum Seragam:** Nama pengajar tidak memiliki label subtitle "Teacher", dan tidak ada tombol panah aksi melingkar (circular arrow button `->`) di sebelah kanan footer kartu.
+
+### ✨ Perubahan & Solusi
+1. **Override Tuntas CSS Boost `max-width: 100px`:**
+   - Menambahkan override `max-width: 100% !important; max-height: none !important; min-width: 100% !important; min-height: 100% !important;` pada `.coursebox .courseimage img` dan `.coursebox .content .courseimage img`.
+   - Menjamin gambar sampul kursus selalu melebar penuh 100% x 180px dengan `object-fit: cover !important` di semua halaman tanpa terpotong atau menyisakan ruang kosong.
+2. **Badge Tag Kategori Dinamis (`.course-tag`):**
+   - Menambahkan injeksi otomatis badge kategori melalui template `drawers.mustache` dan `frontpage.mustache`.
+   - Mengambil nama kategori aktif secara dinamis dari konteks halaman atau elemen kategori kursus dan merendernya dalam bentuk pil putih elegan dengan efek `backdrop-filter: blur(8px)` dan bayangan lembut di pojok kiri atas thumbnail.
+3. **Penyetaraan Footer Pengajar & Tombol Panah Aksi:**
+   - Menambahkan subtitle peran "Teacher" (`.coursebox .teachers li a::after { content: "Teacher" !important; }`).
+   - Menambahkan tombol aksi panah melingkar modern (`.coursebox .teachers::after`) dengan efek hover interaktif (berubah menjadi warna primer bertransisi halus).
+   - Menambahkan fungsi *Card Click Navigation*: mengklik area kartu atau tombol panah otomatis membuka kursus yang bersangkutan.
+4. **Dukungan Dark Mode Penuh:**
+   - Badge `.course-tag`, teks subtitle guru, dan tombol panah aksi secara otomatis beradaptasi dengan warna kontras pada Dark Mode.
+
+---
+
 ## [v1.4.4] - 2026-11-08 (Build 2026110814)
 
 ### 🎯 Masalah yang Diselesaikan

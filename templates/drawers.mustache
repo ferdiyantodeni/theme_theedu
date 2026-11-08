@@ -194,4 +194,53 @@ M.util.js_pending('theme_boost/loader');
 require(['theme_boost/loader'], function() {
     M.util.js_complete('theme_boost/loader');
 });
+
+// Category view course card enhancements (Category Pill Tag Parity & Click Navigation)
+(function() {
+    function enrichCategoryCourseCards() {
+        var catHeading = document.querySelector('#page-course-index-category .page-header-headings h1, .path-course-index .page-header-headings h1');
+        var defaultCatName = catHeading ? catHeading.textContent.trim() : '';
+        if (!defaultCatName) {
+            var activeCrumb = document.querySelector('.breadcrumb-item.active, .breadcrumb .breadcrumb-item:last-child');
+            if (activeCrumb) {
+                defaultCatName = activeCrumb.textContent.trim();
+            }
+        }
+        document.querySelectorAll('.coursebox').forEach(function(box) {
+            if (!box.querySelector('.course-tag')) {
+                var catName = defaultCatName;
+                var boxCat = box.querySelector('.coursecat a, .category-name');
+                if (boxCat && boxCat.textContent.trim()) {
+                    catName = boxCat.textContent.trim();
+                }
+                if (catName) {
+                    var tag = document.createElement('span');
+                    tag.className = 'course-tag';
+                    tag.textContent = catName;
+                    box.appendChild(tag);
+                }
+            }
+
+            // Make clicking card or arrow navigate to course
+            if (!box.dataset.theeduClickAttached) {
+                box.dataset.theeduClickAttached = 'true';
+                box.addEventListener('click', function(e) {
+                    if (e.target.closest('a') || e.target.closest('button')) {
+                        return; // Let native links (e.g. teacher profile) work normally
+                    }
+                    var link = box.querySelector('.coursename a');
+                    if (link && link.href) {
+                        window.location.href = link.href;
+                    }
+                });
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', enrichCategoryCourseCards);
+    } else {
+        enrichCategoryCourseCards();
+    }
+})();
 {{/js}}
