@@ -564,46 +564,47 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
 
     .subcategories {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
         gap: 1.25rem;
         margin: 1.5rem 0 2rem;
         padding: 0;
+        list-style: none;
 
         .category {
             background: var(--theedu-card-bg, #FFFFFF);
             border: 1px solid rgba(108, 92, 231, 0.12);
             border-radius: 1.25rem;
-            padding: 1.25rem 1.5rem;
+            padding: 0;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 4px 16px rgba(108, 92, 231, 0.04);
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.06);
+            overflow: hidden;
             transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+            height: 100%;
+            position: relative;
+            cursor: pointer;
+            text-decoration: none;
 
             &:hover {
-                transform: translateY(-4px);
-                box-shadow: 0 10px 28px rgba(108, 92, 231, 0.12);
+                transform: translateY(-5px);
+                box-shadow: 0 14px 32px rgba(108, 92, 231, 0.15);
                 border-color: var(--theedu-primary, #6C5CE7);
             }
 
             .categoryname {
-                font-size: 1.1rem;
+                font-size: 1.15rem;
                 font-weight: 700;
-                margin: 0;
+                margin: 0 0 0.4rem 0;
 
                 a {
                     color: var(--theedu-navbar-text, #2D3436);
                     text-decoration: none;
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 0.6rem;
+                    display: inline-block;
 
                     &::before {
-                        content: "\f07b";
-                        font-family: "Font Awesome 6 Free";
-                        font-weight: 900;
-                        color: var(--theedu-primary, #6C5CE7);
-                        font-size: 1.35rem;
+                        content: none;
+                        display: none;
                     }
 
                     &:hover {

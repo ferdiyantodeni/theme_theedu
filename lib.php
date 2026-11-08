@@ -363,6 +363,15 @@ function theme_theedu_get_extra_scss($theme) {
     $darknavbarbg = theme_theedu_get_setting('dark_color_navbar_bg', '#1A2130');
     $darkprimary = theme_theedu_get_setting('dark_color_primary', '#8E7CFF');
 
+    // Category presentation settings.
+    $catthumbheight = (int) theme_theedu_get_setting('category_thumbnail_height', 140);
+    if ($catthumbheight < 60 || $catthumbheight > 400) {
+        $catthumbheight = 140;
+    }
+    $enablecatthumbs = (bool) theme_theedu_get_setting('enable_category_thumbnails', 1);
+    $catcardstyle = theme_theedu_get_setting('category_card_style', 'banner');
+    $catthumbsactive = ($enablecatthumbs && ($catcardstyle === 'banner')) ? '1' : '0';
+
     // Font Configuration.
     $themefont = theme_theedu_get_setting('theme_font', 'plus_jakarta_sans');
     $fontfamily = "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
@@ -405,6 +414,8 @@ function theme_theedu_get_extra_scss($theme) {
     --theedu-footer-text: {$footertext};
     --theedu-radius: 1rem;
     --theedu-shadow: 0 10px 25px -5px rgba(108, 92, 231, 0.08), 0 8px 10px -6px rgba(108, 92, 231, 0.04);
+    --theedu-cat-thumb-height: {$catthumbheight}px;
+    --theedu-cat-thumbs-enabled: {$catthumbsactive};
 }
 
 body, .navbar, .card, h1, h2, h3, h4, h5, h6, .btn, input, select, textarea {
@@ -490,6 +501,15 @@ function theme_theedu_get_inline_css() {
     $contentcardpadding = (int) theme_theedu_get_setting('content_card_padding', 24);
     $enablefullwidth = (bool) theme_theedu_get_setting('enable_full_width_content', 1);
 
+    // Category & subcategory presentation settings.
+    $catthumbheight = (int) theme_theedu_get_setting('category_thumbnail_height', 140);
+    if ($catthumbheight < 60 || $catthumbheight > 400) {
+        $catthumbheight = 140;
+    }
+    $enablecatthumbs = (bool) theme_theedu_get_setting('enable_category_thumbnails', 1);
+    $catcardstyle = theme_theedu_get_setting('category_card_style', 'banner');
+    $catthumbsactive = ($enablecatthumbs && ($catcardstyle === 'banner')) ? '1' : '0';
+
     return "<style id=\"theedu-dynamic-colors\" data-brand-preset=\"{$activepreset}\">
 :root {
     --theedu-primary: {$primary};
@@ -506,6 +526,8 @@ function theme_theedu_get_inline_css() {
     --theedu-content-side-padding: {$contentsidepadding}px;
     --theedu-content-margin-bottom: {$contentmarginbottom}px;
     --theedu-content-card-padding: {$contentcardpadding}px;
+    --theedu-cat-thumb-height: {$catthumbheight}px;
+    --theedu-cat-thumbs-enabled: {$catthumbsactive};
 }
 .navbar.fixed-top, nav.fixed-top {
     background-color: var(--theedu-navbar-bg) !important;
@@ -978,50 +1000,204 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
     color: var(--theedu-navbar-text, #2D3436) !important;
     margin: 0 !important;
 }
+.theedu-category-grid,
 .course_category_tree .subcategories {
     display: grid !important;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)) !important;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important;
     gap: 1.25rem !important;
     margin: 1.5rem 0 2rem !important;
     padding: 0 !important;
+    list-style: none !important;
 }
+.theedu-category-card,
 .course_category_tree .subcategories .category {
     background: var(--theedu-card-bg, #FFFFFF) !important;
     border: 1px solid rgba(108, 92, 231, 0.12) !important;
     border-radius: 1.25rem !important;
-    padding: 1.25rem 1.5rem !important;
+    padding: 0 !important;
     display: flex !important;
     flex-direction: column !important;
     justify-content: space-between !important;
-    box-shadow: 0 4px 16px rgba(108, 92, 231, 0.04) !important;
+    box-shadow: 0 4px 20px rgba(108, 92, 231, 0.06) !important;
+    overflow: hidden !important;
     transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
+    height: 100% !important;
+    position: relative !important;
+    cursor: pointer !important;
+    text-decoration: none !important;
 }
+.theedu-category-card:hover,
 .course_category_tree .subcategories .category:hover {
-    transform: translateY(-4px) !important;
-    box-shadow: 0 10px 28px rgba(108, 92, 231, 0.12) !important;
+    transform: translateY(-5px) !important;
+    box-shadow: 0 14px 32px rgba(108, 92, 231, 0.15) !important;
     border-color: var(--theedu-primary, #6C5CE7) !important;
 }
-.course_category_tree .subcategories .category .categoryname {
-    font-size: 1.1rem !important;
-    font-weight: 700 !important;
-    margin: 0 !important;
+
+/* Category Card Thumbnail Banner Area (Toggleable) */
+.category-thumb-wrapper {
+    height: var(--theedu-cat-thumb-height, 140px) !important;
+    width: 100% !important;
+    position: relative !important;
+    overflow: hidden !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
 }
+.category-thumb-img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    transition: transform 0.4s ease !important;
+}
+.theedu-category-card:hover .category-thumb-img,
+.course_category_tree .subcategories .category:hover .category-thumb-img {
+    transform: scale(1.05) !important;
+}
+.category-thumb-fallback-icon {
+    font-size: 2.75rem !important;
+    opacity: 0.95 !important;
+}
+
+/* Overlaid Badges */
+.category-badge-overlay {
+    position: absolute !important;
+    top: 12px !important;
+    left: 12px !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    color: var(--theedu-primary, #6C5CE7) !important;
+    font-size: 0.72rem !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    padding: 3px 10px !important;
+    border-radius: 20px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important;
+    z-index: 2 !important;
+}
+.category-count-overlay {
+    position: absolute !important;
+    top: 12px !important;
+    right: 12px !important;
+    background: rgba(18, 24, 36, 0.65) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    color: #FFFFFF !important;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
+    padding: 3px 10px !important;
+    border-radius: 20px !important;
+    z-index: 2 !important;
+}
+
+/* Compact Icon Header (When thumbnail is disabled) */
+.category-header-compact {
+    padding: 1.25rem 1.25rem 0.5rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+.theedu-cat-icon-box {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 12px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 1.2rem !important;
+    flex-shrink: 0 !important;
+}
+
+/* Card Body */
+.category-card-body {
+    padding: 1.25rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-grow: 1 !important;
+    justify-content: space-between !important;
+}
+.category-card-title,
+.course_category_tree .subcategories .category .categoryname {
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
+    margin: 0 0 0.4rem 0 !important;
+    color: var(--theedu-navbar-text, #2D3436) !important;
+    line-height: 1.35 !important;
+}
+.category-card-title a,
 .course_category_tree .subcategories .category .categoryname a {
     color: var(--theedu-navbar-text, #2D3436) !important;
     text-decoration: none !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 0.6rem !important;
+    display: inline-block !important;
 }
+.category-card-title a::before,
 .course_category_tree .subcategories .category .categoryname a::before {
-    content: \"\f07b\" !important;
-    font-family: \"Font Awesome 6 Free\" !important;
-    font-weight: 900 !important;
-    color: var(--theedu-primary, #6C5CE7) !important;
-    font-size: 1.35rem !important;
+    content: none !important; /* Eliminate folder icon! */
+    display: none !important;
 }
+.category-card-title a:hover,
 .course_category_tree .subcategories .category .categoryname a:hover {
     color: var(--theedu-primary, #6C5CE7) !important;
+}
+.category-card-desc {
+    color: #64748B !important;
+    font-size: 0.85rem !important;
+    line-height: 1.5 !important;
+    margin-bottom: 1rem !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+}
+
+/* Card Footer */
+.category-card-footer {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding-top: 0.85rem !important;
+    border-top: 1px solid rgba(108, 92, 231, 0.08) !important;
+    margin-top: auto !important;
+}
+.category-pill-badge {
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    padding: 3px 10px !important;
+    border-radius: 20px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 4px !important;
+}
+.pill-courses {
+    background: rgba(108, 92, 231, 0.1) !important;
+    color: var(--theedu-primary, #6C5CE7) !important;
+}
+.pill-subcats {
+    background: rgba(0, 206, 201, 0.12) !important;
+    color: #00A8A4 !important;
+}
+
+/* Circular Arrow Action Button (Matches Course Card Arrow) */
+.category-card-arrow-btn {
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background: rgba(108, 92, 231, 0.08) !important;
+    color: var(--theedu-primary, #6C5CE7) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 0.85rem !important;
+    transition: all 0.2s ease !important;
+    flex-shrink: 0 !important;
+}
+.theedu-category-card:hover .category-card-arrow-btn,
+.course_category_tree .subcategories .category:hover .category-card-arrow-btn {
+    background: var(--theedu-primary, #6C5CE7) !important;
+    color: #FFFFFF !important;
+    transform: translateX(3px) !important;
 }
 .course_category_tree .subcategories .category .numberofcourses {
     display: inline-flex !important;
@@ -1310,12 +1486,34 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
 [data-theme=\"dark\"] .coursebox .teachers li a::after {
     color: #94A3B8 !important;
 }
+[data-theme=\"dark\"] .theedu-category-card,
 [data-theme=\"dark\"] .course_category_tree .subcategories .category {
     background: #1E2638 !important;
     border-color: rgba(255, 255, 255, 0.08) !important;
 }
+[data-theme=\"dark\"] .category-card-title,
+[data-theme=\"dark\"] .category-card-title a,
+[data-theme=\"dark\"] .course_category_tree .subcategories .category .categoryname,
 [data-theme=\"dark\"] .course_category_tree .subcategories .category .categoryname a {
     color: #E4E7EB !important;
+}
+[data-theme=\"dark\"] .category-card-desc {
+    color: #94A3B8 !important;
+}
+[data-theme=\"dark\"] .category-badge-overlay {
+    background: rgba(30, 38, 56, 0.92) !important;
+    color: #a29bfe !important;
+}
+[data-theme=\"dark\"] .category-card-footer {
+    border-top-color: rgba(255, 255, 255, 0.08) !important;
+}
+[data-theme=\"dark\"] .category-card-arrow-btn {
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: #E4E7EB !important;
+}
+[data-theme=\"dark\"] .category-card-arrow-btn:hover {
+    background: var(--theedu-primary, #6C5CE7) !important;
+    color: #FFFFFF !important;
 }
 [data-theme=\"dark\"] .coursebox {
     background: #1E2638 !important;
@@ -1750,6 +1948,71 @@ function theme_theedu_is_visible_to_user($visibility, $isloggedin) {
 }
 
 /**
+ * Resolves thumbnail image URL for a course category.
+ * Extracts embedded image from category description or retrieves uploaded image from file storage.
+ *
+ * @param int $categoryid Category ID
+ * @param string $description Category description HTML/text
+ * @return string Image URL or empty string if not found
+ */
+function theme_theedu_get_category_thumbnail_url($categoryid, $description = '') {
+    global $CFG;
+
+    // 1. Try to extract first img src from category description.
+    if (!empty($description) && preg_match('/<img[^>]+src=["\']([^"\']+)["\']/i', $description, $matches)) {
+        return $matches[1];
+    }
+
+    // 2. Check Moodle File Storage for category description files.
+    if (!empty($categoryid) && class_exists('\context_coursecat')) {
+        try {
+            $context = \context_coursecat::instance($categoryid, IGNORE_MISSING);
+            if ($context) {
+                $fs = get_file_storage();
+                $files = $fs->get_area_files($context->id, 'coursecat', 'description', 0, 'itemid, filepath, filename', false);
+                foreach ($files as $file) {
+                    if ($file->is_valid_image()) {
+                        return \moodle_url::make_pluginfile_url(
+                            $file->get_contextid(),
+                            $file->get_component(),
+                            $file->get_filearea(),
+                            $file->get_itemid(),
+                            $file->get_filepath(),
+                            $file->get_filename()
+                        )->out(false);
+                    }
+                }
+            }
+        } catch (\Throwable $e) {
+            // Silently ignore context or storage exceptions.
+        }
+    }
+
+    return '';
+}
+
+/**
+ * Returns dynamic fallback colorful gradient and icon for categories without images.
+ *
+ * @param int $index Category index or ID
+ * @return array ['gradient' => string, 'icon' => string]
+ */
+function theme_theedu_get_category_fallback_gradient($index = 0) {
+    $gradients = [
+        0 => ['gradient' => 'linear-gradient(135deg, #4338CA 0%, #6366F1 50%, #818CF8 100%)', 'icon' => 'fa-graduation-cap'],
+        1 => ['gradient' => 'linear-gradient(135deg, #0F766E 0%, #0D9488 50%, #14B8A6 100%)', 'icon' => 'fa-laptop-code'],
+        2 => ['gradient' => 'linear-gradient(135deg, #6C5CE7 0%, #8075e8 50%, #a29bfe 100%)', 'icon' => 'fa-certificate'],
+        3 => ['gradient' => 'linear-gradient(135deg, #D97706 0%, #F59E0B 50%, #FBBF24 100%)', 'icon' => 'fa-cogs'],
+        4 => ['gradient' => 'linear-gradient(135deg, #0284C7 0%, #0EA5E9 50%, #38BDF8 100%)', 'icon' => 'fa-brain'],
+        5 => ['gradient' => 'linear-gradient(135deg, #BE185D 0%, #E11D48 50%, #F43F5E 100%)', 'icon' => 'fa-award'],
+        6 => ['gradient' => 'linear-gradient(135deg, #1E293B 0%, #334155 50%, #475569 100%)', 'icon' => 'fa-chart-pie'],
+        7 => ['gradient' => 'linear-gradient(135deg, #B91C1C 0%, #DC2626 50%, #EF4444 100%)', 'icon' => 'fa-users'],
+    ];
+    $idx = abs((int) $index) % count($gradients);
+    return $gradients[$idx];
+}
+
+/**
  * Prepares template context data for TheEdu layouts.
  *
  * @param moodle_page $page
@@ -2041,7 +2304,7 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
         'tags' => $searchtags,
     ];
 
-    // 4. Frontpage Course Categories / Highlights Grid (Dynamic Columns).
+    // 4. Frontpage Course Categories / Highlights Grid (Dynamic Columns & Modern Cards).
     $catvis = theme_theedu_get_setting('categories_visibility', 'all');
     $enablecategories = (bool) theme_theedu_get_setting('enable_categories', 1) && $isfrontpage && theme_theedu_is_visible_to_user($catvis, $isloggedinuser);
     $categoryitems = [];
@@ -2049,6 +2312,16 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
     if ($catcolumns < 2 || $catcolumns > 6) {
         $catcolumns = 4;
     }
+
+    $enablecatthumbs = (bool) theme_theedu_get_setting('enable_category_thumbnails', 1);
+    $catcardstyle = theme_theedu_get_setting('category_card_style', 'banner');
+    $catthumbheight = (int) theme_theedu_get_setting('category_thumbnail_height', 140);
+    if ($catthumbheight < 60 || $catthumbheight > 400) {
+        $catthumbheight = 140;
+    }
+    $showcatcoursecount = (bool) theme_theedu_get_setting('show_category_course_count', 1);
+    $showcatsubcatcount = (bool) theme_theedu_get_setting('show_category_subcat_count', 1);
+    $showcatdesc = (bool) theme_theedu_get_setting('show_category_desc', 1);
 
     if ($enablecategories) {
         $catsource = theme_theedu_get_setting('category_source', 'custom');
@@ -2070,14 +2343,31 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
             foreach ($topcategories as $cat) {
                 if ($cat->is_uservisible()) {
                     $tone = $pasteltones[$count % count($pasteltones)];
+                    $gradientinfo = theme_theedu_get_category_fallback_gradient($count);
                     $coursecount = $cat->get_courses_count();
+                    $subcatcount = method_exists($cat, 'get_children_count') ? $cat->get_children_count() : count($cat->get_children());
+                    $catthumb = theme_theedu_get_category_thumbnail_url($cat->id, $cat->description);
+                    $rawdesc = strip_tags($cat->description);
+                    if (strlen($rawdesc) > 120) {
+                        $rawdesc = substr($rawdesc, 0, 117) . '...';
+                    }
                     $categoryitems[] = [
-                        'icon' => 'fa-graduation-cap',
+                        'id' => $cat->id,
+                        'icon' => $gradientinfo['icon'],
                         'title' => $cat->get_formatted_name(),
-                        'desc' => $coursecount . ' ' . get_string('courses'),
+                        'desc' => $rawdesc,
+                        'has_desc' => !empty(trim($rawdesc)) && $showcatdesc,
                         'url' => $CFG->wwwroot . '/course/index.php?categoryid=' . $cat->id,
                         'bg_color' => $tone['bg'],
                         'icon_color' => $tone['icon'],
+                        'image_url' => $catthumb,
+                        'has_image' => !empty($catthumb),
+                        'fallback_gradient' => $gradientinfo['gradient'],
+                        'course_count' => $coursecount,
+                        'has_courses' => ($coursecount > 0) && $showcatcoursecount,
+                        'subcat_count' => $subcatcount,
+                        'has_subcats' => ($subcatcount > 0) && $showcatsubcatcount,
+                        'is_subcategory' => false,
                     ];
                     $count++;
                     if ($count >= $maxcats) {
@@ -2126,13 +2416,24 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
                 }
 
                 $tone = $pasteltones[($k - 1) % count($pasteltones)];
+                $gradientinfo = theme_theedu_get_category_fallback_gradient($k - 1);
                 $categoryitems[] = [
+                    'id' => $k,
                     'icon' => s($cicon),
                     'title' => format_text($ctitle, FORMAT_HTML),
                     'desc' => format_text($cdesc, FORMAT_HTML),
+                    'has_desc' => !empty(trim(strip_tags($cdesc))) && $showcatdesc,
                     'url' => clean_param($curl, PARAM_URL),
                     'bg_color' => $tone['bg'],
                     'icon_color' => $tone['icon'],
+                    'image_url' => '',
+                    'has_image' => false,
+                    'fallback_gradient' => $gradientinfo['gradient'],
+                    'course_count' => 0,
+                    'has_courses' => false,
+                    'subcat_count' => 0,
+                    'has_subcats' => false,
+                    'is_subcategory' => false,
                 ];
             }
         }
@@ -2158,6 +2459,13 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
         'heading' => format_text($catheading, FORMAT_HTML),
         'subheading' => format_text($catsubheading, FORMAT_HTML),
         'all_url' => $catallurl,
+        'enable_thumbnails' => $enablecatthumbs && ($catcardstyle === 'banner'),
+        'card_style_banner' => ($catcardstyle === 'banner'),
+        'card_style_compact' => ($catcardstyle === 'compact') || !$enablecatthumbs,
+        'thumbnail_height' => $catthumbheight . 'px',
+        'show_course_count' => $showcatcoursecount,
+        'show_subcat_count' => $showcatsubcatcount,
+        'show_desc' => $showcatdesc,
     ];
 
     // 5. Frontpage Enrolled / Featured Courses.

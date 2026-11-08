@@ -1,8 +1,8 @@
 {{!
     This file is part of Moodle - http://moodle.org/
 
-    TheEdu Frontpage Course Categories / Highlights Grid Template.
-    Supports dynamic max columns per row before wrapping down.
+    TheEdu Modern Category & Subcategory Card Model Template.
+    Supports toggleable thumbnail banner area, dynamic gradients, course count pills, and dynamic column wrapping.
 }}
 {{#theedu_categories.enabled}}
 <div class="theedu-category-section mb-5 d-print-none">
@@ -25,14 +25,58 @@
     <div class="theedu-category-grid" style="--theedu-cat-cols: {{theedu_categories.columns}};">
         {{#theedu_categories.items}}
         <div class="theedu-category-col">
-            {{#url}}<a href="{{url}}" class="text-decoration-none">{{/url}}
-            <div class="theedu-card p-3 p-lg-4 d-flex align-items-center gap-3 h-100">
-                <div class="theedu-cat-icon-box" style="background-color: {{bg_color}};">
-                    <i class="fa {{icon}}" style="color: {{icon_color}};"></i>
-                </div>
-                <div class="theedu-cat-content">
-                    <h6 class="fw-bold mb-1 theedu-cat-title">{{{ title }}}</h6>
-                    <small class="text-muted theedu-cat-desc">{{{ desc }}}</small>
+            {{#url}}<a href="{{url}}" class="text-decoration-none d-block h-100">{{/url}}
+            <div class="theedu-category-card h-100">
+                {{#theedu_categories.enable_thumbnails}}
+                    <div class="category-thumb-wrapper" style="{{^has_image}}background: {{fallback_gradient}}; color: #FFFFFF;{{/has_image}}">
+                        {{#has_image}}
+                            <img src="{{image_url}}" class="category-thumb-img" alt="{{title}}" loading="lazy">
+                        {{/has_image}}
+                        {{^has_image}}
+                            <div class="category-thumb-fallback-icon">
+                                <i class="fa {{icon}}"></i>
+                            </div>
+                        {{/has_image}}
+                        <span class="category-badge-overlay">{{#str}}category, core{{/str}}</span>
+                        {{#has_courses}}
+                            <span class="category-count-overlay"><i class="fa fa-graduation-cap me-1"></i>{{course_count}}</span>
+                        {{/has_courses}}
+                    </div>
+                {{/theedu_categories.enable_thumbnails}}
+
+                {{^theedu_categories.enable_thumbnails}}
+                    <div class="category-header-compact">
+                        <div class="theedu-cat-icon-box" style="background-color: {{bg_color}}; color: {{icon_color}};">
+                            <i class="fa {{icon}}"></i>
+                        </div>
+                        <span class="category-pill-badge pill-courses">{{#str}}category, core{{/str}}</span>
+                    </div>
+                {{/theedu_categories.enable_thumbnails}}
+
+                <div class="category-card-body">
+                    <div>
+                        <h6 class="category-card-title">{{{ title }}}</h6>
+                        {{#has_desc}}
+                            <p class="category-card-desc">{{{ desc }}}</p>
+                        {{/has_desc}}
+                    </div>
+                    <div class="category-card-footer">
+                        <div class="d-flex align-items-center gap-1 flex-wrap">
+                            {{#has_courses}}
+                                <span class="category-pill-badge pill-courses">
+                                    <i class="fa fa-book-open"></i> {{course_count}} {{#str}}courses{{/str}}
+                                </span>
+                            {{/has_courses}}
+                            {{#has_subcats}}
+                                <span class="category-pill-badge pill-subcats">
+                                    <i class="fa fa-sitemap"></i> {{subcat_count}} {{#str}}subcategories, theme_theedu{{/str}}
+                                </span>
+                            {{/has_subcats}}
+                        </div>
+                        <div class="category-card-arrow-btn">
+                            <i class="fa fa-arrow-right"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
             {{#url}}</a>{{/url}}

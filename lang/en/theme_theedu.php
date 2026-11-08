@@ -370,6 +370,27 @@ $string['categories_subheading_default'] = 'Browse interactive courses curated f
 $string['category_all_url'] = 'View All Courses URL';
 $string['category_all_url_desc'] = 'Destination link for the "View All Courses" button.';
 
+// Category & Subcategory Card Display Options
+$string['heading_category_card_display'] = 'Category & Subcategory Card Presentation';
+$string['heading_category_card_display_desc'] = 'Configure modern card packaging, thumbnail banner area (toggleable ON/OFF), course counts, and subcategory options for both homepage and category catalog pages.';
+$string['enable_category_thumbnails'] = 'Enable Category Thumbnail Image Banner';
+$string['enable_category_thumbnails_desc'] = 'When enabled, category and subcategory cards display a top thumbnail image banner (custom image from category description or elegant colorful education gradient) with overlaid badges. When disabled, cards render in a clean compact icon badge layout.';
+$string['category_card_style'] = 'Category Card Display Style';
+$string['category_card_style_desc'] = 'Choose between visual thumbnail banner cards or compact icon badge cards.';
+$string['category_style_banner'] = 'Thumbnail Banner Area (With Image / Dynamic Gradient)';
+$string['category_style_compact'] = 'Compact Icon Badge (Clean & Space-Saving)';
+$string['category_thumbnail_height'] = 'Category Thumbnail Height (px)';
+$string['category_thumbnail_height_desc'] = 'Height of the category thumbnail banner area in pixels (default: 140).';
+$string['show_category_course_count'] = 'Show Course Count Pill';
+$string['show_category_course_count_desc'] = 'Display total enrolled or available courses badge on category and subcategory cards.';
+$string['show_category_subcat_count'] = 'Show Subcategory Count Pill';
+$string['show_category_subcat_count_desc'] = 'Display count of child subcategories on parent category cards.';
+$string['show_category_desc'] = 'Show Category Description';
+$string['show_category_desc_desc'] = 'Display brief description or summary text inside category cards.';
+$string['subcategories'] = 'Subcategories';
+$string['subcategory'] = 'Subcategory';
+$string['viewcategory'] = 'Explore Category';
+
 // Footer
 $string['heading_footer_info'] = 'Footer Information';
 $string['footer_about'] = 'About Site (Footer Column 1)';

@@ -484,6 +484,39 @@ if ($ADMIN->fulltree) {
         get_string('category_count', 'theme_theedu'),
         get_string('category_count_desc', 'theme_theedu'), '4', $catcountoptions));
 
+    // Category & Subcategory Card Presentation Settings (Unified Options)
+    $tab_categories->add(new admin_setting_heading('heading_category_card_display',
+        get_string('heading_category_card_display', 'theme_theedu'),
+        get_string('heading_category_card_display_desc', 'theme_theedu')));
+
+    $tab_categories->add(new admin_setting_configcheckbox('theme_theedu/enable_category_thumbnails',
+        get_string('enable_category_thumbnails', 'theme_theedu'),
+        get_string('enable_category_thumbnails_desc', 'theme_theedu'), 1));
+
+    $catstyleoptions = [
+        'banner' => get_string('category_style_banner', 'theme_theedu'),
+        'compact' => get_string('category_style_compact', 'theme_theedu'),
+    ];
+    $tab_categories->add(new admin_setting_configselect('theme_theedu/category_card_style',
+        get_string('category_card_style', 'theme_theedu'),
+        get_string('category_card_style_desc', 'theme_theedu'), 'banner', $catstyleoptions));
+
+    $tab_categories->add(new admin_setting_configtext('theme_theedu/category_thumbnail_height',
+        get_string('category_thumbnail_height', 'theme_theedu'),
+        get_string('category_thumbnail_height_desc', 'theme_theedu'), '140', PARAM_INT));
+
+    $tab_categories->add(new admin_setting_configcheckbox('theme_theedu/show_category_course_count',
+        get_string('show_category_course_count', 'theme_theedu'),
+        get_string('show_category_course_count_desc', 'theme_theedu'), 1));
+
+    $tab_categories->add(new admin_setting_configcheckbox('theme_theedu/show_category_subcat_count',
+        get_string('show_category_subcat_count', 'theme_theedu'),
+        get_string('show_category_subcat_count_desc', 'theme_theedu'), 1));
+
+    $tab_categories->add(new admin_setting_configcheckbox('theme_theedu/show_category_desc',
+        get_string('show_category_desc', 'theme_theedu'),
+        get_string('show_category_desc_desc', 'theme_theedu'), 1));
+
     $defaulticons = [
         1 => 'fa-laptop-code',
         2 => 'fa-certificate',

@@ -6,6 +6,52 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.5.1] - 2026-11-08 (Build 2026110821)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Daftar Kategori / Subkategori Berbentuk Dropdown Folder yang Membosankan:**
+   - Navigasi dan daftar kategori bawaan Moodle (baik di halaman katalog `/course/index.php`, pohon kategori `.course_category_tree`, maupun Beranda) sebelumnya berpenampilan seperti struktur folder Windows klasik dengan ikon folder kuning/biru (`\f07b`) dan teks berlekuk.
+   - Tampilan ini kaku, tidak dinamis, dan tidak selaras dengan bahasa desain kartu modern TheEdu yang bersih dan elegan.
+2. **Ketiadaan Opsi Gambar Thumbnail Kategori & Subkategori yang Fleksibel:**
+   - Belum ada kemampuan untuk mengaktifkan atau menonaktifkan area gambar thumbnail (*thumbnail image banner*) pada kartu kategori dan subkategori.
+   - Pengguna menginginkan opsi yang sama untuk tampilan kategori utama maupun subkategori, di mana area thumbnail dapat diaktifkan/dinonaktifkan melalui menu pengaturan tema (*Site Administration*).
+
+### ✨ Perubahan & Solusi
+1. **Model Kartu Kategori & Subkategori Modern (Pengganti Dropdown Folder):**
+   - Mengemas seluruh daftar kategori dan subkategori menjadi kartu modern yang seirama dengan kartu kursus (*Course Cards*):
+     - `border-radius: 1.25rem` (20px rounded card).
+     - Efek hover halus `translateY(-5px)` dengan bayangan lembut berdimensi (`0 14px 32px rgba(108, 92, 231, 0.15)`).
+     - Menghapus ikon folder lawas (`\f07b`) seutuhnya, digantikan oleh tata letak kartu visual yang dinamis.
+     - Dilengkapi tombol aksi panah sirkular (`->`) yang responsif saat kartu disorot cursor.
+2. **Area Banner Thumbnail Kategori yang Dapat Diaktifkan / Dinonaktifkan (Toggleable):**
+   - **Mode Thumbnail Aktif (`enable_category_thumbnails = 1`):**
+     - Menampilkan area banner gambar di bagian atas kartu.
+     - **Ekstraksi Otomatis Gambar Kategori:** Mesin `theme_theedu_get_category_thumbnail_url()` secara cerdas mendeteksi gambar yang disematkan dalam deskripsi kategori (`<img>`) atau file storage Moodle (`coursecat/description`).
+     - **Dynamic Colorful Education Gradient Fallback:** Jika kategori belum memiliki gambar unggahan, tema secara otomatis menghasilkan banner gradien edukasi warna-warni yang estetik (8 palet gradien dinamis berbasis ID kategori: Indigo, Emerald Teal, Violet, Amber, Ocean Blue, Rose, Slate, Crimson) lengkap dengan ikon FontAwesome.
+     - **Overlaid Badges:** Menampilkan badge pill transparan elegan (*Category* / *Subcategory*) di kiri atas dan indikator jumlah kursus di kanan atas banner.
+   - **Mode Thumbnail Nonaktif / Compact (`enable_category_thumbnails = 0` / style `compact`):**
+     - Kartu bertransformasi menjadi model ringkas (*Compact Icon Badge Mode*) dengan kotak ikon pastel berwarna, badge tipe kategori, deskripsi singkat, jumlah kursus, dan tombol panah tanpa memakan ruang banner atas.
+3. **Penyelarasan Opsi Kategori & Subkategori (Unified Features):**
+   - Kategori induk maupun subkategori memiliki fitur dan opsi identik:
+     - `show_category_course_count`: Menampilkan pill total kursus (`<i class="fa fa-book-open"></i> X Kursus`).
+     - `show_category_subcat_count`: Menampilkan pill subkategori (`<i class="fa fa-sitemap"></i> X Sub`).
+     - `show_category_desc`: Menampilkan ringkasan deskripsi kategori.
+     - `category_thumbnail_height`: Mengatur ketinggian banner gambar (default 140px).
+4. **Pembaruan Pengaturan Tab 5 di Site Administration:**
+   - Menambahkan section baru **Category & Subcategory Card Presentation** di Tab 5 (*Homepage Categories & Highlights*):
+     - `enable_category_thumbnails` (Checkbox, default: Aktif).
+     - `category_card_style` (Select: *Thumbnail Banner Area* / *Compact Icon Badge*).
+     - `category_thumbnail_height` (Input angka dalam pixel, default: 140px).
+     - `show_category_course_count` (Checkbox, default: Aktif).
+     - `show_category_subcat_count` (Checkbox, default: Aktif).
+     - `show_category_desc` (Checkbox, default: Aktif).
+5. **Dukungan Halaman Beranda & Katalog Kursus:**
+   - Diperbarui pada `templates/frontpage_categories.mustache` untuk render server-side template.
+   - Diperkaya melalui progressive enhancement script `enrichCategoryCards()` di `drawers.mustache` dan `frontpage.mustache` untuk merender pohon kategori Moodle core pada `/course/index.php` secara otomatis.
+   - Dukungan penuh Dark Mode untuk seluruh elemen kartu kategori.
+
+---
+
 ## [v1.5.0] - 2026-11-08 (Build 2026110820)
 
 ### 🎯 Masalah yang Diselesaikan

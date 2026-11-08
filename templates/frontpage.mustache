@@ -136,4 +136,108 @@ require(['theme_boost/loader'], function(Loader) {
         enrichFrontpageCourseCards();
     }
 })();
+
+// Category & Subcategory Card Model Enhancement (Card Presentation & Thumbnail Toggle)
+(function() {
+    function enrichCategoryCards() {
+        var subcats = document.querySelectorAll('.course_category_tree .subcategories .category');
+        if (!subcats || subcats.length === 0) return;
+
+        var rootStyles = getComputedStyle(document.documentElement);
+        var thumbsEnabledVar = rootStyles.getPropertyValue('--theedu-cat-thumbs-enabled').trim();
+        var enableThumbs = thumbsEnabledVar !== '0';
+
+        var fallbackGradients = [
+            { bg: 'linear-gradient(135deg, #4338CA 0%, #6366F1 50%, #818CF8 100%)', icon: 'fa-graduation-cap' },
+            { bg: 'linear-gradient(135deg, #0F766E 0%, #0D9488 50%, #14B8A6 100%)', icon: 'fa-laptop-code' },
+            { bg: 'linear-gradient(135deg, #6C5CE7 0%, #8075e8 50%, #a29bfe 100%)', icon: 'fa-certificate' },
+            { bg: 'linear-gradient(135deg, #D97706 0%, #F59E0B 50%, #FBBF24 100%)', icon: 'fa-cogs' },
+            { bg: 'linear-gradient(135deg, #0284C7 0%, #0EA5E9 50%, #38BDF8 100%)', icon: 'fa-brain' },
+            { bg: 'linear-gradient(135deg, #BE185D 0%, #E11D48 50%, #F43F5E 100%)', icon: 'fa-award' },
+            { bg: 'linear-gradient(135deg, #1E293B 0%, #334155 50%, #475569 100%)', icon: 'fa-chart-pie' },
+            { bg: 'linear-gradient(135deg, #B91C1C 0%, #DC2626 50%, #EF4444 100%)', icon: 'fa-users' }
+        ];
+
+        subcats.forEach(function(cat, index) {
+            if (cat.dataset.theeduCardEnriched) return;
+            cat.dataset.theeduCardEnriched = 'true';
+            cat.classList.add('theedu-category-card');
+
+            var link = cat.querySelector('.categoryname a');
+            var title = link ? link.textContent.trim() : '';
+            var url = link ? link.href : '';
+            var numCoursesElem = cat.querySelector('.numberofcourses');
+            var numCoursesText = numCoursesElem ? numCoursesElem.textContent.trim() : '';
+            var numCoursesMatch = numCoursesText.match(/\d+/);
+            var numCourses = numCoursesMatch ? numCoursesMatch[0] : '';
+
+            var depth = cat.getAttribute('data-depth') || '1';
+            var isSubcat = parseInt(depth, 10) > 1 || cat.closest('.subcategories .subcategories') !== null;
+            var badgeText = isSubcat ? 'Subcategory' : 'Category';
+
+            var existingImg = cat.querySelector('.content img, .description img');
+            var imgSrc = existingImg ? existingImg.src : '';
+
+            var descElem = cat.querySelector('.content .description, .category_desc');
+            var descText = descElem ? descElem.textContent.trim() : '';
+            if (descText.length > 120) {
+                descText = descText.substring(0, 117) + '...';
+            }
+
+            var gradInfo = fallbackGradients[index % fallbackGradients.length];
+
+            var cardHtml = '';
+            if (enableThumbs) {
+                cardHtml += '<div class="category-thumb-wrapper"' + (!imgSrc ? ' style="background: ' + gradInfo.bg + '; color: white;"' : '') + '>';
+                if (imgSrc) {
+                    cardHtml += '<img src="' + imgSrc + '" class="category-thumb-img" alt="' + title.replace(/"/g, '&quot;') + '">';
+                } else {
+                    cardHtml += '<div class="category-thumb-fallback-icon"><i class="fa ' + gradInfo.icon + '"></i></div>';
+                }
+                cardHtml += '<span class="category-badge-overlay">' + badgeText + '</span>';
+                if (numCourses) {
+                    cardHtml += '<span class="category-count-overlay"><i class="fa fa-graduation-cap me-1"></i>' + numCourses + '</span>';
+                }
+                cardHtml += '</div>';
+            } else {
+                cardHtml += '<div class="category-header-compact">';
+                cardHtml += '<div class="theedu-cat-icon-box" style="background: rgba(108, 92, 231, 0.12); color: #6C5CE7;"><i class="fa ' + gradInfo.icon + '"></i></div>';
+                cardHtml += '<span class="category-pill-badge ' + (isSubcat ? 'pill-subcats' : 'pill-courses') + '">' + badgeText + '</span>';
+                cardHtml += '</div>';
+            }
+
+            cardHtml += '<div class="category-card-body">';
+            cardHtml += '<div>';
+            cardHtml += '<h6 class="category-card-title">' + (url ? '<a href="' + url + '">' + title + '</a>' : title) + '</h6>';
+            if (descText) {
+                cardHtml += '<p class="category-card-desc">' + descText + '</p>';
+            }
+            cardHtml += '</div>';
+            cardHtml += '<div class="category-card-footer">';
+            cardHtml += '<div class="d-flex align-items-center gap-1 flex-wrap">';
+            if (numCourses) {
+                cardHtml += '<span class="category-pill-badge pill-courses"><i class="fa fa-book-open"></i> ' + numCourses + ' Courses</span>';
+            }
+            cardHtml += '</div>';
+            cardHtml += '<div class="category-card-arrow-btn"><i class="fa fa-arrow-right"></i></div>';
+            cardHtml += '</div>';
+            cardHtml += '</div>';
+
+            cat.innerHTML = cardHtml;
+
+            if (url) {
+                cat.addEventListener('click', function(e) {
+                    if (e.target.closest('a') || e.target.closest('button')) return;
+                    window.location.href = url;
+                });
+            }
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', enrichCategoryCards);
+    } else {
+        enrichCategoryCards();
+    }
+})();
 {{/js}}
