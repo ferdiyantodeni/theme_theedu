@@ -415,18 +415,22 @@
     }
 }
 
-// Default Page Drawer Padding & Full Width Layout
-#page.drawers {
+// Default Page Container Padding & Full Width Layout (Applies to all pages)
+#page.drawers,
+#page.theedu-frontpage-container,
+#page {
     margin-top: 60px !important;
     padding-top: var(--theedu-content-margin-top, 20px) !important;
     padding-left: var(--theedu-content-side-padding, 20px) !important;
     padding-right: var(--theedu-content-side-padding, 20px) !important;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
     position: relative;
     z-index: 1;
 
     .main-inner {
         margin-top: 0 !important;
-        margin-bottom: var(--theedu-content-margin-bottom, 20px) !important;
+        margin-bottom: 0 !important;
         max-width: var(--theedu-content-max-width, 1440px) !important;
         width: 100% !important;
         margin-left: auto !important;
@@ -472,14 +476,19 @@ a, button, .btn, .nav-link, .dropdown-item, [role="button"], [role="tab"], [role
         z-index: 1040 !important;
     }
 
-    #page.drawers {
+    #page.drawers,
+    #page.theedu-frontpage-container,
+    #page {
         margin-top: 70px !important; // Exactly below floating navbar
-        padding-top: var(--theedu-content-margin-top, 20px) !important; // Precise ~20px top gap
+        padding-top: var(--theedu-content-margin-top, 20px) !important; // Precise ~20px top gap across all pages
         padding-left: var(--theedu-content-side-padding, 20px) !important;
         padding-right: var(--theedu-content-side-padding, 20px) !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
 
         .main-inner {
             margin-top: 0 !important;
+            margin-bottom: 0 !important;
         }
     }
 }
@@ -504,17 +513,25 @@ a, button, .btn, .nav-link, .dropdown-item, [role="button"], [role="tab"], [role
             padding: 0.5rem 0.85rem !important;
         }
 
-        #page.drawers {
+        #page.drawers,
+        #page.theedu-frontpage-container,
+        #page {
             margin-top: 58px !important;
             padding-top: var(--theedu-content-margin-top, 15px) !important;
             padding-left: 10px !important;
             padding-right: 10px !important;
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
         }
     }
 
-    #page.drawers {
+    #page.drawers,
+    #page.theedu-frontpage-container,
+    #page {
         padding-left: 10px !important;
         padding-right: 10px !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
 
         .main-inner {
             padding: 1rem !important;

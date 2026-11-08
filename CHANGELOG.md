@@ -6,6 +6,37 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.4.9] - 2026-11-08 (Build 2026110819)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Jarak Navbar >> Konten Masih Melebar (> 20px) di Halaman Beranda (Home/Frontpage):**
+   - Pengguna melaporkan bahwa di beberapa halaman (khususnya Beranda/Home) celah antara navbar dan konten kartu masih terlihat renggang (~50px).
+   - **Penyebab:** Pada rilis sebelumnya (v1.4.8), perbaikan 20px hanya dispesifikasikan untuk selector `#page.drawers`. Pada halaman Beranda/Frontpage (`theedu-frontpage-container`), kontainer masih memiliki warisan CSS `padding-top: 6rem` (96px) pada `.theedu-main-content` dan `margin-top: 1.5rem` (24px) pada `.theedu-slider-wrapper`, sehingga jarak bersih dari batas bawah navbar (70px) menjadi `120px - 70px = 50px`.
+2. **Jarak Konten >> Footer Masih Melebar (> 100px) di Bawah Kartu:**
+   - Di bagian bawah kartu konten menuju footer, jarak ruang kosong terlihat sangat lebar (~104px), tidak konsisten dengan target 20px.
+   - **Penyebab:** Terjadi akumulasi spasi dari `margin-top: 3rem` (48px) pada `#page-footer`, `padding-bottom: 3.5rem` (56px) pada `.theedu-main-content`, `mb-5` (48px) pada seksi kartu terakhir, serta `margin-bottom: 20px` pada `.main-inner`.
+3. **Pemeriksaan Menyeluruh Seluruh Halaman & Potensi Bertumpuk (*Overlapping*):**
+   - Pengguna meminta agar standarisasi jarak **Navbar >> Konten (20px)** dan **Konten >> Footer (20px)** berlaku universal untuk SEMUA halaman (Frontpage, Dashboard, My courses, Course content, Site administration, Categories, Activities, dll.), dinamis mengikuti menu pengaturan Margin, serta bebas dari potensi tabrakan/tumpukan elemen (*stacking bugs*).
+
+### ✨ Perubahan & Solusi
+1. **Universal Top Spacing Tepat 20px untuk Semua Halaman:**
+   - Selector diperluas mencakup semua halaman: `#page.drawers`, `#page.theedu-frontpage-container`, dan `#page:not(.drawers)`.
+   - Mengatur `margin-top: 70px !important;` (dan `58px` pada mobile) dengan `padding-top: var(--theedu-content-margin-top, 20px) !important;`.
+   - Menghapus `margin-top` pada `.theedu-slider-wrapper`, `.theedu-course-search-section`, `.main-inner`, dan seksi awal, serta mengatur `padding-top: 0 !important;` pada `.theedu-main-content`.
+   - **Hasil:** Di SEMUA halaman, jarak antara batas bawah floating navbar dan elemen konten pertama presisi tepat **20px**.
+2. **Universal Bottom Spacing Tepat 20px ke Footer untuk Semua Halaman:**
+   - Menetapkan `#page-footer { margin-top: var(--theedu-content-margin-bottom, 20px) !important; margin-bottom: 0 !important; }`.
+   - Mengatur `margin-bottom: 0 !important; padding-bottom: 0 !important;` pada `#page.drawers`, `.main-inner`, `#page-content`, dan `.theedu-frontpage-container`.
+   - Mengatur `margin-bottom: 0 !important;` pada seksi terakhir di dalam `.theedu-main-content` (`:last-child` / `:last-of-type`) dan menonaktifkan area konten core frontpage (`.theedu-frontpage-region-main`) jika kosong.
+   - **Hasil:** Di SEMUA halaman, jarak bersih antara batas bawah kartu konten dan batas atas footer presisi tepat **20px**.
+3. **Audit Bebas Tabrakan & Bertumpuk (Zero Overlap & Stacking Guarantee):**
+   - **Navbar vs Konten Scroll:** Navbar memiliki `position: fixed; z-index: 1040; backdrop-filter: blur(16px);`. Konten di bawahnya memiliki `z-index: 1` sehingga dapat di-scroll dengan sangat halus di bawah navbar tanpa tabrakan teks maupun gangguan klik.
+   - **Dropdown & Notifikasi Navbar:** Tetap mengapung bebas di layer teratas (`z-index: 1060; overflow: visible;`), tidak terpotong oleh batas navbar maupun tertutup oleh kartu konten.
+   - **Drawer Kiri & Kanan (Course Index & Blocks):** Menggunakan `z-index: 1050;`. Di desktop, kartu konten otomatis menciut (*auto-shrink*) saat drawer dibuka; di mobile, drawer hadir dengan backdrop isolasi rapi.
+   - **Tombol Melayang (Edit Mode Switch):** Ditempatkan di kanan bawah dengan `z-index: 1030;`, bebas dari benturan dengan footer dan konten.
+
+---
+
 ## [v1.4.8] - 2026-11-08 (Build 2026110818)
 
 ### 🎯 Masalah yang Diselesaikan

@@ -1356,15 +1356,27 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
     border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
-/* 1. TOP SPACING: ~20px gap under navbar */
-.theedu-floating-header #page.drawers {
+/* 1. TOP SPACING: Exactly ~20px gap under navbar across ALL pages */
+.theedu-floating-header #page.drawers,
+.theedu-floating-header #page.theedu-frontpage-container,
+.theedu-floating-header #page,
+.theedu-floating-header .theedu-frontpage-container {
     margin-top: 70px !important;
     padding-top: var(--theedu-content-margin-top, 20px) !important;
 }
-.theedu-floating-header #page.drawers .main-inner {
+.theedu-floating-header #page.drawers .main-inner,
+.theedu-floating-header .theedu-frontpage-container .theedu-main-content,
+.theedu-floating-header .theedu-slider-wrapper {
     margin-top: 0 !important;
 }
-#page.drawers {
+.theedu-floating-header .theedu-main-content,
+.theedu-floating-header #theedu-main-portal {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+}
+#page.drawers,
+#page.theedu-frontpage-container,
+#page {
     margin-top: 60px !important;
     padding-top: var(--theedu-content-margin-top, 20px) !important;
 }
@@ -1373,7 +1385,9 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
 }
 
 /* 2. SIDES: Match Content Width to Navbar & Shrink when Drawers Open */
-#page.drawers {
+#page.drawers,
+#page.theedu-frontpage-container,
+#page {
     padding-left: var(--theedu-content-side-padding, 20px) !important;
     padding-right: var(--theedu-content-side-padding, 20px) !important;
 }
@@ -1383,24 +1397,49 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
 .pagelayout-incourse #page.drawers .main-inner,
 .pagelayout-mydashboard #page.drawers .main-inner,
 body.limitedwidth #page.drawers .main-inner,
-body.mediumwidth #page.drawers .main-inner {
+body.mediumwidth #page.drawers .main-inner,
+.theedu-main-content,
+#theedu-main-portal {
     max-width: var(--theedu-content-max-width, 1440px) !important;
     width: 100% !important;
     margin-left: auto !important;
     margin-right: auto !important;
+}
+#page.drawers .main-inner {
     padding: var(--theedu-content-card-padding, 24px) !important;
 }
 
-/* 3. BOTTOM GAP TO FOOTER: ~20px */
-#page.drawers .main-inner {
-    margin-bottom: var(--theedu-content-margin-bottom, 20px) !important;
-}
-#page.drawers #page-content {
+/* 3. BOTTOM GAP TO FOOTER: Exactly ~20px gap to footer across ALL pages */
+#page.drawers,
+#page.drawers .main-inner,
+#page.drawers #page-content,
+.theedu-frontpage-container,
+.theedu-frontpage-container .theedu-main-content,
+.theedu-frontpage-container #theedu-main-portal {
+    margin-bottom: 0 !important;
     padding-bottom: 0 !important;
 }
+.theedu-frontpage-container .theedu-main-content > div:last-child,
+.theedu-frontpage-container .theedu-main-content > section:last-child,
+.theedu-frontpage-container .theedu-courses-section:last-of-type,
+.theedu-frontpage-container .theedu-category-section:last-of-type,
+.theedu-frontpage-region-main {
+    margin-bottom: 0 !important;
+}
+#page-footer {
+    margin-top: var(--theedu-content-margin-bottom, 20px) !important;
+    margin-bottom: 0 !important;
+}
 @media (max-width: 768px) {
-    .theedu-floating-header #page.drawers {
-        padding-top: 2rem !important;
+    .theedu-floating-header #page.drawers,
+    .theedu-floating-header #page.theedu-frontpage-container,
+    .theedu-floating-header #page {
+        margin-top: 58px !important;
+        padding-top: var(--theedu-content-margin-top, 15px) !important;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 0 !important;
     }
     .navbar.fixed-top {
         overflow: visible !important;

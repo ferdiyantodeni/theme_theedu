@@ -6,7 +6,8 @@
     background-color: var(--theedu-footer-bg, #2D3436) !important;
     color: var(--theedu-footer-text, #DFE6E9) !important;
     padding: 3.5rem 0 2rem;
-    margin-top: 3rem;
+    margin-top: var(--theedu-content-margin-bottom, 20px) !important;
+    margin-bottom: 0 !important;
     border-top: 1px solid rgba(108, 92, 231, 0.1);
 
     .theedu-footer-inner {

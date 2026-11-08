@@ -128,29 +128,44 @@ body,
 
 .theedu-main-content,
 #theedu-main-portal {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 5rem 2rem 3.5rem !important; // Clean proportional spacing under fixed-top navbar
+    max-width: var(--theedu-content-max-width, 1440px) !important;
+    width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 var(--theedu-content-side-padding, 20px) 0 !important; // Dynamic side padding matching navbar
     height: auto !important;
     overflow: visible !important;
     display: block !important;
 
     @media (max-width: 768px) {
-        padding: 4.5rem 1rem 2rem !important;
+        padding: 0 10px 0 !important;
     }
 }
 
-.theedu-floating-header .theedu-main-content {
-    padding-top: 6rem !important;
+.theedu-floating-header .theedu-main-content,
+.theedu-floating-header #theedu-main-portal {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 
     @media (max-width: 768px) {
-        padding-top: 5rem !important;
+        padding-top: 0 !important;
+        padding-bottom: 0 !important;
     }
 }
 
 .theedu-frontpage-region-main {
     background: transparent;
-    margin-top: 2rem;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+// Eliminate excessive bottom space on the final section before footer
+.theedu-main-content > div:last-child,
+.theedu-main-content > section:last-child,
+.theedu-main-content .theedu-courses-section:last-child,
+.theedu-main-content .theedu-category-section:last-child {
+    margin-bottom: 0 !important;
 }
 
 // Modern TheEdu Card Base (Matches preview.html)
