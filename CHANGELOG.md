@@ -6,6 +6,43 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.4.8] - 2026-11-08 (Build 2026110818)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Jarak Atas (1) Masih Terlalu Lebar:**
+   - Gap antara bagian bawah *Floating Navbar* dan kartu konten utama (`.main-inner`) masih dirasa terlalu berjarak. Pengguna menginginkan jarak presisi sekitar **20px**.
+2. **Kiri (2) dan Kanan (3) Kartu Konten Mengalami Kekosongan Luas:**
+   - Pada halaman Dashboard, My Courses, dan Course Content (`/course/view.php`), kartu konten terpotong sempit di tengah (`max-width: 830px` akibat `body.limitedwidth` bawaan Boost), menyisakan ruang kosong raksasa di sisi kiri dan kanan.
+   - Pengguna meminta agar lebar kartu konten menyamakan lebar *Floating Navbar* (1440px) dengan margin sisi kiri-kanan yang presisi (20px), serta **otomatis menciut (*auto-shrink*)** saat drawer menu kiri (Course Index) atau drawer kanan (Blocks) dibuka.
+3. **Jarak Konten dengan Footer Berpotensi Melebar:**
+   - Memastikan batas bawah antara kartu konten utama dan footer tetap rapi dan konsisten berjarak **20px**.
+4. **Dukungan Kustomisasi Tanpa Rubah Kode (Menu Pengaturan Baru "Margin"):**
+   - Pengguna meminta penambahan tab pengaturan baru di Site Administration agar seluruh nilai margin, lebar konten, padding kartu, dan jarak footer dapat disesuaikan di kemudian hari tanpa harus memodifikasi kode sumber.
+
+### ✨ Perubahan & Solusi
+1. **Perampingan Jarak Atas Tepat 20px (Navbar to Content):**
+   - Floating navbar TheEdu berada di posisi `top: 14px` dengan tinggi `56px` (batas bawah navbar tepat di koordinat `70px`).
+   - `#page.drawers` ditetapkan memiliki `margin-top: 70px !important;` dan `padding-top: var(--theedu-content-margin-top, 20px) !important;` serta menghapus `margin-top` bawaan Boost pada `.main-inner` (`margin-top: 0 !important;`).
+   - Hasilnya, celah vertikal antara navbar dan kartu konten menjadi tepat **20px** yang presisi dan bersih.
+2. **Ekspansi Lebar Konten Menyamai Navbar & Responsif Menciut (Drawer Auto-Shrink):**
+   - Meng-override pembatas `max-width: 830px` bawaan Boost (`.pagelayout-standard`, `.pagelayout-course`, `.pagelayout-incourse`, `.pagelayout-mydashboard`, `body.limitedwidth`, `body.mediumwidth`).
+   - Kartu konten utama `.main-inner` kini memiliki `width: 100% !important;` dan `max-width: var(--theedu-content-max-width, 1440px) !important;` dengan padding luar kiri-kanan sebesar `20px` selaras dengan *Floating Navbar*.
+   - Karena kontainer `#page.drawers` secara otomatis mendapatkan `margin-left: 285px` atau `margin-right: 315px` saat drawer dibuka, maka `.main-inner` dengan `width: 100%` secara alami akan **menciut (*shrink*)** secara proporsional dan elegan tanpa merusak elemen di dalamnya.
+3. **Kontrol Jarak Bawah ke Footer (20px):**
+   - Menetapkan `margin-bottom: var(--theedu-content-margin-bottom, 20px) !important;` pada `.main-inner`, mencegah timbulnya celah putih berlebih di atas footer.
+4. **Tab Pengaturan Baru: "Margin & Spacing" di Pengaturan Tema:**
+   - Menambahkan Tab ke-7 di `settings.php` bertajuk **"Margin & Spacing"** (`tab_margin` / `theme_theedu_margin`).
+   - Dilengkapi 6 opsi pengaturan intuitif:
+     - **Jarak Navbar ke Konten (px)** (`theme_theedu/content_margin_top`, default: `20`)
+     - **Samakan Lebar Konten dengan Navbar (Toggle)** (`theme_theedu/enable_full_width_content`, default: `1`)
+     - **Lebar Maksimum Konten (px)** (`theme_theedu/content_max_width`, default: `1440`)
+     - **Jarak Sisi Kiri & Kanan (px)** (`theme_theedu/content_side_padding`, default: `20`)
+     - **Jarak Konten ke Footer (px)** (`theme_theedu/content_margin_bottom`, default: `20`)
+     - **Padding Dalam Kartu Konten (px)** (`theme_theedu/content_card_padding`, default: `24`)
+   - Nilai pengaturan ini langsung diinjeksi sebagai CSS Custom Properties (`--theedu-content-margin-top`, dll.) melalui engine `theme_theedu_get_inline_css()` di `lib.php` dan `scss/_header.scss`.
+
+---
+
 ## [v1.4.7] - 2026-11-08 (Build 2026110817)
 
 ### 🎯 Masalah yang Diselesaikan

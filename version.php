@@ -24,11 +24,11 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2026110817; // YYYYMMDDXX versioning for seamless periodic upgrades.
+$plugin->version   = 2026110818; // YYYYMMDDXX versioning for seamless periodic upgrades.
 $plugin->requires  = 2024042200; // Moodle 4.4 or later (supports 4.4, 4.5, 5.0, 5.1, 5.2, 5.3+).
 $plugin->component = 'theme_theedu';
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'v1.4.7';
+$plugin->release   = 'v1.4.8';
 $plugin->dependencies = [
     'theme_boost' => 2024042200,
 ];

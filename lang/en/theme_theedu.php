@@ -393,6 +393,29 @@ $string['backtocourse'] = 'Back to Course';
 $string['enable_activity_nav'] = 'Enable Course Activity Navigation Bar';
 $string['enable_activity_nav_desc'] = 'Show previous, next, and jump-to activity buttons below activities in course view.';
 
+// Margin & Layout Spacing
+$string['tab_margin'] = 'Margin & Spacing';
+$string['heading_margin_top'] = '1. Jarak Atas (Top Spacing under Navbar)';
+$string['heading_margin_top_desc'] = 'Atur jarak vertikal antara batas bawah navbar dan kartu konten utama.';
+$string['content_margin_top'] = 'Jarak Navbar ke Konten (px)';
+$string['content_margin_top_desc'] = 'Jarak dalam piksel antara batas bawah navbar dan kartu konten (default: 20px).';
+
+$string['heading_margin_width'] = '2. Lebar Konten & Sisi Kiri-Kanan (Width & Side Alignment)';
+$string['heading_margin_width_desc'] = 'Atur lebar kartu konten agar presisi dengan floating navbar pada halaman Dashboard, My Courses, dan Course Content.';
+$string['enable_full_width_content'] = 'Samakan Lebar Konten dengan Navbar';
+$string['enable_full_width_content_desc'] = 'Aktifkan agar lebar kartu konten utama mengikuti batas floating navbar (1440px) dan otomatis menciut saat drawer kiri/kanan dibuka.';
+$string['content_max_width'] = 'Lebar Maksimum Konten (px)';
+$string['content_max_width_desc'] = 'Lebar maksimum kartu konten utama pada layar monitor lebar (default: 1440px).';
+$string['content_side_padding'] = 'Jarak Sisi Kiri & Kanan (px)';
+$string['content_side_padding_desc'] = 'Jarak tepi luar kartu konten dari sisi layar browser agar selaras dengan navbar (default: 20px).';
+
+$string['heading_margin_bottom'] = '3. Jarak Bawah ke Footer (Bottom Spacing above Footer)';
+$string['heading_margin_bottom_desc'] = 'Atur jarak vertikal antara bagian bawah kartu konten utama dan footer.';
+$string['content_margin_bottom'] = 'Jarak Konten ke Footer (px)';
+$string['content_margin_bottom_desc'] = 'Jarak dalam piksel antara bagian bawah kartu konten dan footer (default: 20px).';
+$string['content_card_padding'] = 'Padding Dalam Kartu Konten (px)';
+$string['content_card_padding_desc'] = 'Ruang padding di dalam kartu konten utama (.main-inner) (default: 24px).';
+
 // Advanced
 $string['heading_customcss'] = 'Custom CSS Code';
 $string['customcss'] = 'Custom CSS';

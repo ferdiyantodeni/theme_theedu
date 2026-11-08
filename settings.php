@@ -643,7 +643,53 @@ if ($ADMIN->fulltree) {
     $settings->add($tab_courses);
 
     // =========================================================================
-    // TAB 7: FOOTER & SOCIAL LINKS
+    // TAB 7: MARGIN & SPACING (Tata Letak, Lebar Konten & Spasi)
+    // =========================================================================
+    $tab_margin = new admin_settingpage('theme_theedu_margin', get_string('tab_margin', 'theme_theedu'));
+
+    // 1. Jarak Atas (Top Spacing under Navbar)
+    $tab_margin->add(new admin_setting_heading('heading_margin_top',
+        get_string('heading_margin_top', 'theme_theedu'),
+        get_string('heading_margin_top_desc', 'theme_theedu')));
+
+    $tab_margin->add(new admin_setting_configtext('theme_theedu/content_margin_top',
+        get_string('content_margin_top', 'theme_theedu'),
+        get_string('content_margin_top_desc', 'theme_theedu'), '20', PARAM_INT));
+
+    // 2. Lebar Konten & Sisi Kiri-Kanan (Width & Side Alignment)
+    $tab_margin->add(new admin_setting_heading('heading_margin_width',
+        get_string('heading_margin_width', 'theme_theedu'),
+        get_string('heading_margin_width_desc', 'theme_theedu')));
+
+    $tab_margin->add(new admin_setting_configcheckbox('theme_theedu/enable_full_width_content',
+        get_string('enable_full_width_content', 'theme_theedu'),
+        get_string('enable_full_width_content_desc', 'theme_theedu'), 1));
+
+    $tab_margin->add(new admin_setting_configtext('theme_theedu/content_max_width',
+        get_string('content_max_width', 'theme_theedu'),
+        get_string('content_max_width_desc', 'theme_theedu'), '1440', PARAM_INT));
+
+    $tab_margin->add(new admin_setting_configtext('theme_theedu/content_side_padding',
+        get_string('content_side_padding', 'theme_theedu'),
+        get_string('content_side_padding_desc', 'theme_theedu'), '20', PARAM_INT));
+
+    // 3. Jarak Bawah ke Footer (Bottom Spacing above Footer)
+    $tab_margin->add(new admin_setting_heading('heading_margin_bottom',
+        get_string('heading_margin_bottom', 'theme_theedu'),
+        get_string('heading_margin_bottom_desc', 'theme_theedu')));
+
+    $tab_margin->add(new admin_setting_configtext('theme_theedu/content_margin_bottom',
+        get_string('content_margin_bottom', 'theme_theedu'),
+        get_string('content_margin_bottom_desc', 'theme_theedu'), '20', PARAM_INT));
+
+    $tab_margin->add(new admin_setting_configtext('theme_theedu/content_card_padding',
+        get_string('content_card_padding', 'theme_theedu'),
+        get_string('content_card_padding_desc', 'theme_theedu'), '24', PARAM_INT));
+
+    $settings->add($tab_margin);
+
+    // =========================================================================
+    // TAB 8: FOOTER & SOCIAL LINKS
     // =========================================================================
     $tab_footer = new admin_settingpage('theme_theedu_footer', get_string('tab_footer', 'theme_theedu'));
 

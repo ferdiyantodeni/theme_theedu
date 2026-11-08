@@ -482,6 +482,14 @@ function theme_theedu_get_inline_css() {
     $darknavbarbg = theme_theedu_get_setting('dark_color_navbar_bg', '#1A2130');
     $darkprimary = theme_theedu_get_color('dark_primary', '#8E7CFF');
 
+    // Margin & layout dimensions settings.
+    $contentmargintop = (int) theme_theedu_get_setting('content_margin_top', 20);
+    $contentmaxwidth = (int) theme_theedu_get_setting('content_max_width', 1440);
+    $contentsidepadding = (int) theme_theedu_get_setting('content_side_padding', 20);
+    $contentmarginbottom = (int) theme_theedu_get_setting('content_margin_bottom', 20);
+    $contentcardpadding = (int) theme_theedu_get_setting('content_card_padding', 24);
+    $enablefullwidth = (bool) theme_theedu_get_setting('enable_full_width_content', 1);
+
     return "<style id=\"theedu-dynamic-colors\" data-brand-preset=\"{$activepreset}\">
 :root {
     --theedu-primary: {$primary};
@@ -493,6 +501,11 @@ function theme_theedu_get_inline_css() {
     --theedu-card-bg: {$cardbg};
     --theedu-footer-bg: {$footerbg};
     --theedu-footer-text: {$footertext};
+    --theedu-content-margin-top: {$contentmargintop}px;
+    --theedu-content-max-width: {$contentmaxwidth}px;
+    --theedu-content-side-padding: {$contentsidepadding}px;
+    --theedu-content-margin-bottom: {$contentmarginbottom}px;
+    --theedu-content-card-padding: {$contentcardpadding}px;
 }
 .navbar.fixed-top, nav.fixed-top {
     background-color: var(--theedu-navbar-bg) !important;
@@ -1343,12 +1356,47 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
     border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
-/* Content spacing under navbar: 50% narrower gap between floating navbar and main content */
-#page.drawers {
-    padding-top: 1.5rem !important;
-}
+/* 1. TOP SPACING: ~20px gap under navbar */
 .theedu-floating-header #page.drawers {
-    padding-top: 2.75rem !important;
+    margin-top: 70px !important;
+    padding-top: var(--theedu-content-margin-top, 20px) !important;
+}
+.theedu-floating-header #page.drawers .main-inner {
+    margin-top: 0 !important;
+}
+#page.drawers {
+    margin-top: 60px !important;
+    padding-top: var(--theedu-content-margin-top, 20px) !important;
+}
+#page.drawers .main-inner {
+    margin-top: 0 !important;
+}
+
+/* 2. SIDES: Match Content Width to Navbar & Shrink when Drawers Open */
+#page.drawers {
+    padding-left: var(--theedu-content-side-padding, 20px) !important;
+    padding-right: var(--theedu-content-side-padding, 20px) !important;
+}
+#page.drawers .main-inner,
+.pagelayout-standard #page.drawers .main-inner,
+.pagelayout-course #page.drawers .main-inner,
+.pagelayout-incourse #page.drawers .main-inner,
+.pagelayout-mydashboard #page.drawers .main-inner,
+body.limitedwidth #page.drawers .main-inner,
+body.mediumwidth #page.drawers .main-inner {
+    max-width: var(--theedu-content-max-width, 1440px) !important;
+    width: 100% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: var(--theedu-content-card-padding, 24px) !important;
+}
+
+/* 3. BOTTOM GAP TO FOOTER: ~20px */
+#page.drawers .main-inner {
+    margin-bottom: var(--theedu-content-margin-bottom, 20px) !important;
+}
+#page.drawers #page-content {
+    padding-bottom: 0 !important;
 }
 @media (max-width: 768px) {
     .theedu-floating-header #page.drawers {
