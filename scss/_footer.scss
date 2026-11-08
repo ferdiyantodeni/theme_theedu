@@ -1,0 +1,167 @@
+// =============================================================================
+// TheEdu Footer & 4-Logo Position Support (Bottom-Left & Bottom-Right)
+// =============================================================================
+
+#page-footer {
+    background-color: var(--theedu-footer-bg, #2D3436) !important;
+    color: var(--theedu-footer-text, #DFE6E9) !important;
+    padding: 3.5rem 0 2rem;
+    margin-top: 3rem;
+    border-top: 1px solid rgba(108, 92, 231, 0.1);
+
+    .theedu-footer-inner {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 1.5rem;
+    }
+
+    .theedu-footer-top {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 2rem;
+        padding-bottom: 2.5rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    // 3. Bottom-Left Logo Section
+    .theedu-logo-bottom-left {
+        max-width: 320px;
+
+        img {
+            max-height: 48px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 1rem;
+        }
+
+        .footer-desc {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            opacity: 0.85;
+            margin-bottom: 1.25rem;
+        }
+    }
+
+    // 4. Bottom-Right Logo Section
+    .theedu-logo-bottom-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        text-align: right;
+
+        @media (max-width: 768px) {
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        img {
+            max-height: 42px;
+            width: auto;
+            object-fit: contain;
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-partner-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            opacity: 0.6;
+        }
+    }
+
+    // Middle Column: Quick Links & Custom Menu
+    .theedu-footer-col-middle {
+        .footer-col-title {
+            letter-spacing: -0.01em;
+        }
+
+        .theedu-footer-menu-links {
+            .footer-link {
+                color: var(--theedu-footer-text, #DFE6E9);
+                opacity: 0.85;
+                font-size: 0.95rem;
+                transition: all 0.2s ease;
+                display: inline-block;
+
+                &:hover {
+                    color: var(--theedu-primary, #6C5CE7);
+                    opacity: 1;
+                    transform: translateX(4px);
+                }
+            }
+        }
+    }
+
+    // Social Links
+    .theedu-social-links {
+        display: flex;
+        gap: 0.6rem;
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            color: #FFFFFF;
+            transition: all 0.25s ease;
+            text-decoration: none;
+
+            &:hover {
+                background: var(--theedu-primary, #6C5CE7);
+                transform: translateY(-2px);
+                color: #FFFFFF;
+            }
+        }
+    }
+
+    // Footer Bottom
+    .theedu-footer-bottom {
+        padding-top: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        font-size: 0.85rem;
+        opacity: 0.85;
+
+        @media (max-width: 768px) {
+            flex-direction: column;
+            text-align: center;
+        }
+
+        .theedu-footer-bottom-right {
+            .footer-bottom-link {
+                color: inherit;
+                text-decoration: underline;
+                font-size: 0.85rem;
+                opacity: 0.85;
+                transition: color 0.2s ease;
+
+                &:hover {
+                    color: var(--theedu-primary, #6C5CE7);
+                    opacity: 1;
+                }
+            }
+
+            .footer-bottom-custom-text {
+                font-size: 0.85rem;
+                opacity: 0.75;
+            }
+        }
+
+        a {
+            color: inherit;
+            text-decoration: underline;
+
+            &:hover {
+                color: var(--theedu-primary, #6C5CE7);
+            }
+        }
+    }
+}

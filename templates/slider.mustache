@@ -1,0 +1,186 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    TheEdu Dynamic Carousel Slider Template (Responsive, Proportional & Fail-Safe).
+}}
+{{#theedu_slider.enabled}}
+<div class="theedu-slider-wrapper">
+    <div id="theeduCarousel" class="carousel slide theedu-carousel" data-bs-ride="carousel" data-bs-interval="{{theedu_slider.interval}}">
+
+        {{! Carousel Indicators (Dots/Pills) }}
+        {{#theedu_slider.has_multiple}}
+        <div class="carousel-indicators">
+            {{#theedu_slider.slides}}
+            <button type="button" data-bs-target="#theeduCarousel" data-bs-slide-to="{{index}}" class="{{#active}}active{{/active}}" aria-current="{{#active}}true{{/active}}" aria-label="Slide {{index}}"></button>
+            {{/theedu_slider.slides}}
+        </div>
+        {{/theedu_slider.has_multiple}}
+
+        {{! Carousel Slides }}
+        <div class="carousel-inner">
+            {{#theedu_slider.slides}}
+            <div class="carousel-item {{#active}}active{{/active}}"
+                 style="{{#has_image}}background-image: url('{{{image}}}');{{/has_image}}{{^has_image}}background: linear-gradient(135deg, #1E1B4B 0%, #312E81 35%, #4338CA 70%, #0284C7 100%);{{/has_image}}"
+                 data-bs-interval="{{theedu_slider.interval}}">
+
+                {{#has_content}}
+                <div class="slide-overlay">
+                    <div class="theedu-caption-card">
+                        <span class="slide-badge">TheEdu Learning</span>
+                        {{#title}}
+                            <h2 class="slide-title">{{{ title }}}</h2>
+                        {{/title}}
+                        {{#caption}}
+                            <p class="slide-caption-text">{{{ caption }}}</p>
+                        {{/caption}}
+                        {{#has_button}}
+                            <a href="{{button_url}}" class="slide-btn">
+                                <span>{{button_text}}</span>
+                                <i class="fa fa-arrow-right ms-1"></i>
+                            </a>
+                        {{/has_button}}
+                    </div>
+                </div>
+                {{/has_content}}
+
+            </div>
+            {{/theedu_slider.slides}}
+        </div>
+
+        {{! Previous / Next Navigation Arrows }}
+        {{#theedu_slider.has_multiple}}
+        <button class="carousel-control-prev" type="button" data-bs-target="#theeduCarousel" data-bs-slide="prev" aria-label="Previous">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#theeduCarousel" data-bs-slide="next" aria-label="Next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+        {{/theedu_slider.has_multiple}}
+
+    </div>
+</div>
+
+{{#theedu_slider.has_multiple}}
+{{#js}}
+(function() {
+    function initTheEduSlider() {
+        var carouselEl = document.getElementById('theeduCarousel');
+        if (!carouselEl) return;
+
+        var intervalTime = {{theedu_slider.interval}} || 5000;
+        var slides = carouselEl.querySelectorAll('.carousel-item');
+        var indicators = carouselEl.querySelectorAll('.carousel-indicators button');
+        var total = slides.length;
+        if (total <= 1) return;
+
+        var currentIndex = 0;
+        for (var i = 0; i < total; i++) {
+            if (slides[i].classList.contains('active')) {
+                currentIndex = i;
+                break;
+            }
+        }
+
+        function showSlide(index) {
+            if (index < 0) index = total - 1;
+            if (index >= total) index = 0;
+            currentIndex = index;
+
+            for (var j = 0; j < total; j++) {
+                if (j === currentIndex) {
+                    slides[j].classList.add('active');
+                    if (indicators[j]) {
+                        indicators[j].classList.add('active');
+                        indicators[j].setAttribute('aria-current', 'true');
+                    }
+                } else {
+                    slides[j].classList.remove('active');
+                    if (indicators[j]) {
+                        indicators[j].classList.remove('active');
+                        indicators[j].removeAttribute('aria-current');
+                    }
+                }
+            }
+        }
+
+        var timer = null;
+        function startAutoPlay() {
+            stopAutoPlay();
+            timer = setInterval(function() {
+                showSlide(currentIndex + 1);
+            }, intervalTime);
+        }
+
+        function stopAutoPlay() {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+        }
+
+        var prevBtn = carouselEl.querySelector('.carousel-control-prev');
+        var nextBtn = carouselEl.querySelector('.carousel-control-next');
+        if (prevBtn) {
+            prevBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSlide(currentIndex - 1);
+                startAutoPlay();
+            });
+        }
+        if (nextBtn) {
+            nextBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSlide(currentIndex + 1);
+                startAutoPlay();
+            });
+        }
+
+        indicators.forEach(function(dot, idx) {
+            dot.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSlide(idx);
+                startAutoPlay();
+            });
+        });
+
+        carouselEl.addEventListener('mouseenter', stopAutoPlay);
+        carouselEl.addEventListener('mouseleave', startAutoPlay);
+
+        // Mobile touch swipe gesture support (fluid navigation on smartphones and tablets)
+        var touchStartX = 0;
+        var touchEndX = 0;
+        carouselEl.addEventListener('touchstart', function(e) {
+            if (e.changedTouches && e.changedTouches[0]) {
+                touchStartX = e.changedTouches[0].screenX;
+            }
+            stopAutoPlay();
+        }, {passive: true});
+        carouselEl.addEventListener('touchend', function(e) {
+            if (e.changedTouches && e.changedTouches[0]) {
+                touchEndX = e.changedTouches[0].screenX;
+                var diff = touchEndX - touchStartX;
+                if (Math.abs(diff) > 45) {
+                    if (diff < 0) {
+                        showSlide(currentIndex + 1); // Swipe left -> next
+                    } else {
+                        showSlide(currentIndex - 1); // Swipe right -> prev
+                    }
+                }
+            }
+            startAutoPlay();
+        }, {passive: true});
+
+        startAutoPlay();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initTheEduSlider);
+    } else {
+        initTheEduSlider();
+    }
+})();
+{{/js}}
+{{/theedu_slider.has_multiple}}
+{{/theedu_slider.enabled}}

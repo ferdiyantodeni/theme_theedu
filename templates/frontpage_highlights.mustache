@@ -1,0 +1,24 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    TheEdu Frontpage Marketing Highlights Cards Template.
+}}
+{{#theedu_marketing.enabled}}
+<div class="theedu-marketing-boxes row g-4 mb-5 d-print-none">
+    {{#theedu_marketing.cards}}
+    <div class="col-lg-3 col-md-6">
+        {{#url}}<a href="{{url}}" class="text-decoration-none">{{/url}}
+        <div class="theedu-card p-4 d-flex align-items-center gap-3 h-100">
+            <div class="theedu-marketing-icon-wrapper" style="width: 52px; height: 52px; border-radius: 14px; background: rgba(108, 92, 231, 0.1); color: var(--theedu-primary, #6C5CE7); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0;">
+                <i class="fa {{icon}}"></i>
+            </div>
+            <div>
+                <h6 class="fw-bold mb-1" style="color: var(--theedu-navbar-text, #2D3436);">{{{ title }}}</h6>
+                <small class="text-muted">{{{ desc }}}</small>
+            </div>
+        </div>
+        {{#url}}</a>{{/url}}
+    </div>
+    {{/theedu_marketing.cards}}
+</div>
+{{/theedu_marketing.enabled}}

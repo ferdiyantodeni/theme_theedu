@@ -1,0 +1,31 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    TheEdu Secure layout template.
+}}
+{{> theme_boost/head }}
+
+{{{ theedu_dynamic_colors }}}
+
+<body {{{ bodyattributes }}}>
+<div id="page-wrapper">
+    <nav class="navbar navbar-light bg-white border-bottom px-4 py-2">
+        <div class="theedu-logo-top-left">
+            {{#theedu_logos.top_left.url}}
+                <img src="{{theedu_logos.top_left.url}}" alt="{{theedu_logos.top_left.alt}}" style="height: {{theedu_logos.top_left.height}}px;">
+            {{/theedu_logos.top_left.url}}
+            {{^theedu_logos.top_left.url}}
+                <span class="theedu-site-title">{{{ sitename }}}</span>
+            {{/theedu_logos.top_left.url}}
+        </div>
+    </nav>
+
+    <div id="page" class="container py-4">
+        <section id="region-main">
+            {{{ output.main_content }}}
+        </section>
+    </div>
+</div>
+{{{ output.standard_end_of_body_html }}}
+</body>
+</html>

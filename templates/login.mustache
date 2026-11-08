@@ -1,0 +1,49 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    TheEdu Login Page Template.
+}}
+{{> theme_boost/head }}
+
+{{{ theedu_dynamic_colors }}}
+
+<body {{{ bodyattributes }}} style="{{#theedu_login_bg}}background: linear-gradient(rgba(18, 24, 36, 0.4), rgba(18, 24, 36, 0.6)), url('{{theedu_login_bg}}') center / cover no-repeat fixed;{{/theedu_login_bg}}">
+<script>
+    (function() {
+        var saved = localStorage.getItem('theedu_theme_mode');
+        var def = '{{theedu_darkmode.default}}' || 'auto';
+        var mode = saved ? saved : (def === 'dark' ? 'dark' : (def === 'light' ? 'light' : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')));
+        document.documentElement.setAttribute('data-theme', mode);
+        document.body.setAttribute('data-theme', mode);
+    })();
+</script>
+
+<div id="page-wrapper">
+    <div class="container d-flex flex-column justify-content-center align-items-center min-vh-100 py-5">
+
+        {{! Top branding in login }}
+        <div class="mb-4 text-center">
+            {{#theedu_logos.top_left.enabled}}
+                {{#theedu_logos.top_left.url}}
+                    <img src="{{theedu_logos.top_left.url}}" alt="{{theedu_logos.top_left.alt}}" style="height: {{theedu_logos.top_left.height}}px;" class="mb-2">
+                {{/theedu_logos.top_left.url}}
+                {{^theedu_logos.top_left.url}}
+                    <h2 class="fw-bold" style="background: linear-gradient(135deg, var(--theedu-primary, #6C5CE7), var(--theedu-secondary, #00CEC9)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">{{{ loginsitefullname }}}</h2>
+                {{/theedu_logos.top_left.url}}
+            {{/theedu_logos.top_left.enabled}}
+        </div>
+
+        <div class="card p-4 shadow-lg border-0" style="max-width: 440px; width: 100%; border-radius: 1.5rem;">
+            {{{ output.main_content }}}
+        </div>
+
+        <div class="mt-4 text-center">
+            {{> theme_theedu/dark_mode_toggle }}
+        </div>
+
+    </div>
+</div>
+
+{{{ output.standard_end_of_body_html }}}
+</body>
+</html>

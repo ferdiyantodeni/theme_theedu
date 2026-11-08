@@ -1,0 +1,93 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    TheEdu Navbar Template with Top-Left and Top-Right Logo positions.
+}}
+<nav class="fixed-top navbar navbar-light navbar-expand" aria-label="{{#str}}sitemenubar, admin{{/str}}">
+
+    <div class="d-flex align-items-center flex-shrink-0">
+        <button class="navbar-toggler aabtn d-block d-md-none px-2 me-1" data-toggler="drawers" data-action="toggle" data-target="theme_boost-drawers-primary">
+            <span class="navbar-toggler-icon"></span>
+            <span class="sr-only">{{#str}}sidepanel, core{{/str}}</span>
+        </button>
+
+        {{! 1. TOP-LEFT LOGO (Kiri-Atas) }}
+        {{#theedu_logos.top_left.enabled}}
+        <a href="{{theedu_logos.top_left.link}}" class="navbar-brand theedu-logo-top-left d-flex align-items-center me-2 me-xl-3" aria-label="{{theedu_logos.top_left.alt}}">
+            {{#theedu_logos.top_left.url}}
+                <img src="{{theedu_logos.top_left.url}}" alt="{{theedu_logos.top_left.alt}}" class="theedu-navbar-logo-img me-2" style="height: {{theedu_logos.top_left.height}}px; max-height: 44px; width: auto; object-fit: contain;">
+            {{/theedu_logos.top_left.url}}
+            {{^theedu_logos.top_left.url}}
+                <div class="theedu-logo-badge me-2">E</div>
+            {{/theedu_logos.top_left.url}}
+            <span class="theedu-site-title fw-bold text-truncate {{#theedu_logos.top_left.url}}d-none d-xxl-inline-block{{/theedu_logos.top_left.url}}" style="max-width: 180px;">{{{ sitename }}}</span>
+        </a>
+        {{/theedu_logos.top_left.enabled}}
+        {{^theedu_logos.top_left.enabled}}
+        <a href="{{{ config.wwwroot }}}" class="navbar-brand theedu-logo-top-left d-flex align-items-center me-2 me-xl-3">
+            <div class="theedu-logo-badge me-2">E</div>
+            <span class="theedu-site-title fw-bold text-truncate" style="max-width: 220px;">{{{ sitename }}}</span>
+        </a>
+        {{/theedu_logos.top_left.enabled}}
+    </div>
+
+    {{! Primary Navigation Menu (Courses, Dashboard, Site Admin, etc.) - Hidden on Mobile to prevent navbar collision }}
+    <div class="primary-navigation d-none d-md-flex flex-grow-1 min-w-0 mx-2">
+        {{#primarymoremenu}}
+            {{> core/moremenu}}
+        {{/primarymoremenu}}
+    </div>
+
+    {{! Right Actions Area }}
+    <div class="theedu-header-actions ms-auto d-flex align-items-center gap-1 gap-sm-2 flex-shrink-0">
+
+        {{! My Courses Shortcut Icon }}
+        {{#theedu_header.show_mycourses}}
+            <a href="{{theedu_header.mycourses_url}}" class="header-shortcut-btn d-none d-sm-inline-flex" title="{{#str}}mycourses{{/str}}">
+                <i class="fa fa-graduation-cap fs-5"></i>
+            </a>
+        {{/theedu_header.show_mycourses}}
+
+        {{! Dark Mode Toggle Button }}
+        {{> theme_theedu/dark_mode_toggle }}
+
+        {{! Language Switcher }}
+        {{#langmenu}}
+            <div class="theedu-lang-wrapper d-none d-md-block">
+                {{> theme_boost/language_menu }}
+            </div>
+        {{/langmenu}}
+
+        {{! Moodle Standard Notifications & Messages Icons }}
+        {{{ output.navbar_plugin_output }}}
+
+        {{! User Menu (Profile dropdown / Login) }}
+        <div class="d-flex align-items-center usermenu-wrapper">
+            {{#usermenu}}
+                {{> core/user_menu }}
+            {{/usermenu}}
+        </div>
+
+        {{! 2. TOP-RIGHT LOGO (Kanan-Atas: Posisi PALING KANAN) }}
+        {{#theedu_logos.top_right.enabled}}
+            {{#theedu_logos.top_right.url}}
+            <div class="theedu-logo-top-right d-none d-md-inline-flex align-items-center ps-2 ms-1 border-start border-secondary border-opacity-25">
+                {{#theedu_logos.top_right.link}}<a href="{{theedu_logos.top_right.link}}" target="_blank" rel="noopener noreferrer">{{/theedu_logos.top_right.link}}
+                    <img src="{{theedu_logos.top_right.url}}" alt="{{theedu_logos.top_right.alt}}" style="height: {{theedu_logos.top_right.height}}px; max-height: 38px; max-width: 140px; width: auto; object-fit: contain;">
+                {{#theedu_logos.top_right.link}}</a>{{/theedu_logos.top_right.link}}
+            </div>
+            {{/theedu_logos.top_right.url}}
+        {{/theedu_logos.top_right.enabled}}
+
+    </div>
+
+</nav>
+
+{{> theme_boost/primary-drawer-mobile }}
+
+{{! Floating Edit Mode Switch (Floating di area bawah bagian tengah) }}
+{{#output.edit_switch}}
+<div class="theedu-floating-editmode d-print-none">
+    {{{ output.edit_switch }}}
+</div>
+{{/output.edit_switch}}

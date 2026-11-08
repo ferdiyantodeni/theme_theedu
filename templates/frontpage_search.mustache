@@ -1,0 +1,44 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    TheEdu Frontpage Course Search Bar Template.
+    Features responsive pill input wrap, flex layout, and dynamic category search tags.
+}}
+{{#theedu_search.enabled}}
+<div class="theedu-course-search-section mb-5 d-print-none" id="theedu-search-section">
+    <div class="theedu-search-card p-4 p-md-5 text-center">
+        <div class="theedu-search-container mx-auto" style="max-width: 720px;">
+            {{#theedu_search.heading}}
+                <h3 class="theedu-search-title fw-bold mb-2" style="color: var(--theedu-navbar-text, #2D3436);">{{{ theedu_search.heading }}}</h3>
+            {{/theedu_search.heading}}
+            {{#theedu_search.subheading}}
+                <p class="theedu-search-subtitle text-muted mb-4 small">{{{ theedu_search.subheading }}}</p>
+            {{/theedu_search.subheading}}
+
+            <form action="{{{ config.wwwroot }}}/course/search.php" method="get" class="theedu-search-form">
+                <div class="theedu-search-icon-wrap">
+                    <i class="fa fa-magnifying-glass"></i>
+                </div>
+                <input type="text" name="search" class="theedu-search-input" placeholder="{{theedu_search.placeholder}}" autocomplete="off" required>
+                <button type="submit" class="theedu-search-submit btn btn-primary">
+                    <i class="fa fa-search me-1 d-none d-sm-inline-block"></i>
+                    <span>{{#str}}searchcourses, core{{/str}}</span>
+                </button>
+            </form>
+
+            {{#theedu_search.has_tags}}
+            <div class="theedu-search-tags mt-3 pt-2 d-flex flex-wrap align-items-center justify-content-center gap-2">
+                <span class="small fw-semibold text-muted theedu-search-tag-label me-1">
+                    <i class="fa fa-fire text-warning me-1"></i>{{#str}}popular_searches, theme_theedu{{/str}}:
+                </span>
+                {{#theedu_search.tags}}
+                    <a href="{{url}}" class="theedu-search-tag-pill">
+                        {{name}}
+                    </a>
+                {{/theedu_search.tags}}
+            </div>
+            {{/theedu_search.has_tags}}
+        </div>
+    </div>
+</div>
+{{/theedu_search.enabled}}

@@ -1,0 +1,134 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    TheEdu Frontpage Enrolled / Featured Courses Template.
+    Supports teacher display, progress bar, category tags, and custom thumbnail icons.
+}}
+{{#theedu_courses.enabled}}
+<div class="theedu-courses-section mb-5 d-print-none" id="theedu-courses">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1" style="color: var(--theedu-navbar-text, #2D3436);">{{{ theedu_courses.heading }}}</h3>
+            {{#theedu_courses.subheading}}
+                <p class="text-muted mb-0 small">{{{ theedu_courses.subheading }}}</p>
+            {{/theedu_courses.subheading}}
+        </div>
+        {{#theedu_courses.view_all_url}}
+            <a href="{{theedu_courses.view_all_url}}" class="btn btn-outline-primary rounded-pill px-4" style="border-color: var(--theedu-primary, #6C5CE7); color: var(--theedu-primary, #6C5CE7);">
+                {{#str}}viewallcourses, core{{/str}} <i class="fa fa-arrow-right ms-1"></i>
+            </a>
+        {{/theedu_courses.view_all_url}}
+    </div>
+
+    <div class="row g-4 theedu-courses-grid">
+        {{#theedu_courses.courses}}
+        <div class="{{theedu_courses.column_class}}">
+            <div class="theedu-card theedu-course-card h-100 d-flex flex-column">
+
+                {{! Course Thumbnail Area (Image or Pastel Icon) }}
+                {{#theedu_courses.show_thumbnail}}
+                <div class="course-thumb {{#use_icon_thumb}}course-thumb-icon-mode{{/use_icon_thumb}}"
+                     style="{{#image_url}}background-image: url('{{image_url}}');{{/image_url}} {{#use_icon_thumb}}background: {{thumb_gradient}};{{/use_icon_thumb}}">
+
+                    {{! Category Tag on Thumbnail }}
+                    {{#theedu_courses.show_category}}
+                        {{#category_name}}
+                            <span class="course-tag">{{category_name}}</span>
+                        {{/category_name}}
+                    {{/theedu_courses.show_category}}
+
+                    {{! Icon Display when in Icon Mode or when no image uploaded }}
+                    {{#use_icon_thumb}}
+                        <div class="thumb-icon-center">
+                            <i class="fa {{thumb_icon}}"></i>
+                        </div>
+                    {{/use_icon_thumb}}
+                </div>
+                {{/theedu_courses.show_thumbnail}}
+
+                {{! Course Card Body }}
+                <div class="p-4 d-flex flex-column flex-grow-1">
+
+                    {{! Category tag if thumbnail is hidden }}
+                    {{^theedu_courses.show_thumbnail}}
+                        {{#theedu_courses.show_category}}
+                            {{#category_name}}
+                                <div class="mb-2">
+                                    <span class="badge bg-primary-subtle text-primary">{{category_name}}</span>
+                                </div>
+                            {{/category_name}}
+                        {{/theedu_courses.show_category}}
+                    {{/theedu_courses.show_thumbnail}}
+
+                    <h5 class="fw-bold mb-2">
+                        <a href="{{url}}" class="text-decoration-none course-title-link" style="color: var(--theedu-navbar-text, #2D3436);">
+                            {{{ fullname }}}
+                        </a>
+                    </h5>
+
+                    {{#theedu_courses.show_summary}}
+                        {{#summary}}
+                            <p class="text-muted small mb-3 flex-grow-1 course-summary-text">
+                                {{{ summary }}}
+                            </p>
+                        {{/summary}}
+                    {{/theedu_courses.show_summary}}
+
+                    {{! Course Completion Progress Bar }}
+                    {{#theedu_courses.show_progress}}
+                        {{#has_progress}}
+                        <div class="course-progress-wrapper mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-1 small">
+                                <span class="text-muted">{{#str}}progress, completion{{/str}}</span>
+                                <span class="fw-bold text-primary">{{progress}}%</span>
+                            </div>
+                            <div class="progress" style="height: 6px; border-radius: 10px; background-color: rgba(108, 92, 231, 0.1);">
+                                <div class="progress-bar" role="progressbar" style="width: {{progress}}%; background: var(--theedu-primary, #6C5CE7);" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        {{/has_progress}}
+                    {{/theedu_courses.show_progress}}
+
+                    {{! Card Footer Section: Teacher / Instructor & Action Arrow (No Enrol Badge) }}
+                    <div class="d-flex justify-content-between align-items-center pt-3 mt-auto border-top border-secondary border-opacity-10 course-card-footer">
+
+                        {{! Teacher Info (Avatar or Role Icon & Full Name) }}
+                        {{#theedu_courses.show_teacher}}
+                            <div class="d-flex align-items-center gap-2 course-teacher-info" title="{{teacher_name}}{{#teacher_role}} ({{teacher_role}}){{/teacher_role}}">
+                                {{#has_avatar}}
+                                    <img src="{{teacher_avatar}}" alt="{{teacher_name}}" class="rounded-circle teacher-avatar" style="width: 32px; height: 32px; object-fit: cover;">
+                                {{/has_avatar}}
+                                {{^has_avatar}}
+                                    <div class="teacher-avatar-placeholder rounded-circle d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; background: rgba(108, 92, 231, 0.12); color: var(--theedu-primary, #6C5CE7); font-size: 0.85rem;" title="{{#teacher_role}}{{teacher_role}}{{/teacher_role}}{{^teacher_role}}Instructor{{/teacher_role}}">
+                                        <i class="fa {{teacher_icon}}"></i>
+                                    </div>
+                                {{/has_avatar}}
+                                <div class="d-flex flex-column teacher-meta" style="min-width: 0;">
+                                    <span class="small fw-semibold text-truncate teacher-name" style="max-width: 155px; color: var(--theedu-navbar-text, #2D3436);">{{teacher_name}}</span>
+                                    {{#theedu_courses.show_teacher_role}}
+                                        {{#teacher_role}}
+                                            <span class="text-muted teacher-role-label" style="font-size: 0.72rem; line-height: 1.1;">{{teacher_role}}</span>
+                                        {{/teacher_role}}
+                                    {{/theedu_courses.show_teacher_role}}
+                                </div>
+                            </div>
+                        {{/theedu_courses.show_teacher}}
+                        {{^theedu_courses.show_teacher}}
+                            <div></div>
+                        {{/theedu_courses.show_teacher}}
+
+                        {{! Action Arrow Button linking directly to course (Clean Modern LMS UI) }}
+                        <a href="{{url}}" class="course-card-arrow-btn" title="{{#str}}viewcourse, theme_theedu{{/str}}" aria-label="{{#str}}viewcourse, theme_theedu{{/str}}">
+                            <i class="fa fa-arrow-right"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        {{/theedu_courses.courses}}
+    </div>
+</div>
+{{/theedu_courses.enabled}}

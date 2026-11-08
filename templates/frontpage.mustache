@@ -1,0 +1,103 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    TheEdu dedicated frontpage template (modern, full-width, responsive portal).
+    Inspired by Eduardo Kraus's Boost Magnific layout architecture.
+}}
+{{> theme_boost/head }}
+
+{{{ theedu_dynamic_colors }}}
+
+<body {{{ bodyattributes }}}>
+<script>
+    // Prevent Flash of Unstyled Content (FOUC) for Dark Mode
+    (function() {
+        var saved = localStorage.getItem('theedu_theme_mode');
+        var def = '{{theedu_darkmode.default}}' || 'auto';
+        var mode = saved ? saved : (def === 'dark' ? 'dark' : (def === 'light' ? 'light' : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')));
+        document.documentElement.setAttribute('data-theme', mode);
+        document.body.setAttribute('data-theme', mode);
+    })();
+</script>
+
+{{> core/local/toast/wrapper }}
+
+<div id="page-wrapper" class="d-print-block {{#theedu_floating_header}}theedu-floating-header{{/theedu_floating_header}}">
+
+    {{{ output.standard_top_of_body_html }}}
+
+    {{! Custom TheEdu Navbar }}
+    {{> theme_theedu/navbar }}
+
+    {{! Full-Width Modern Frontpage Content (matches preview.html) }}
+    <div id="page" class="theedu-frontpage-container">
+        <main id="theedu-main-portal" class="theedu-main-content" role="main">
+            <span id="maincontent" tabindex="-1" class="sr-only visually-hidden"></span>
+
+            {{! 1. Dynamic Hero Carousel Slider }}
+            {{> theme_theedu/slider }}
+
+            {{! 2. Frontpage Course Search Bar (Toggleable On/Off) }}
+            {{> theme_theedu/frontpage_search }}
+
+            {{! 3. Dynamic Category & Highlights Grid (Dynamic Columns Before Wrapping) }}
+            {{> theme_theedu/frontpage_categories }}
+
+            {{! 4. Enrolled / Featured Courses Cards }}
+            {{> theme_theedu/frontpage_courses }}
+
+            {{! 5. Moodle Frontpage Activities & Main Content (Always rendered to satisfy Moodle requirement) }}
+            <section id="region-main" class="theedu-frontpage-region-main" aria-label="{{#str}}content{{/str}}">
+
+                {{#hasregionmainsettingsmenu}}
+                <div id="region-main-settings-menu" class="d-print-none mb-3">
+                    <div> {{{ regionmainsettingsmenu }}} </div>
+                </div>
+                {{/hasregionmainsettingsmenu}}
+
+                {{#overflow}}
+                    <div class="container-fluid tertiary-navigation mb-3">
+                        <div class="navitem">
+                            {{> core/url_select}}
+                        </div>
+                    </div>
+                {{/overflow}}
+
+                {{! Wrapped so Moodle's required main_content is always evaluated, but visually hidden if disabled }}
+                <div class="theedu-core-frontpage-content {{^show_main_content}}theedu-hide-core-content{{/show_main_content}}">
+                    {{{ output.main_content }}}
+                </div>
+
+                {{! Blocks placed on Frontpage }}
+                {{#hasblocks}}
+                <div class="theedu-frontpage-blocks mt-5 pt-3 border-top border-secondary border-opacity-10">
+                    <div class="row">
+                        <div class="col-12">
+                            {{{ sidepreblocks }}}
+                        </div>
+                    </div>
+                </div>
+                {{/hasblocks}}
+
+            </section>
+
+        </main>
+    </div>
+
+    {{! Custom TheEdu Footer with 4-Logo Position Support }}
+    {{> theme_theedu/footer }}
+
+    {{{ output.standard_after_main_region_html }}}
+
+</div>
+
+{{{ output.standard_end_of_body_html }}}
+
+</body>
+</html>
+{{#js}}
+M.util.js_pending('theme_boost/loader');
+require(['theme_boost/loader'], function(Loader) {
+    M.util.js_complete('theme_boost/loader');
+});
+{{/js}}

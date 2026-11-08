@@ -1,0 +1,43 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    TheEdu Frontpage Course Categories / Highlights Grid Template.
+    Supports dynamic max columns per row before wrapping down.
+}}
+{{#theedu_categories.enabled}}
+<div class="theedu-category-section mb-5 d-print-none">
+    {{#theedu_categories.heading}}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h4 class="fw-bold mb-1" style="color: var(--theedu-navbar-text, #2D3436);">{{{ theedu_categories.heading }}}</h4>
+                {{#theedu_categories.subheading}}
+                    <p class="text-muted small mb-0">{{{ theedu_categories.subheading }}}</p>
+                {{/theedu_categories.subheading}}
+            </div>
+            {{#theedu_categories.all_url}}
+                <a href="{{theedu_categories.all_url}}" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                    {{#str}}viewallcourses, core{{/str}} <i class="fa fa-arrow-right ms-1"></i>
+                </a>
+            {{/theedu_categories.all_url}}
+        </div>
+    {{/theedu_categories.heading}}
+
+    <div class="theedu-category-grid" style="--theedu-cat-cols: {{theedu_categories.columns}};">
+        {{#theedu_categories.items}}
+        <div class="theedu-category-col">
+            {{#url}}<a href="{{url}}" class="text-decoration-none">{{/url}}
+            <div class="theedu-card p-3 p-lg-4 d-flex align-items-center gap-3 h-100">
+                <div class="theedu-cat-icon-box" style="background-color: {{bg_color}};">
+                    <i class="fa {{icon}}" style="color: {{icon_color}};"></i>
+                </div>
+                <div class="theedu-cat-content">
+                    <h6 class="fw-bold mb-1 theedu-cat-title">{{{ title }}}</h6>
+                    <small class="text-muted theedu-cat-desc">{{{ desc }}}</small>
+                </div>
+            </div>
+            {{#url}}</a>{{/url}}
+        </div>
+        {{/theedu_categories.items}}
+    </div>
+</div>
+{{/theedu_categories.enabled}}

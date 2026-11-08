@@ -1,0 +1,46 @@
+// Default Boost Preset customized for TheEdu Pastel Theme.
+
+// Typography
+$font-family-sans-serif: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+$font-size-base: 0.95rem !default;
+$line-height-base: 1.6 !default;
+
+// Pastel Palette Defaults
+$primary:       #6C5CE7 !default; // Soft Pastel Violet
+$secondary:     #00CEC9 !default; // Pastel Mint
+$success:       #00B894 !default; // Pastel Emerald
+$info:          #0984E3 !default; // Pastel Sky
+$warning:       #FDCB6E !default; // Pastel Gold/Peach
+$danger:        #FF7675 !default; // Pastel Coral
+$light:         #F8F9FD !default; // Pastel White
+$dark:          #2D3436 !default; // Slate
+
+// Layout & Surfaces
+$body-bg:       #F7F9FC !default;
+$body-color:    #2D3436 !default;
+$card-bg:       #FFFFFF !default;
+$card-border-color: rgba(108, 92, 231, 0.08) !default;
+$card-border-radius: 1rem !default;
+
+// Components
+$border-radius:        0.75rem !default;
+$border-radius-lg:     1.25rem !default;
+$border-radius-sm:     0.5rem !default;
+
+// Soft Shadows
+$box-shadow-sm: 0 2px 4px rgba(108, 92, 231, 0.04) !default;
+$box-shadow:    0 8px 24px rgba(108, 92, 231, 0.08) !default;
+$box-shadow-lg: 0 16px 40px rgba(108, 92, 231, 0.12) !default;
+
+// Buttons
+$btn-border-radius: 0.75rem !default;
+$btn-padding-y: 0.55rem !default;
+$btn-padding-x: 1.25rem !default;
+
+// Navbar
+$navbar-light-color: #2D3436 !default;
+$navbar-light-hover-color: $primary !default;
+$navbar-light-active-color: $primary !default;
+
+// Import Boost's core Sass.
+@import "moodle";

@@ -1,0 +1,114 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    TheEdu Footer Template with Bottom-Left and Bottom-Right Logo positions.
+}}
+<footer id="page-footer" class="py-5">
+    <div class="theedu-footer-inner container-fluid">
+
+        <div class="theedu-footer-top row g-4">
+
+            {{! 3. BOTTOM-LEFT LOGO & ABOUT COLUMN }}
+            <div class="col-lg-5 col-md-6 theedu-logo-bottom-left">
+                {{#theedu_logos.bottom_left.enabled}}
+                    {{#theedu_logos.bottom_left.url}}
+                        <a href="{{theedu_logos.bottom_left.link}}" aria-label="{{theedu_logos.bottom_left.alt}}">
+                            <img src="{{theedu_logos.bottom_left.url}}" alt="{{theedu_logos.bottom_left.alt}}" style="height: {{theedu_logos.bottom_left.height}}px;">
+                        </a>
+                    {{/theedu_logos.bottom_left.url}}
+                {{/theedu_logos.bottom_left.enabled}}
+
+                {{#theedu_footer.about_text}}
+                    <div class="footer-desc mt-2">
+                        {{{ theedu_footer.about_text }}}
+                    </div>
+                {{/theedu_footer.about_text}}
+
+                {{! Social Media Links }}
+                <div class="theedu-social-links mt-3">
+                    {{#theedu_footer.facebook}}
+                        <a href="{{theedu_footer.facebook}}" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Facebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    {{/theedu_footer.facebook}}
+                    {{#theedu_footer.twitter}}
+                        <a href="{{theedu_footer.twitter}}" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="X Twitter">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    {{/theedu_footer.twitter}}
+                    {{#theedu_footer.instagram}}
+                        <a href="{{theedu_footer.instagram}}" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                    {{/theedu_footer.instagram}}
+                    {{#theedu_footer.youtube}}
+                        <a href="{{theedu_footer.youtube}}" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="YouTube">
+                            <i class="fa fa-youtube-play"></i>
+                        </a>
+                    {{/theedu_footer.youtube}}
+                    {{#theedu_footer.linkedin}}
+                        <a href="{{theedu_footer.linkedin}}" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn">
+                            <i class="fa fa-linkedin"></i>
+                        </a>
+                    {{/theedu_footer.linkedin}}
+                </div>
+            </div>
+
+            {{! QUICK LINKS OR INFORMATION COLUMN (CUSTOMIZABLE) }}
+            <div class="col-lg-3 col-md-6 theedu-footer-col-middle">
+                {{#theedu_footer.middle_title}}
+                    <h5 class="fw-bold mb-3 footer-col-title" style="color: var(--theedu-primary, #6C5CE7);">{{{ theedu_footer.middle_title }}}</h5>
+                {{/theedu_footer.middle_title}}
+                {{#theedu_footer.has_middle_links}}
+                <ul class="list-unstyled mb-0 theedu-footer-menu-links" style="line-height: 2.2;">
+                    {{#theedu_footer.middle_links}}
+                    <li>
+                        <a href="{{url}}" class="text-decoration-none footer-link">
+                            <i class="fa fa-angle-right me-2 text-muted"></i>{{{ title }}}
+                        </a>
+                    </li>
+                    {{/theedu_footer.middle_links}}
+                </ul>
+                {{/theedu_footer.has_middle_links}}
+            </div>
+
+            {{! 4. BOTTOM-RIGHT LOGO & PARTNERSHIP / ACCREDITATION }}
+            <div class="col-lg-4 col-md-12 theedu-logo-bottom-right">
+                {{#theedu_logos.bottom_right.enabled}}
+                    {{#theedu_logos.bottom_right.url}}
+                        <div class="footer-partner-label mb-2">Supported & Certified By</div>
+                        {{#theedu_logos.bottom_right.link}}<a href="{{theedu_logos.bottom_right.link}}" target="_blank" rel="noopener noreferrer">{{/theedu_logos.bottom_right.link}}
+                            <img src="{{theedu_logos.bottom_right.url}}" alt="{{theedu_logos.bottom_right.alt}}" style="height: {{theedu_logos.bottom_right.height}}px;">
+                        {{#theedu_logos.bottom_right.link}}</a>{{/theedu_logos.bottom_right.link}}
+                    {{/theedu_logos.bottom_right.url}}
+                {{/theedu_logos.bottom_right.enabled}}
+            </div>
+
+        </div>
+
+        {{! Footer Bottom Bar }}
+        <div class="theedu-footer-bottom">
+            <div class="theedu-copyright">
+                {{{ theedu_footer.copyright }}}
+            </div>
+            <div class="theedu-footer-bottom-right text-md-end text-center mt-2 mt-md-0">
+                {{#theedu_footer.custom_bottom_right}}
+                    <div class="theedu-custom-bottom-links mb-1">
+                        {{#theedu_footer.bottom_links}}
+                            <a href="{{url}}" class="text-decoration-none me-3 footer-bottom-link">{{{ title }}}</a>
+                        {{/theedu_footer.bottom_links}}
+                        {{#theedu_footer.has_bottom_right_text}}
+                            <span class="footer-bottom-custom-text d-block d-md-inline mt-1 mt-md-0">{{{ theedu_footer.bottom_right_text }}}</span>
+                        {{/theedu_footer.has_bottom_right_text}}
+                    </div>
+                {{/theedu_footer.custom_bottom_right}}
+                {{#theedu_footer.show_standard_footer}}
+                    <div class="theedu-standard-footer small">
+                        {{{ output.standard_footer_html }}}
+                    </div>
+                {{/theedu_footer.show_standard_footer}}
+            </div>
+        </div>
+
+    </div>
+</footer>

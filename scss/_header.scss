@@ -1,0 +1,672 @@
+// =============================================================================
+// TheEdu Header & 4-Logo Position Support (Top-Left & Top-Right)
+// =============================================================================
+
+.navbar.fixed-top {
+    background-color: var(--theedu-navbar-bg, #FFFFFF) !important;
+    color: var(--theedu-navbar-text, #2D3436) !important;
+    box-shadow: 0 4px 20px rgba(108, 92, 231, 0.05);
+    border-bottom: 1px solid rgba(108, 92, 231, 0.08);
+    padding: 0.5rem 1rem;
+    transition: all 0.25s ease;
+    flex-wrap: nowrap !important;
+
+    .navbar-brand {
+        display: inline-flex;
+        align-items: center;
+        padding: 0;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+
+    // Clean Single-Row Navigation Menu (Fluid Auto-Scaling, Zero Collision)
+    .primary-navigation,
+    .navbar-collapse {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex: 1 1 auto;
+        min-width: 0;
+        margin: 0 0.5rem;
+
+        .moremenu,
+        .navigation {
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
+
+        .dropdown-menu {
+            z-index: 1060 !important;
+        }
+    }
+
+    .navbar-nav {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap; // Allows Moodle core/moremenu to calculate height and auto-collapse into "More"
+        align-items: center;
+        gap: 0.35rem;
+        margin: 0 !important;
+
+        .nav-item {
+            display: inline-flex;
+            align-items: center;
+            flex-shrink: 0;
+
+            &.d-none {
+                display: none !important;
+            }
+        }
+
+        // Strictly hide More dropdown button when empty, marked d-none, or not needed
+        li.d-none,
+        .dropdownmoremenu.d-none,
+        [data-region="morebutton"].d-none {
+            display: none !important;
+        }
+
+        // When logged out (guests), strictly hide More button (only Home is visible)
+        body.notloggedin &,
+        .notloggedin & {
+            .dropdownmoremenu,
+            [data-region="morebutton"] {
+                display: none !important;
+            }
+        }
+
+        .nav-link {
+            color: var(--theedu-navbar-text, #2D3436) !important;
+            white-space: nowrap !important;
+            display: inline-flex !important;
+            flex-direction: row !important;
+            align-items: center !important;
+            gap: 6px !important;
+            padding: 0.4rem 0.75rem !important;
+            font-size: 0.9rem !important;
+            line-height: 1.2 !important;
+            border-radius: 0.65rem;
+            transition: all 0.2s ease;
+
+            i, .fa, .fas, .far {
+                margin: 0 !important;
+                font-size: 0.95rem;
+                display: inline-block !important;
+            }
+
+            span {
+                white-space: nowrap !important;
+                display: inline-block !important;
+            }
+
+            &:hover,
+            &.active,
+            &[aria-current="true"] {
+                background: rgba(108, 92, 231, 0.08);
+                color: var(--theedu-primary, #6C5CE7) !important;
+            }
+        }
+    }
+}
+
+// 1. Top-Left Logo Container
+.theedu-logo-top-left {
+    display: inline-flex;
+    align-items: center;
+
+    .theedu-logo-badge {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--theedu-primary, #6C5CE7), var(--theedu-secondary, #00CEC9));
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #FFFFFF;
+        font-weight: 800;
+        font-size: 1.15rem;
+        box-shadow: 0 4px 12px rgba(108, 92, 231, 0.25);
+    }
+
+    img {
+        max-height: 48px;
+        width: auto;
+        object-fit: contain;
+        transition: transform 0.2s ease;
+
+        &:hover {
+            transform: scale(1.02);
+        }
+    }
+
+    .theedu-site-title {
+        font-weight: 700;
+        font-size: 1.25rem;
+        background: linear-gradient(135deg, var(--theedu-primary, #6C5CE7), var(--theedu-secondary, #00CEC9));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.02em;
+    }
+}
+
+// 2. Top-Right Logo Container
+.theedu-logo-top-right {
+    display: inline-flex;
+    align-items: center;
+
+    img {
+        max-height: 38px !important;
+        max-width: 140px !important;
+        width: auto;
+        object-fit: contain;
+        transition: opacity 0.2s ease;
+
+        &:hover {
+            opacity: 0.85;
+        }
+    }
+}
+
+// Header Actions (Dark mode toggle, search, notification, user menu, lang menu)
+.theedu-header-actions {
+    display: inline-flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important; // Never allow shrinking into collision
+    margin-left: auto !important;
+    gap: 0.35rem !important;
+    white-space: nowrap !important;
+    z-index: 5 !important;
+
+    .langmenu {
+        .dropdown-toggle {
+            border-radius: 2rem !important;
+            padding: 0.25rem 0.65rem !important;
+            font-size: 0.82rem !important;
+            font-weight: 600 !important;
+            border: 1px solid rgba(108, 92, 231, 0.2) !important;
+            background: rgba(108, 92, 231, 0.06) !important;
+            color: var(--theedu-primary, #6C5CE7) !important;
+            transition: all 0.2s ease;
+
+            &:hover {
+                background: rgba(108, 92, 231, 0.14) !important;
+            }
+        }
+    }
+}
+
+// Responsive dynamic scale rules to guarantee zero overlap across all display widths
+@media (max-width: 1360px) {
+    .navbar.fixed-top {
+        .navbar-nav .nav-link {
+            font-size: 0.82rem !important;
+            padding: 0.3rem 0.5rem !important;
+        }
+        .theedu-user-pill .user-role-label {
+            display: none !important;
+        }
+    }
+}
+
+@media (max-width: 1180px) {
+    .navbar.fixed-top {
+        .navbar-nav .nav-link {
+            font-size: 0.76rem !important;
+            padding: 0.25rem 0.4rem !important;
+        }
+        .theedu-logo-top-left .theedu-site-title {
+            font-size: 1.05rem !important;
+        }
+        .editmode-switch-wrapper span {
+            display: none !important;
+        }
+    }
+}
+
+[data-theme="dark"] .theedu-header-actions .langmenu .dropdown-toggle {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    color: #E2E8F0 !important;
+
+    &:hover {
+        background: rgba(255, 255, 255, 0.12) !important;
+    }
+}
+
+// Responsive dynamic adjustments for header & mobile navbar (Guarantees zero stacking/overlapping)
+@media (max-width: 768px) {
+    .navbar.fixed-top {
+        padding: 0.35rem 0.65rem !important;
+        min-height: 52px !important;
+        max-height: 58px !important;
+        flex-wrap: nowrap !important;
+        overflow: hidden !important;
+
+        .primary-navigation {
+            display: none !important; // All primary items belong in the mobile drawer!
+        }
+
+        .theedu-logo-top-left {
+            max-width: 130px !important;
+            margin-right: 0.25rem !important;
+
+            img {
+                max-height: 32px !important;
+                max-width: 110px !important;
+                width: auto !important;
+                object-fit: contain !important;
+            }
+
+            .theedu-site-title {
+                display: none !important;
+            }
+        }
+
+        .theedu-logo-top-right {
+            display: none !important; // Gracefully hide secondary header logo on mobile
+        }
+
+        .theedu-header-actions {
+            gap: 4px !important;
+            flex-wrap: nowrap !important;
+            margin-left: auto !important;
+
+            .theedu-darkmode-toggle {
+                width: 32px !important;
+                height: 32px !important;
+                margin: 0 2px !important;
+                flex-shrink: 0 !important;
+
+                svg, i {
+                    width: 16px !important;
+                    height: 16px !important;
+                    font-size: 15px !important;
+                }
+            }
+
+            // Hide user text/name on mobile, only show avatar circle
+            .usermenu {
+                .usertext,
+                .userbutton .usertext {
+                    display: none !important;
+                }
+                .avatar {
+                    margin-right: 0 !important;
+                    width: 30px !important;
+                    height: 30px !important;
+                    img {
+                        width: 30px !important;
+                        height: 30px !important;
+                    }
+                }
+                b.caret,
+                .caret {
+                    display: none !important;
+                }
+            }
+
+            .theedu-user-pill {
+                padding: 2px !important;
+                .user-role-label,
+                i.fa-chevron-down {
+                    display: none !important;
+                }
+                .user-avatar-circle {
+                    width: 30px !important;
+                    height: 30px !important;
+                    font-size: 0.75rem !important;
+                }
+            }
+
+            // Moodle core notification & message popover icons
+            .popover-region {
+                margin-right: 0 !important;
+                margin-left: 2px !important;
+                flex-shrink: 0 !important;
+
+                .nav-link {
+                    width: 32px !important;
+                    height: 32px !important;
+                    padding: 0 !important;
+                    display: inline-flex !important;
+                    align-items: center !important;
+                    justify-content: center !important;
+
+                    i, .icon {
+                        font-size: 15px !important;
+                        margin: 0 !important;
+                    }
+                }
+
+                .count-container {
+                    top: -2px !important;
+                    right: -2px !important;
+                    font-size: 0.65rem !important;
+                    padding: 1px 4px !important;
+                }
+            }
+        }
+    }
+}
+
+// Extra small smartphone screens (< 420px)
+@media (max-width: 420px) {
+    .navbar.fixed-top {
+        padding: 0.25rem 0.4rem !important;
+
+        .theedu-logo-top-left {
+            max-width: 95px !important;
+            img {
+                max-height: 28px !important;
+                max-width: 85px !important;
+            }
+        }
+
+        .theedu-header-actions {
+            gap: 2px !important;
+
+            .theedu-darkmode-toggle {
+                width: 28px !important;
+                height: 28px !important;
+                margin: 0 1px !important;
+
+                svg, i {
+                    width: 14px !important;
+                    height: 14px !important;
+                    font-size: 13px !important;
+                }
+            }
+
+            .popover-region .nav-link {
+                width: 28px !important;
+                height: 28px !important;
+            }
+        }
+    }
+}
+
+// Default Page Drawer Padding (guarantees content & navigation never tucks under fixed navbar)
+#page.drawers {
+    padding-top: 4.75rem !important;
+    position: relative;
+    z-index: 1;
+}
+
+// Interactive Elements clickability guarantee
+a, button, .btn, .nav-link, .dropdown-item, [role="button"], [role="tab"], [role="menuitem"] {
+    pointer-events: auto !important;
+}
+
+// Floating Header Style
+.theedu-floating-header {
+    .navbar.fixed-top {
+        position: fixed !important;
+        top: 14px !important;
+        left: 20px !important;
+        right: 20px !important;
+        width: calc(100% - 40px) !important;
+        max-width: 1440px !important;
+        margin: 0 auto !important;
+        border-radius: 1.5rem !important;
+        background-color: rgba(255, 255, 255, 0.92) !important;
+        backdrop-filter: blur(16px) !important;
+        -webkit-backdrop-filter: blur(16px) !important;
+        border: 1px solid rgba(108, 92, 231, 0.18) !important;
+        box-shadow: 0 16px 36px rgba(108, 92, 231, 0.14) !important;
+        z-index: 1040 !important;
+    }
+
+    #page.drawers {
+        padding-top: 6rem !important;
+    }
+}
+
+[data-theme="dark"].theedu-floating-header,
+[data-theme="dark"] .theedu-floating-header {
+    .navbar.fixed-top {
+        background-color: rgba(26, 33, 48, 0.92) !important;
+        border-color: rgba(255, 255, 255, 0.14) !important;
+        box-shadow: 0 16px 36px rgba(0, 0, 0, 0.45) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .theedu-floating-header {
+        .navbar.fixed-top {
+            top: 8px !important;
+            left: 10px !important;
+            right: 10px !important;
+            width: calc(100% - 20px) !important;
+            border-radius: 1rem !important;
+            padding: 0.5rem 0.85rem !important;
+        }
+
+        #page.drawers {
+            padding-top: 5rem !important;
+        }
+    }
+}
+
+// Header Shortcuts (Notifications, Messages, Edit Mode, User Menu)
+.theedu-header-actions {
+    .header-shortcut-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        background: transparent;
+        color: var(--theedu-navbar-text, #2D3436);
+        border: none;
+        position: relative;
+        text-decoration: none;
+        transition: all 0.2s ease;
+
+        &:hover {
+            background: rgba(108, 92, 231, 0.08);
+            color: var(--theedu-primary, #6C5CE7);
+        }
+
+        .badge-count {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: #E02424;
+            color: #FFFFFF;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 5px;
+            border-radius: 10px;
+            min-width: 16px;
+            text-align: center;
+            border: 2px solid var(--theedu-navbar-bg, #FFFFFF);
+        }
+    }
+
+    .editmode-switch-wrapper {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: 8px;
+        padding-left: 10px;
+        border-left: 1px solid rgba(0, 0, 0, 0.08);
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #D32F2F;
+
+        .form-check-input {
+            cursor: pointer;
+            width: 2.2em;
+            height: 1.2em;
+            background-color: rgba(0,0,0,0.25);
+            border: none;
+
+            &:checked {
+                background-color: #D32F2F;
+            }
+        }
+    }
+
+    .theedu-user-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 4px 10px 4px 6px;
+        border-radius: 20px;
+        background: rgba(0, 0, 0, 0.04);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        cursor: pointer;
+        transition: background 0.2s ease;
+
+        &:hover {
+            background: rgba(108, 92, 231, 0.08);
+        }
+
+        .user-avatar-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #E2E8F0;
+            color: #334155;
+            font-weight: 700;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .user-role-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--theedu-navbar-text, #2D3436);
+        }
+    }
+}
+
+[data-theme="dark"] .theedu-header-actions {
+    .header-shortcut-btn {
+        color: #CBD5E1;
+
+        &:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--theedu-primary, #8E7CFF);
+        }
+
+        .badge-count {
+            border-color: #1A2130;
+        }
+    }
+
+    .editmode-switch-wrapper {
+        border-left-color: rgba(255, 255, 255, 0.12);
+        color: #FF6B6B;
+
+        .form-check-input:checked {
+            background-color: #FF6B6B;
+        }
+    }
+
+    .theedu-user-pill {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.1);
+
+        .user-avatar-circle {
+            background: #2D3748;
+            color: #E2E8F0;
+        }
+    }
+}
+
+// =============================================================================
+// Floating Edit Mode Switch (Floating di Area Bawah Bagian Tengah)
+// =============================================================================
+.theedu-floating-editmode {
+    position: fixed !important;
+    bottom: 24px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 1040 !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    border: 1px solid rgba(108, 92, 231, 0.22) !important;
+    border-radius: 40px !important;
+    padding: 7px 20px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12), 0 2px 10px rgba(108, 92, 231, 0.18) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    pointer-events: auto !important;
+
+    &:hover {
+        transform: translateX(-50%) translateY(-2px) !important;
+        box-shadow: 0 14px 38px rgba(108, 92, 231, 0.28) !important;
+    }
+
+    .divider {
+        display: none !important;
+    }
+
+    .editmode-switch-wrapper,
+    form {
+        display: inline-flex !important;
+        align-items: center !important;
+        margin: 0 !important;
+        gap: 8px !important;
+    }
+
+    label {
+        margin: 0 !important;
+        font-weight: 700 !important;
+        font-size: 0.88rem !important;
+        color: var(--theedu-navbar-text, #2D3436) !important;
+        cursor: pointer !important;
+        user-select: none !important;
+        white-space: nowrap !important;
+    }
+
+    .form-check-input {
+        cursor: pointer !important;
+        width: 2.2rem !important;
+        height: 1.2rem !important;
+        margin: 0 !important;
+
+        &:checked {
+            background-color: var(--theedu-primary, #6C5CE7) !important;
+            border-color: var(--theedu-primary, #6C5CE7) !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        bottom: 16px !important;
+        padding: 5px 14px !important;
+        border-radius: 30px !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18) !important;
+
+        label {
+            font-size: 0.78rem !important;
+        }
+
+        .form-check-input {
+            width: 1.9rem !important;
+            height: 1.05rem !important;
+        }
+    }
+}
+
+[data-theme="dark"] .theedu-floating-editmode {
+    background: rgba(30, 38, 56, 0.94) !important;
+    border-color: rgba(255, 255, 255, 0.18) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55), 0 2px 10px rgba(142, 124, 255, 0.2) !important;
+
+    label {
+        color: #F1F5F9 !important;
+    }
+
+    .form-check-input:checked {
+        background-color: var(--theedu-primary, #8E7CFF) !important;
+        border-color: var(--theedu-primary, #8E7CFF) !important;
+    }
+}
