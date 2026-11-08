@@ -240,7 +240,7 @@
         min-height: 52px !important;
         max-height: 58px !important;
         flex-wrap: nowrap !important;
-        overflow: hidden !important;
+        overflow: visible !important; // Must be visible so notification popovers & profile dropdowns can open freely!
 
         .primary-navigation {
             display: none !important; // All primary items belong in the mobile drawer!
@@ -270,6 +270,7 @@
             gap: 4px !important;
             flex-wrap: nowrap !important;
             margin-left: auto !important;
+            overflow: visible !important;
 
             .theedu-darkmode-toggle {
                 width: 32px !important;
@@ -286,6 +287,9 @@
 
             // Hide user text/name on mobile, only show avatar circle
             .usermenu {
+                position: relative !important;
+                overflow: visible !important;
+
                 .usertext,
                 .userbutton .usertext {
                     display: none !important;
@@ -302,6 +306,19 @@
                 b.caret,
                 .caret {
                     display: none !important;
+                }
+
+                .dropdown-menu {
+                    position: absolute !important;
+                    top: calc(100% + 12px) !important;
+                    right: 0 !important;
+                    left: auto !important;
+                    width: auto !important;
+                    min-width: 220px !important;
+                    max-width: calc(100vw - 32px) !important;
+                    z-index: 1060 !important;
+                    border-radius: 1rem !important;
+                    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18) !important;
                 }
             }
 
@@ -323,6 +340,8 @@
                 margin-right: 0 !important;
                 margin-left: 2px !important;
                 flex-shrink: 0 !important;
+                position: relative !important;
+                overflow: visible !important;
 
                 .nav-link {
                     width: 32px !important;
@@ -343,6 +362,17 @@
                     right: -2px !important;
                     font-size: 0.65rem !important;
                     padding: 1px 4px !important;
+                }
+
+                .popover-region-container {
+                    position: absolute !important;
+                    top: calc(100% + 12px) !important;
+                    right: -20px !important;
+                    width: calc(100vw - 32px) !important;
+                    max-width: 360px !important;
+                    z-index: 1060 !important;
+                    border-radius: 1rem !important;
+                    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18) !important;
                 }
             }
         }

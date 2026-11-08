@@ -968,3 +968,96 @@
         }
     }
 }
+
+// Course Activity Bottom Navigation Bar (Prev, Jump-To, Next)
+.theedu-activity-navigation {
+    .theedu-activity-nav-card {
+        background: var(--theedu-card-bg, #FFFFFF);
+        border: 1px solid rgba(108, 92, 231, 0.12) !important;
+        box-shadow: 0 8px 24px rgba(108, 92, 231, 0.06) !important;
+        border-radius: 1.25rem !important;
+        transition: box-shadow 0.25s ease;
+
+        &:hover {
+            box-shadow: 0 12px 32px rgba(108, 92, 231, 0.12) !important;
+        }
+    }
+
+    .theedu-jump-select {
+        border-radius: 0 50rem 50rem 0 !important;
+        font-weight: 500;
+        font-size: 0.88rem;
+        cursor: pointer;
+        border-color: rgba(108, 92, 231, 0.2) !important;
+
+        &:focus {
+            border-color: var(--theedu-primary, #6C5CE7) !important;
+            box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.15) !important;
+        }
+    }
+
+    .input-group-text {
+        border-radius: 50rem 0 0 50rem !important;
+        border-color: rgba(108, 92, 231, 0.2) !important;
+        color: var(--theedu-primary, #6C5CE7) !important;
+    }
+
+    .theedu-nav-btn {
+        font-weight: 600;
+        font-size: 0.88rem;
+        transition: all 0.25s ease;
+
+        &.prev-btn {
+            border-color: rgba(108, 92, 231, 0.3) !important;
+            color: var(--theedu-primary, #6C5CE7) !important;
+
+            &:hover {
+                background: var(--theedu-primary, #6C5CE7) !important;
+                color: #FFFFFF !important;
+                transform: translateX(-3px);
+            }
+        }
+
+        &.next-btn {
+            background: linear-gradient(135deg, var(--theedu-primary, #6C5CE7), var(--theedu-secondary, #00CEC9)) !important;
+            border: none !important;
+            color: #FFFFFF !important;
+
+            &:hover {
+                transform: translateX(3px);
+                box-shadow: 0 6px 16px rgba(108, 92, 231, 0.3) !important;
+            }
+        }
+    }
+}
+
+// Dark Mode Support for Activity Nav
+[data-theme="dark"] .theedu-activity-navigation {
+    .theedu-activity-nav-card {
+        background: #1E2638 !important;
+        border-color: rgba(255, 255, 255, 0.08) !important;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    .theedu-jump-select {
+        background-color: #121824 !important;
+        color: #E4E7EB !important;
+        border-color: rgba(255, 255, 255, 0.15) !important;
+    }
+
+    .input-group-text {
+        background-color: #121824 !important;
+        border-color: rgba(255, 255, 255, 0.15) !important;
+        color: #8E7CFF !important;
+    }
+
+    .prev-btn {
+        border-color: rgba(142, 124, 255, 0.3) !important;
+        color: #C4B5FD !important;
+
+        &:hover {
+            background: #8E7CFF !important;
+            color: #121824 !important;
+        }
+    }
+}

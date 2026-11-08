@@ -385,6 +385,14 @@ $string['footer_bottom_right_text'] = 'Bottom-Right Custom Text / Note';
 $string['footer_bottom_right_text_desc'] = 'Optional text or small disclaimer displayed in the bottom-right bar.';
 $string['heading_footer_social'] = 'Social Media Links';
 
+// Course Activity Navigation
+$string['previousactivity'] = 'Previous';
+$string['nextactivity'] = 'Next';
+$string['jumpto'] = 'Jump to...';
+$string['backtocourse'] = 'Back to Course';
+$string['enable_activity_nav'] = 'Enable Course Activity Navigation Bar';
+$string['enable_activity_nav_desc'] = 'Show previous, next, and jump-to activity buttons below activities in course view.';
+
 // Advanced
 $string['heading_customcss'] = 'Custom CSS Code';
 $string['customcss'] = 'Custom CSS';

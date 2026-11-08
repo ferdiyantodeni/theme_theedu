@@ -6,6 +6,28 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.4.7] - 2026-11-08 (Build 2026110817)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Menu Notifikasi (Lonceng) & Profil Tidak Muncul di Mobile:**
+   - Pada layar perangkat seluler / smartphone (`@media (max-width: 768px)`), dropdown notifikasi dan menu profil pengguna tidak muncul atau terpotong bagian bawahnya seolah tertimpa.
+   - **Penyebab:** Pada `.navbar.fixed-top` terdapat aturan `overflow: hidden !important;` pada breakpoint mobile, sehingga elemen dropdown (`.popover-region-container` dan `.dropdown-menu`) yang muncul di bawah batas 58px navbar langsung terpotong secara permanen.
+2. **Navigasi Aktivitas Kursus (Prev, Next, Jump-to) Hilang:**
+   - Pada halaman aktivitas kursus (seperti membaca materi PDF `/mod/resource/view.php`, review kuis `/mod/quiz/review.php`, tugas, video, dll.), tidak tersedia tombol navigasi Sebelumnya (*Previous*), Selanjutnya (*Next*), maupun dropdown *Jump to topic/activity* di bawah konten aktivitas.
+
+### ✨ Perubahan & Solusi
+1. **Perbaikan Tuntas Dropdown Navbar Mobile:**
+   - Menghapus `overflow: hidden !important;` dan menetapkan `overflow: visible !important;` pada `.navbar.fixed-top` dan `.theedu-header-actions` pada breakpoint mobile.
+   - Mengatur posisi dan ukuran `.popover-region-container` dan `.usermenu .dropdown-menu` di mobile dengan `z-index: 1060`, `max-width: calc(100vw - 32px)`, bayangan lembut, dan sudut membulat elegan (*rounded pill*), menjamin menu notifikasi dan profil terbuka sempurna tanpa terpotong.
+2. **Implementasi Bar Navigasi Bawah Aktivitas Kursus (Universal Course Activity Navigation):**
+   - Menambahkan template [`activity_nav.mustache`](file:///d:/6.%20Project/15.%20App/TheEdu_Theme/templates/activity_nav.mustache) dan helper `theme_theedu_get_activity_navigation()` di `lib.php`.
+   - **Tombol Sebelumnya (Prev):** Menampilkan nama aktivitas sebelumnya dengan tombol pill outline berikon panah kiri. Jika berada di aktivitas pertama, otomatis mengarah kembali ke Beranda Kursus (*Back to Course*).
+   - **Dropdown Jump-To:** Dropdown dinamis berisi seluruh bab/topik dan aktivitas kursus dengan pengelompokan `<optgroup>` per bagian kursus serta penanda aktivitas saat ini (`▶`). Memilih topik langsung melompat (*jump*) ke aktivitas tersebut.
+   - **Tombol Selanjutnya (Next):** Menampilkan tombol dengan gradien warna primer TheEdu berikon panah kanan menuju materi/kuis selanjutnya. Jika di aktivitas terakhir, menampilkan tombol sukses (*Finish / Back to Course*).
+   - Dilengkapi dukungan Dark Mode penuh dan toggle pengaturan di *Site administration > Appearance > Themes > TheEdu > Enrolled Courses & Card Display*.
+
+---
+
 ## [v1.4.6] - 2026-11-08 (Build 2026110816)
 
 ### 🎯 Masalah yang Diselesaikan

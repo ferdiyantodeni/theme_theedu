@@ -151,6 +151,11 @@
 
                         {{{ output.main_content }}}
 
+                        {{! Modern TheEdu Course Activity Bottom Navigation Bar (Prev, Jump-To, Next) }}
+                        {{#theedu_activity_nav.has_nav}}
+                            {{> theme_theedu/activity_nav }}
+                        {{/theedu_activity_nav.has_nav}}
+
                         {{{ output.course_content_footer }}}
 
                     </section>

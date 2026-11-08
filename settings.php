@@ -632,6 +632,14 @@ if ($ADMIN->fulltree) {
         get_string('course_show_summary', 'theme_theedu'),
         get_string('course_show_summary_desc', 'theme_theedu'), 1));
 
+    $tab_courses->add(new admin_setting_heading('heading_activity_navigation',
+        get_string('enable_activity_nav', 'theme_theedu'),
+        get_string('enable_activity_nav_desc', 'theme_theedu')));
+
+    $tab_courses->add(new admin_setting_configcheckbox('theme_theedu/enable_activity_nav',
+        get_string('enable_activity_nav', 'theme_theedu'),
+        get_string('enable_activity_nav_desc', 'theme_theedu'), 1));
+
     $settings->add($tab_courses);
 
     // =========================================================================

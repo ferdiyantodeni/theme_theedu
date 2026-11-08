@@ -1,0 +1,70 @@
+{{!
+    This file is part of Moodle - http://moodle.org/
+
+    TheEdu Course Activity Bottom Navigation Bar.
+    Provides Prev, Next, and Jump-to activity dropdown navigation below any course activity.
+}}
+{{#theedu_activity_nav.has_nav}}
+<div class="theedu-activity-navigation d-print-none my-4" id="theedu-activity-nav">
+    <div class="theedu-activity-nav-card p-3 p-md-4 rounded-4 shadow-sm border d-flex flex-wrap align-items-center justify-content-between gap-3">
+
+        {{! 1. Previous Activity Button }}
+        <div class="theedu-act-col theedu-act-prev">
+            {{#theedu_activity_nav.has_prev}}
+                <a href="{{theedu_activity_nav.prev_url}}" class="btn btn-outline-primary d-inline-flex align-items-center gap-2 rounded-pill px-3 py-2 theedu-nav-btn prev-btn" title="{{theedu_activity_nav.prev_name}}">
+                    <i class="fa fa-arrow-left"></i>
+                    <span class="theedu-btn-label d-none d-sm-inline">{{#str}}previousactivity, theme_theedu{{/str}}</span>
+                    <span class="theedu-act-name text-truncate d-none d-lg-inline" style="max-width: 180px;">: {{theedu_activity_nav.prev_name}}</span>
+                </a>
+            {{/theedu_activity_nav.has_prev}}
+            {{^theedu_activity_nav.has_prev}}
+                <a href="{{theedu_activity_nav.course_url}}" class="btn btn-outline-secondary d-inline-flex align-items-center gap-2 rounded-pill px-3 py-2 theedu-nav-btn" title="{{theedu_activity_nav.course_name}}">
+                    <i class="fa fa-arrow-left"></i>
+                    <span class="theedu-btn-label d-none d-sm-inline">{{#str}}backtocourse, theme_theedu{{/str}}</span>
+                </a>
+            {{/theedu_activity_nav.has_prev}}
+        </div>
+
+        {{! 2. Jump To (Topic / Activity) Dropdown }}
+        {{#theedu_activity_nav.has_jump}}
+        <div class="theedu-act-col theedu-act-jump flex-grow-1 mx-auto text-center" style="max-width: 420px; min-width: 220px;">
+            <div class="input-group">
+                <span class="input-group-text bg-transparent border-end-0 text-primary">
+                    <i class="fa fa-list-ul"></i>
+                </span>
+                <select class="form-select border-start-0 theedu-jump-select" aria-label="{{#str}}jumpto, theme_theedu{{/str}}" onchange="if(this.value) window.location.href=this.value;">
+                    <option value="" disabled selected>{{#str}}jumpto, theme_theedu{{/str}}</option>
+                    {{#theedu_activity_nav.jump_sections}}
+                        <optgroup label="{{section_name}}">
+                            {{#activities}}
+                                <option value="{{url}}" {{#is_current}}selected disabled{{/is_current}}>
+                                    {{#is_current}}▶ {{/is_current}}{{name}}
+                                </option>
+                            {{/activities}}
+                        </optgroup>
+                    {{/theedu_activity_nav.jump_sections}}
+                </select>
+            </div>
+        </div>
+        {{/theedu_activity_nav.has_jump}}
+
+        {{! 3. Next Activity Button }}
+        <div class="theedu-act-col theedu-act-next text-end">
+            {{#theedu_activity_nav.has_next}}
+                <a href="{{theedu_activity_nav.next_url}}" class="btn btn-primary d-inline-flex align-items-center gap-2 rounded-pill px-3 py-2 theedu-nav-btn next-btn" title="{{theedu_activity_nav.next_name}}">
+                    <span class="theedu-act-name text-truncate d-none d-lg-inline" style="max-width: 180px;">{{theedu_activity_nav.next_name}} :</span>
+                    <span class="theedu-btn-label d-none d-sm-inline">{{#str}}nextactivity, theme_theedu{{/str}}</span>
+                    <i class="fa fa-arrow-right"></i>
+                </a>
+            {{/theedu_activity_nav.has_next}}
+            {{^theedu_activity_nav.has_next}}
+                <a href="{{theedu_activity_nav.course_url}}" class="btn btn-success d-inline-flex align-items-center gap-2 rounded-pill px-3 py-2 theedu-nav-btn" title="{{theedu_activity_nav.course_name}}">
+                    <span class="theedu-btn-label d-none d-sm-inline">{{#str}}backtocourse, theme_theedu{{/str}}</span>
+                    <i class="fa fa-check"></i>
+                </a>
+            {{/theedu_activity_nav.has_next}}
+        </div>
+
+    </div>
+</div>
+{{/theedu_activity_nav.has_nav}}

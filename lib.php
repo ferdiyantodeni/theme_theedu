@@ -1354,6 +1354,105 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
     .theedu-floating-header #page.drawers {
         padding-top: 2rem !important;
     }
+    .navbar.fixed-top {
+        overflow: visible !important;
+    }
+    .navbar.fixed-top .theedu-header-actions {
+        overflow: visible !important;
+    }
+    .navbar.fixed-top .popover-region {
+        position: relative !important;
+        overflow: visible !important;
+    }
+    .navbar.fixed-top .popover-region .popover-region-container {
+        position: absolute !important;
+        top: calc(100% + 10px) !important;
+        right: -15px !important;
+        width: calc(100vw - 32px) !important;
+        max-width: 360px !important;
+        z-index: 1060 !important;
+        border-radius: 1rem !important;
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18) !important;
+    }
+    .navbar.fixed-top .usermenu {
+        position: relative !important;
+        overflow: visible !important;
+    }
+    .navbar.fixed-top .usermenu .dropdown-menu {
+        position: absolute !important;
+        top: calc(100% + 10px) !important;
+        right: 0 !important;
+        left: auto !important;
+        max-width: calc(100vw - 32px) !important;
+        min-width: 210px !important;
+        z-index: 1060 !important;
+        border-radius: 1rem !important;
+        box-shadow: 0 12px 36px rgba(0, 0, 0, 0.18) !important;
+    }
+}
+
+/* Course Activity Bottom Navigation Bar */
+.theedu-activity-navigation .theedu-activity-nav-card {
+    background: var(--theedu-card-bg, #FFFFFF) !important;
+    border: 1px solid rgba(108, 92, 231, 0.12) !important;
+    box-shadow: 0 8px 24px rgba(108, 92, 231, 0.06) !important;
+    border-radius: 1.25rem !important;
+}
+.theedu-activity-navigation .theedu-jump-select {
+    border-radius: 0 50rem 50rem 0 !important;
+    font-weight: 500 !important;
+    font-size: 0.88rem !important;
+    cursor: pointer !important;
+    border-color: rgba(108, 92, 231, 0.2) !important;
+}
+.theedu-activity-navigation .theedu-jump-select:focus {
+    border-color: var(--theedu-primary, #6C5CE7) !important;
+    box-shadow: 0 0 0 0.2rem rgba(108, 92, 231, 0.15) !important;
+}
+.theedu-activity-navigation .input-group-text {
+    border-radius: 50rem 0 0 50rem !important;
+    border-color: rgba(108, 92, 231, 0.2) !important;
+    color: var(--theedu-primary, #6C5CE7) !important;
+}
+.theedu-activity-navigation .theedu-nav-btn {
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+}
+.theedu-activity-navigation .theedu-nav-btn.prev-btn {
+    border-color: rgba(108, 92, 231, 0.3) !important;
+    color: var(--theedu-primary, #6C5CE7) !important;
+}
+.theedu-activity-navigation .theedu-nav-btn.prev-btn:hover {
+    background: var(--theedu-primary, #6C5CE7) !important;
+    color: #FFFFFF !important;
+}
+.theedu-activity-navigation .theedu-nav-btn.next-btn {
+    background: linear-gradient(135deg, var(--theedu-primary, #6C5CE7), var(--theedu-secondary, #00CEC9)) !important;
+    border: none !important;
+    color: #FFFFFF !important;
+}
+[data-theme=\"dark\"] .theedu-activity-navigation .theedu-activity-nav-card {
+    background: #1E2638 !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+}
+[data-theme=\"dark\"] .theedu-activity-navigation .theedu-jump-select {
+    background-color: #121824 !important;
+    color: #E4E7EB !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+[data-theme=\"dark\"] .theedu-activity-navigation .input-group-text {
+    background-color: #121824 !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #8E7CFF !important;
+}
+[data-theme=\"dark\"] .theedu-activity-navigation .prev-btn {
+    border-color: rgba(142, 124, 255, 0.3) !important;
+    color: #C4B5FD !important;
+}
+[data-theme=\"dark\"] .theedu-activity-navigation .prev-btn:hover {
+    background: #8E7CFF !important;
+    color: #121824 !important;
 }
 
 </style>";
@@ -2324,5 +2423,155 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
         'linkedin' => theme_theedu_get_setting('footer_linkedin', ''),
     ];
 
+    // 7. Course Activity Bottom Navigation Bar (Prev, Jump-To, Next).
+    $enableactivitynav = (bool) theme_theedu_get_setting('enable_activity_nav', 1);
+    if ($enableactivitynav) {
+        $context['theedu_activity_nav'] = theme_theedu_get_activity_navigation($page);
+    } else {
+        $context['theedu_activity_nav'] = ['has_nav' => false];
+    }
+
     return $context;
+}
+
+/**
+ * Helper to generate modern bottom activity navigation (Prev, Next, Jump-to dropdown).
+ *
+ * @param \moodle_page $page
+ * @return array Context data for activity navigation.
+ */
+function theme_theedu_get_activity_navigation($page) {
+    global $CFG, $COURSE;
+
+    $emptyresult = ['has_nav' => false];
+
+    // Must be in a valid course (not site course)
+    $course = (!empty($page->course) && $page->course->id > 1) ? $page->course : $COURSE;
+    if (empty($course) || !isset($course->id) || $course->id <= 1) {
+        return $emptyresult;
+    }
+
+    // Must not be the course main page itself (/course/view.php)
+    if ($page->pagetype === 'course-view' || $page->pagelayout === 'course') {
+        // Only show inside activities, not on the course section list itself
+        if (empty($page->cm) && (empty($page->context) || $page->context->contextlevel != CONTEXT_MODULE)) {
+            return $emptyresult;
+        }
+    }
+
+    // Try to get current course_module ($cm)
+    $cm = !empty($page->cm) ? $page->cm : null;
+    if (empty($cm) && !empty($page->context) && $page->context->contextlevel == CONTEXT_MODULE) {
+        try {
+            $modinfo = get_fast_modinfo($course);
+            if (!empty($modinfo->cms[$page->context->instanceid])) {
+                $cm = $modinfo->cms[$page->context->instanceid];
+            }
+        } catch (\Throwable $e) {
+            $cm = null;
+        }
+    }
+
+    // Also check optional_param id for mod views where $page->cm is not yet set
+    if (empty($cm)) {
+        $cmid = optional_param('id', 0, PARAM_INT);
+        if ($cmid > 0) {
+            try {
+                $modinfo = get_fast_modinfo($course);
+                if (!empty($modinfo->cms[$cmid])) {
+                    $cm = $modinfo->cms[$cmid];
+                }
+            } catch (\Throwable $e) {
+                $cm = null;
+            }
+        }
+    }
+
+    if (empty($cm)) {
+        return $emptyresult;
+    }
+
+    try {
+        $modinfo = get_fast_modinfo($course);
+    } catch (\Throwable $e) {
+        return $emptyresult;
+    }
+
+    $prevcm = null;
+    $nextcm = null;
+    $foundcurrent = false;
+    $jumpsections = [];
+
+    // Traverse visible sections and activities in natural course sequence
+    $sections = $modinfo->get_section_info_all();
+    foreach ($sections as $sectionnum => $section) {
+        if (!$section->uservisible) {
+            continue;
+        }
+
+        $sectionname = get_section_name($course, $section);
+        $sectionactivities = [];
+
+        if (!empty($modinfo->sections[$sectionnum])) {
+            foreach ($modinfo->sections[$sectionnum] as $modnumber) {
+                if (empty($modinfo->cms[$modnumber])) {
+                    continue;
+                }
+                $othercm = $modinfo->cms[$modnumber];
+
+                // Activity must be visible to user and not stealth
+                if (!$othercm->uservisible || $othercm->is_stealth()) {
+                    continue;
+                }
+
+                $iscurrent = ($othercm->id == $cm->id);
+
+                if ($iscurrent) {
+                    $foundcurrent = true;
+                } else if (!$foundcurrent) {
+                    $prevcm = $othercm;
+                } else if ($foundcurrent && $nextcm === null) {
+                    $nextcm = $othercm;
+                }
+
+                $acturl = $othercm->url ? $othercm->url->out(false) : '';
+                if (!empty($acturl)) {
+                    $sectionactivities[] = [
+                        'id' => $othercm->id,
+                        'name' => format_string($othercm->name),
+                        'url' => $acturl,
+                        'is_current' => $iscurrent,
+                        'modname' => $othercm->modname,
+                    ];
+                }
+            }
+        }
+
+        if (!empty($sectionactivities)) {
+            $jumpsections[] = [
+                'section_num' => $sectionnum,
+                'section_name' => format_string($sectionname),
+                'activities' => $sectionactivities,
+            ];
+        }
+    }
+
+    $courseurl = $CFG->wwwroot . '/course/view.php?id=' . $course->id;
+
+    $hasprev = !empty($prevcm) && !empty($prevcm->url);
+    $hasnext = !empty($nextcm) && !empty($nextcm->url);
+
+    return [
+        'has_nav' => true,
+        'has_prev' => $hasprev,
+        'prev_url' => $hasprev ? $prevcm->url->out(false) : $courseurl,
+        'prev_name' => $hasprev ? format_string($prevcm->name) : format_string($course->fullname),
+        'has_next' => $hasnext,
+        'next_url' => $hasnext ? $nextcm->url->out(false) : $courseurl,
+        'next_name' => $hasnext ? format_string($nextcm->name) : format_string($course->fullname),
+        'course_url' => $courseurl,
+        'course_name' => format_string($course->fullname),
+        'jump_sections' => $jumpsections,
+        'has_jump' => !empty($jumpsections),
+    ];
 }
