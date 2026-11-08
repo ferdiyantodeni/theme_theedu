@@ -185,6 +185,14 @@ if ($ADMIN->fulltree) {
         get_string('header_show_editmode', 'theme_theedu'),
         get_string('header_show_editmode_desc', 'theme_theedu'), 1));
 
+    $navbarguestopts = [
+        'show' => get_string('nav_guest_show', 'theme_theedu'),
+        'hide' => get_string('nav_guest_hide', 'theme_theedu'),
+    ];
+    $tab_branding->add(new admin_setting_configselect('theme_theedu/navbar_guest_visibility',
+        get_string('navbar_guest_visibility', 'theme_theedu'),
+        get_string('navbar_guest_visibility_desc', 'theme_theedu'), 'show', $navbarguestopts));
+
     $settings->add($tab_branding);
 
     // =========================================================================
@@ -352,10 +360,12 @@ if ($ADMIN->fulltree) {
         get_string('enable_slider_desc', 'theme_theedu'), 1));
 
     $visoptions = [
-        'all'      => get_string('vis_all', 'theme_theedu'),
-        'loggedin' => get_string('vis_loggedin', 'theme_theedu'),
-        'guest'    => get_string('vis_guest', 'theme_theedu'),
-        'none'     => get_string('vis_none', 'theme_theedu'),
+        'all'             => get_string('vis_all', 'theme_theedu'),
+        'guest'           => get_string('vis_guest', 'theme_theedu'),
+        'loggedin'        => get_string('vis_loggedin', 'theme_theedu'),
+        'registered_only' => get_string('vis_registered_only', 'theme_theedu'),
+        'admin'           => get_string('vis_admin', 'theme_theedu'),
+        'none'            => get_string('vis_none', 'theme_theedu'),
     ];
     $tab_slider->add(new admin_setting_configselect('theme_theedu/slider_visibility',
         get_string('slider_visibility', 'theme_theedu'),
@@ -554,6 +564,19 @@ if ($ADMIN->fulltree) {
     $tab_courses->add(new admin_setting_configcheckbox('theme_theedu/frontpage_hide_moodle_content',
         get_string('frontpage_hide_moodle_content', 'theme_theedu'),
         get_string('frontpage_hide_moodle_content_desc', 'theme_theedu'), 1));
+
+    // Frontpage Blocks & Core Content Role Visibility
+    $tab_courses->add(new admin_setting_heading('heading_frontpage_blocks',
+        get_string('heading_frontpage_blocks', 'theme_theedu'),
+        get_string('heading_frontpage_blocks_desc', 'theme_theedu')));
+
+    $tab_courses->add(new admin_setting_configselect('theme_theedu/frontpage_blocks_visibility',
+        get_string('frontpage_blocks_visibility', 'theme_theedu'),
+        get_string('frontpage_blocks_visibility_desc', 'theme_theedu'), 'admin', $visoptions));
+
+    $tab_courses->add(new admin_setting_configselect('theme_theedu/frontpage_content_visibility',
+        get_string('frontpage_content_visibility', 'theme_theedu'),
+        get_string('frontpage_content_visibility_desc', 'theme_theedu'), 'all', $visoptions));
 
     $tab_courses->add(new admin_setting_configcheckbox('theme_theedu/enable_catalog_card_grid',
         get_string('enable_catalog_card_grid', 'theme_theedu'),

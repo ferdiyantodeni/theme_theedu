@@ -245,9 +245,23 @@ $string['default_cat8_desc'] = 'English, Mandarin & Japanese';
 
 // Visibility & Access Control
 $string['vis_all'] = 'All Visitors (Guests & Logged-in)';
-$string['vis_loggedin'] = 'Logged-in Users Only';
 $string['vis_guest'] = 'Guests Only (Not logged in)';
-$string['vis_none'] = 'Disabled / Hidden';
+$string['vis_loggedin'] = 'Logged-in Users Only (All roles)';
+$string['vis_registered_only'] = 'Registered Regular Users Only (Non-Admin)';
+$string['vis_admin'] = 'Site Administrators Only';
+$string['vis_none'] = 'Disabled / Completely Hidden';
+
+// Navigation & Administration Blocks Visibility
+$string['heading_frontpage_blocks'] = 'Frontpage Blocks & Core Content Visibility';
+$string['heading_frontpage_blocks_desc'] = 'Control the visibility of Moodle side/footer blocks (such as the Navigation and Administration blocks) and Moodle core activities on the Frontpage by user category.';
+$string['frontpage_blocks_visibility'] = 'Frontpage Blocks Visibility (Navigation & Administration)';
+$string['frontpage_blocks_visibility_desc'] = 'Choose who can see the blocks (Navigation, Administration, etc.) on the Frontpage. Setting this to "Site Administrators Only" prevents guest / non-login users from seeing navigation clutter.';
+$string['frontpage_content_visibility'] = 'Moodle Core Content Visibility';
+$string['frontpage_content_visibility_desc'] = 'Choose who can see Moodle core default frontpage activities/listings below the cards.';
+$string['navbar_guest_visibility'] = 'Primary Navbar Menu for Guest (Non-login) Users';
+$string['navbar_guest_visibility_desc'] = 'Choose whether to show or hide the primary navigation menu in the header navbar for guest/non-logged-in visitors.';
+$string['nav_guest_show'] = 'Show primary navigation menu for guests';
+$string['nav_guest_hide'] = 'Hide primary navigation menu for guests (clean minimalist navbar)';
 $string['slider_visibility'] = 'Slider Target Audience';
 $string['slider_visibility_desc'] = 'Choose who can see the hero banner slider on the home page.';
 $string['search_visibility'] = 'Search Bar Target Audience';

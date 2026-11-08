@@ -1724,15 +1724,21 @@ function theme_theedu_get_course_instructor_details($courseorid, $courseobj = nu
 }
 
 /**
- * Helper to evaluate visibility of frontpage components based on user status.
+ * Helper to evaluate visibility of frontpage components based on user status and role.
  *
- * @param string $visibility 'all', 'loggedin', 'guest', 'none'
+ * @param string $visibility 'all', 'guest', 'loggedin', 'registered_only', 'admin', 'none'
  * @param bool $isloggedin
  * @return bool
  */
 function theme_theedu_is_visible_to_user($visibility, $isloggedin) {
     if ($visibility === 'none') {
         return false;
+    }
+    if ($visibility === 'admin') {
+        return is_siteadmin();
+    }
+    if ($visibility === 'registered_only') {
+        return $isloggedin && !is_siteadmin();
     }
     if ($visibility === 'loggedin' && !$isloggedin) {
         return false;

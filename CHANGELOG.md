@@ -6,6 +6,42 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.5.0] - 2026-11-08 (Build 2026110820)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Menu / Blok "Navigation" dan "Administration" Muncul untuk Guest Non-Login di Beranda:**
+   - Pada halaman Beranda (Home), blok navigasi Moodle ("Navigation" block) muncul bagi pengunjung tamu (*guest* yang belum login), serta blok administrasi ("Administration" block) tampil di bawah konten sehingga mengganggu estetika dan kerapian portal.
+   - Belum tersedia variabel pengaturan tema untuk menyembunyikan atau menampilkan blok-blok Beranda secara selektif berdasarkan kategori peran pengguna.
+2. **Kebutuhan Pengaturan Hak Akses Multilevel Berdasarkan Kategori User:**
+   - Administrator memerlukan opsi terstruktur di Site Administration untuk menentukan elemen Beranda mana saja yang boleh dilihat oleh:
+     - Tamu / Belum Login (*Guest / Non-login*)
+     - Pengguna Terdaftar Biasa (*Registered Users / Non-admin*)
+     - Pengguna Login (*Logged-in Users: Mahasiswa, Dosen, Guru, Admin*)
+     - Administrator Situs (*Site Administrators Only*)
+     - Disembunyikan Sepenuhnya (*Disabled / Hidden*)
+
+### ✨ Perubahan & Solusi
+1. **Peningkatan Mesin Evaluasi Visibilitas Peran (`theme_theedu_is_visible_to_user`):**
+   - Memperluas fungsi helper `theme_theedu_is_visible_to_user()` di `lib.php` dengan dukungan penuh 6 kategori akses:
+     - `all`: Semua pengunjung (tamu maupun login).
+     - `guest`: Khusus pengunjung tamu yang belum login.
+     - `loggedin`: Semua pengguna yang sudah login (mahasiswa, pengajar, admin).
+     - `registered_only`: Khusus pengguna login biasa (non-admin).
+     - `admin`: Khusus Administrator Situs (`is_siteadmin()`).
+     - `none`: Disembunyikan sepenuhnya.
+2. **Variabel Pengaturan Baru: Visibilitas Blok Beranda (`theme_theedu/frontpage_blocks_visibility`):**
+   - Ditambahkan pada Tab 6 (*Enrolled Courses & Frontpage Content*) di Site Administration.
+   - Nilai default diset ke **`admin` (Site Administrators Only)**.
+   - **Hasil:** Pengunjung Tamu (*Guest*) dan Mahasiswa/Karyawan biasa secara otomatis **TIDAK AKAN** melihat blok "Navigation" maupun "Administration" di Beranda. Halaman Beranda menjadi bersih, rapi, dan profesional.
+3. **Variabel Pengaturan Baru: Visibilitas Konten Inti Beranda (`theme_theedu/frontpage_content_visibility`):**
+   - Mengontrol siapa yang dapat melihat daftar/aktivitas bawaan Moodle di Beranda.
+4. **Variabel Pengaturan Baru: Menu Utama Navbar untuk Guest (`theme_theedu/navbar_guest_visibility`):**
+   - Ditambahkan pada Tab 1 (*Branding & Logos*): Admin dapat memilih untuk menampilkan menu utama pada navbar tamu (`show`), atau menyembunyikannya (`hide`) agar tampilan tamu hanya menyisakan Logo dan tombol Login yang elegan.
+5. **Dukungan Moodle Core Editing Mode:**
+   - Blok Beranda tetap muncul secara interaktif saat Administrator mengaktifkan **Edit mode** sehingga penambahan dan penghapusan blok dapat dilakukan tanpa kendala.
+
+---
+
 ## [v1.4.9] - 2026-11-08 (Build 2026110819)
 
 ### 🎯 Masalah yang Diselesaikan

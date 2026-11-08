@@ -90,6 +90,14 @@ if ($PAGE->has_secondary_navigation()) {
 $primary = new core\navigation\output\primary($PAGE);
 $renderer = $PAGE->get_renderer('core');
 $primarymenu = $primary->export_for_template($renderer);
+
+// Optional header primary navbar suppression for guest (non-login) users.
+$isloggedinuser = isloggedin() && !isguestuser();
+$navbarguestvis = theme_theedu_get_setting('navbar_guest_visibility', 'show');
+if (!$isloggedinuser && $navbarguestvis === 'hide') {
+    $primarymenu['moremenu'] = false;
+    $primarymenu['mobileprimarynav'] = false;
+}
 $buildregionmainsettings = !$PAGE->include_region_main_settings_in_header_actions() &&
         !$PAGE->has_secondary_navigation();
 // If the settings menu will be included in the header actions, display it there.

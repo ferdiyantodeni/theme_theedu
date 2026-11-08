@@ -28,12 +28,20 @@ defined('MOODLE_INTERNAL') || die();
 
 $renderer = $PAGE->get_renderer('core');
 
+$isloggedinuser = isloggedin() && !isguestuser();
+
 // Add block button in editing mode.
 $addblockbutton = $OUTPUT->addblockbutton();
 
-// Frontpage blocks from side-pre region.
-$blockshtml = $OUTPUT->blocks('side-pre');
-$hasblocks = (strpos($blockshtml, 'data-block=') !== false || !empty($addblockbutton));
+// Frontpage blocks from side-pre region with role-based visibility.
+$blocksvisibility = theme_theedu_get_setting('frontpage_blocks_visibility', 'admin');
+$canseeblocks = theme_theedu_is_visible_to_user($blocksvisibility, $isloggedinuser) || $PAGE->user_is_editing();
+
+$blockshtml = '';
+if ($canseeblocks) {
+    $blockshtml = $OUTPUT->blocks('side-pre');
+}
+$hasblocks = (strpos($blockshtml, 'data-block=') !== false || (!empty($addblockbutton) && $PAGE->user_is_editing()));
 
 $bodyattributes = $OUTPUT->body_attributes(['theedu-frontpage-page']);
 
@@ -49,6 +57,13 @@ if ($PAGE->has_secondary_navigation()) {
 $primary = new core\navigation\output\primary($PAGE);
 $primarymenu = $primary->export_for_template($renderer);
 
+// Optional header primary navbar suppression for guest (non-login) users.
+$navbarguestvis = theme_theedu_get_setting('navbar_guest_visibility', 'show');
+if (!$isloggedinuser && $navbarguestvis === 'hide') {
+    $primarymenu['moremenu'] = false;
+    $primarymenu['mobileprimarynav'] = false;
+}
+
 $buildregionmainsettings = !$PAGE->include_region_main_settings_in_header_actions() &&
         !$PAGE->has_secondary_navigation();
 if ($buildregionmainsettings) {
@@ -58,9 +73,11 @@ if ($buildregionmainsettings) {
 $headercontent = false;
 
 // Frontpage Moodle core content control (Hide duplicate unstyled core listings when editing is off).
+$contentvis = theme_theedu_get_setting('frontpage_content_visibility', 'all');
 $hidemoodlecontent = (bool) theme_theedu_get_setting('frontpage_hide_moodle_content', 1);
 $isediting = $PAGE->user_is_editing();
-$showmaincontent = !$hidemoodlecontent || $isediting;
+$canseecontent = theme_theedu_is_visible_to_user($contentvis, $isloggedinuser);
+$showmaincontent = (!$hidemoodlecontent && $canseecontent) || $isediting;
 
 $templatecontext = [
     'sitename' => format_string($SITE->shortname, true, ['context' => context_course::instance(SITEID), "escape" => false]),
