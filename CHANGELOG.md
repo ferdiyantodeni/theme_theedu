@@ -6,6 +6,25 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.4.6] - 2026-11-08 (Build 2026110816)
+
+### 🎯 Masalah yang Diselesaikan
+- Jarak (gap) kosong antara bagian bawah *Floating Navbar* dan kartu konten utama (*Main Inner / Site administration / Dashboard / Course*) pada layout drawers (`#page.drawers`) terlalu lebar (~108px).
+- **Penyebab:** 
+  - CSS bawaan Moodle Boost core sudah memiliki `margin-top: 60px` pada `#page.drawers` dan `margin-top: 1.5rem` (24px) pada `.main-inner`.
+  - Tema TheEdu sebelumnya menambahkan `padding-top: 6rem` (96px) pada `#page.drawers`, sehingga total jarak akumulatif menjadi `60px + 96px + 24px - 72px (navbar) = 108px`, menimbulkan ruang kosong yang terlalu luas dan tidak proporsional di bawah navbar.
+
+### ✨ Perubahan & Solusi
+1. **Penyempitan Jarak Gap Menjadi 50%:**
+   - Nilai `padding-top` pada `.theedu-floating-header #page.drawers` dipangkas dari `6rem` menjadi `2.75rem` (dan default dari `4.75rem` menjadi `1.5rem`).
+   - Jarak bersih dari batas bawah floating navbar ke tepi atas kartu konten berkurang dari **~108px** menjadi **~52px** (tepat 50% lebih ramping dan proporsional).
+2. **Optimalisasi Responsif Mobile:**
+   - Menyesuaikan `@media (max-width: 768px)` untuk `#page.drawers` dari `5rem` menjadi `2rem`, memastikan tampilan di layar tablet dan ponsel tetap rapi tanpa scroll kosong berlebih.
+3. **Sinkronisasi Langsung ke Inline CSS & SCSS:**
+   - Perubahan diterapkan pada `scss/_header.scss` dan diinjeksi via `theme_theedu_get_inline_css()` di `lib.php` sehingga pengguna langsung melihat perubahan tata letak secara instan bahkan sebelum cache tema di-purge.
+
+---
+
 ## [v1.4.5] - 2026-11-08 (Build 2026110815)
 
 ### 🎯 Masalah yang Diselesaikan

@@ -387,7 +387,7 @@
 
 // Default Page Drawer Padding (guarantees content & navigation never tucks under fixed navbar)
 #page.drawers {
-    padding-top: 4.75rem !important;
+    padding-top: 1.5rem !important;
     position: relative;
     z-index: 1;
 }
@@ -417,7 +417,7 @@ a, button, .btn, .nav-link, .dropdown-item, [role="button"], [role="tab"], [role
     }
 
     #page.drawers {
-        padding-top: 6rem !important;
+        padding-top: 2.75rem !important; // Reduced by 50% for optimal spacing under floating navbar
     }
 }
 
@@ -442,7 +442,7 @@ a, button, .btn, .nav-link, .dropdown-item, [role="button"], [role="tab"], [role
         }
 
         #page.drawers {
-            padding-top: 5rem !important;
+            padding-top: 2rem !important;
         }
     }
 }

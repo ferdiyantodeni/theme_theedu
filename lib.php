@@ -1343,6 +1343,19 @@ body.editing .theedu-core-frontpage-content.theedu-hide-core-content {
     border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
+/* Content spacing under navbar: 50% narrower gap between floating navbar and main content */
+#page.drawers {
+    padding-top: 1.5rem !important;
+}
+.theedu-floating-header #page.drawers {
+    padding-top: 2.75rem !important;
+}
+@media (max-width: 768px) {
+    .theedu-floating-header #page.drawers {
+        padding-top: 2rem !important;
+    }
+}
+
 </style>";
 }
 
