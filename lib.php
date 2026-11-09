@@ -541,8 +541,11 @@ function theme_theedu_get_inline_css() {
     --theedu-cat-thumb-height: {$catthumbheight}px;
     --theedu-cat-thumbs-enabled: {$catthumbsactive};
 }
-.navbar,
+#page-wrapper.theedu-floating-header .navbar.fixed-top,
+.theedu-floating-header .navbar.fixed-top,
+.theedu-floating-header .navbar,
 .navbar.fixed-top,
+.navbar,
 nav.fixed-top,
 header.navbar,
 nav.navbar,
@@ -3019,8 +3022,8 @@ function theme_theedu_get_about_html() {
     global $CFG;
 
     // Dynamically introspect version metadata from version.php
-    $version_number = '2026110904';
-    $version_release = 'v1.5.5';
+    $version_number = '2026110905';
+    $version_release = 'v1.5.6';
     $version_maturity = 'STABLE';
     $version_requires = '2024042200 (Moodle 4.4+)';
 
@@ -3443,13 +3446,30 @@ function theme_theedu_get_about_html() {
                 <span style="font-size: 0.85rem; color: #64748B; font-weight: 500;">Comprehensive Version History</span>
             </div>
 
-            <!-- Version 1.5.5 -->
+            <!-- Version 1.5.6 -->
             <div class="theedu-version-card latest">
                 <div class="theedu-version-meta">
                     <div class="theedu-version-tag">
-                        <i class="fa fa-cube"></i> v1.5.5
+                        <i class="fa fa-cube"></i> v1.5.6
                         <span class="theedu-release-badge badge-latest">Current Release</span>
                     </div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110905</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Moodle 4.5 Navbar Background Color Cascade Fix:</strong> Updated <code>scss/_header.scss</code> to use <code>var(--theedu-navbar-bg, rgba(255, 255, 255, 0.92))</code> instead of hardcoded RGBA, and amplified inline CSS specificity with <code>#page-wrapper.theedu-floating-header .navbar.fixed-top</code>, ensuring custom navbar colors apply reliably across both Moodle 4.5 LTS and Moodle 5.x.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.5.5 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.5.5</div>
                     <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110904</div>
                 </div>
                 <ul>

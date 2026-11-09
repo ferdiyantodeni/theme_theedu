@@ -6,6 +6,25 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.5.6] - 2026-11-09 (Build 2026110905)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Warna Navbar (`color_navbar_bg`) Tidak Berubah pada Moodle 4.5 LTS:**
+   - Pada Moodle 4.5 LTS, saat administrator mengubah warna background navbar di *Site Administration*, warna navbar tetap putih dan tidak berganti, sedangkan di Moodle 5.3 berhasil.
+   - **Penyebab Teknis:** Di `scss/_header.scss` baris 471, selector `.theedu-floating-header .navbar.fixed-top` sebelumnya menggunakan nilai hardcoded:
+     `background-color: rgba(255, 255, 255, 0.92) !important;`
+     Pada kompilasi SCSS Moodle 4.5, aturan ini menang atas selektor `.navbar.fixed-top` di inline CSS karena memiliki spesifisitas kelas induk ganda (`.theedu-floating-header .navbar.fixed-top`).
+
+### ✨ Perubahan & Solusi
+1. **Penggunaan Variabel CSS pada `_header.scss`:**
+   - Mengubah deklarasi background di `scss/_header.scss` menjadi:
+     `background-color: var(--theedu-navbar-bg, rgba(255, 255, 255, 0.92)) !important;`
+2. **Penguatan Spesifisitas Selektor Inline CSS (`lib.php`):**
+   - Menambahkan selektor tingkat tertinggi `#page-wrapper.theedu-floating-header .navbar.fixed-top` (spesifisitas ID + 2 Class: `1, 2, 0`) pada CSS dinamis di `lib.php`.
+   - Menjamin warna background kustom langsung diterapkan secara instan pada Moodle 4.4, 4.5 LTS, maupun 5.x tanpa terblokir oleh aturan SCSS lama.
+
+---
+
 ## [v1.5.5] - 2026-11-09 (Build 2026110904)
 
 ### 🎯 Masalah yang Diselesaikan
