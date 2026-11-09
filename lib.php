@@ -3019,8 +3019,8 @@ function theme_theedu_get_about_html() {
     global $CFG;
 
     // Dynamically introspect version metadata from version.php
-    $version_number = '2026110902';
-    $version_release = 'v1.5.3';
+    $version_number = '2026110903';
+    $version_release = 'v1.5.4';
     $version_maturity = 'STABLE';
     $version_requires = '2024042200 (Moodle 4.4+)';
 
@@ -3042,7 +3042,7 @@ function theme_theedu_get_about_html() {
         }
     }
 
-    $moodle_host = !empty($CFG->release) ? clean_text($CFG->release) : 'Moodle 4.4, 4.5, 5.0, 5.1, 5.2, 5.3+';
+    $moodle_host = !empty($CFG->release) ? s($CFG->release) : 'Moodle 4.4, 4.5, 5.0, 5.1, 5.2, 5.3+';
 
     $html = '
     <div class="theedu-about-container">
@@ -3443,23 +3443,40 @@ function theme_theedu_get_about_html() {
                 <span style="font-size: 0.85rem; color: #64748B; font-weight: 500;">Comprehensive Version History</span>
             </div>
 
-            <!-- Version 1.5.3 -->
+            <!-- Version 1.5.4 -->
             <div class="theedu-version-card latest">
                 <div class="theedu-version-meta">
                     <div class="theedu-version-tag">
-                        <i class="fa fa-cube"></i> v1.5.3
+                        <i class="fa fa-cube"></i> v1.5.4
                         <span class="theedu-release-badge badge-latest">Current Release</span>
                     </div>
-                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110902</div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110903</div>
                 </div>
                 <ul>
                     <li>
                         <i class="fa fa-circle bullet"></i>
                         <div>
-                            <span class="theedu-release-badge badge-new">New</span>
-                            <strong>Dedicated "About Theme & Release Notes" Settings Tab:</strong> Added Tab 10 in Site Administration theme settings providing real-time developer credentials, institution metadata, and technical specifications.
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Settings Library Inclusion Fix:</strong> Added <code>require_once(__DIR__ . \'/lib.php\')</code> at the top of <code>settings.php</code> and guarded the dashboard invocation with <code>function_exists()</code>, permanently resolving the <code>Call to undefined function theme_theedu_get_about_html()</code> exception during Moodle admin tree building.
                         </div>
                     </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-new">New</span>
+                            <strong>Dedicated "About Theme & Release Notes" Settings Tab:</strong> Added Tab 10 in Site Administration theme settings providing real-time developer credentials, institution metadata, technical specifications, and categorized English release notes.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.5.3 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.5.3</div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110902</div>
+                </div>
+                <ul>
                     <li>
                         <i class="fa fa-circle bullet"></i>
                         <div>

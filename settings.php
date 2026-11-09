@@ -24,6 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
+require_once(__DIR__ . '/lib.php');
+
 if ($ADMIN->fulltree) {
     // Top-level tabbed settings navigation.
     $settings = new theme_boost_admin_settingspage_tabs('themesettingtheedu', get_string('configtitle', 'theme_theedu'));
@@ -844,9 +846,11 @@ if ($ADMIN->fulltree) {
     // =========================================================================
     $tab_about = new admin_settingpage('theme_theedu_about', get_string('tab_about', 'theme_theedu'));
 
+    $about_html = function_exists('theme_theedu_get_about_html') ? theme_theedu_get_about_html() : '';
+
     $tab_about->add(new admin_setting_heading('heading_about_theme',
         get_string('heading_about_theme', 'theme_theedu'),
-        theme_theedu_get_about_html()));
+        $about_html));
 
     $settings->add($tab_about);
 }

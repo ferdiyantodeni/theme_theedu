@@ -6,6 +6,30 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.5.4] - 2026-11-09 (Build 2026110903)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Fatal Error: `Call to undefined function theme_theedu_get_about_html()` pada Site Administration:**
+   - Saat membuka *Site Administration* Moodle, muncul pesan exception berwarna merah:
+     ```
+     Exception - Call to undefined function theme_theedu_get_about_html()
+     ```
+   - **Penyebab Teknis:** Loader pohon navigasi admin Moodle (`/lib/classes/plugininfo/theme.php`) menyertakan `theme/theedu/settings.php` secara terisolasi tanpa memuat berkas fungsi pustaka tema (`theme/theedu/lib.php`) terlebih dahulu. Akibatnya, pemanggilan fungsi `theme_theedu_get_about_html()` gagal karena fungsi tersebut belum didefinisikan dalam memori PHP saat `settings.php` dievaluasi.
+
+### ✨ Perubahan & Solusi
+1. **Inklusi Berkas Pustaka pada `settings.php` (`require_once`):**
+   - Menambahkan `require_once(__DIR__ . '/lib.php');` di bagian paling atas berkas `settings.php`. Hal ini menjamin bahwa seluruh fungsi pembantu tema TheEdu selalu siap digunakan saat Moodle membangun navigasi administrasi.
+2. **Defensive Function Guard (`function_exists`):**
+   - Menyelimuti pemanggilan `theme_theedu_get_about_html()` dengan validasi defensif:
+     ```php
+     $about_html = function_exists('theme_theedu_get_about_html') ? theme_theedu_get_about_html() : '';
+     ```
+   - Mencegah kemungkinan terlemparnya PHP fatal error dalam kondisi apa pun.
+3. **Penyempurnaan String Escaping:**
+   - Mengganti `clean_text($CFG->release)` menjadi `s($CFG->release)` agar lebih cepat dan aman dari dependensi purifier yang belum dimuat.
+
+---
+
 ## [v1.5.3] - 2026-11-09 (Build 2026110902)
 
 ### 🎯 Overview & User Request
