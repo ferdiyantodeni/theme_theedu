@@ -7,7 +7,132 @@
 
 {{{ theedu_dynamic_colors }}}
 
-<body {{{ bodyattributes }}} style="{{#theedu_login_bg}}background: linear-gradient(rgba(18, 24, 36, 0.4), rgba(18, 24, 36, 0.6)), url('{{theedu_login_bg}}') center / cover no-repeat fixed;{{/theedu_login_bg}}">
+<style>
+/* Login Page Background & Layout Stability (Edge & Chrome Cross-Browser) */
+html, body.pagelayout-login {
+    min-height: 100vh;
+    height: auto;
+}
+body.pagelayout-login {
+    {{#theedu_login_bg}}
+    background: linear-gradient(rgba(18, 24, 36, 0.45), rgba(18, 24, 36, 0.65)), url('{{{ theedu_login_bg }}}') center center / cover no-repeat fixed !important;
+    {{/theedu_login_bg}}
+    {{^theedu_login_bg}}
+    background: linear-gradient(135deg, #1E1B4B 0%, #312E81 40%, #4338CA 70%, #6C5CE7 100%) center center / cover no-repeat fixed !important;
+    {{/theedu_login_bg}}
+}
+body.pagelayout-login #page-wrapper {
+    background: transparent !important;
+    background-color: transparent !important;
+    min-height: 100vh !important;
+    width: 100% !important;
+}
+/* Login Container - Eliminate double card nesting and overflow clipping */
+.theedu-login-box {
+    width: 100%;
+    max-width: 450px;
+    margin: 0 auto;
+}
+body.pagelayout-login .card,
+.theedu-login-box .card {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    border-radius: 1.5rem !important;
+    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22) !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    backdrop-filter: blur(16px) !important;
+    -webkit-backdrop-filter: blur(16px) !important;
+    transition: none !important;
+    transform: none !important;
+}
+body.pagelayout-login .card:hover,
+.theedu-login-box .card:hover {
+    transform: none !important;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.22) !important;
+}
+body.pagelayout-login .card-body {
+    padding: 2.25rem 2rem !important;
+}
+body.pagelayout-login .login-instructions {
+    margin-top: 1.25rem !important;
+    padding: 1.25rem !important;
+    background: rgba(255, 255, 255, 0.92) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15) !important;
+    text-align: center !important;
+    overflow: visible !important;
+    font-size: 0.92rem !important;
+    color: #334155 !important;
+    line-height: 1.5 !important;
+}
+body.pagelayout-login .login-instructions .btn {
+    border-radius: 2rem !important;
+    padding: 0.55rem 1.5rem !important;
+    font-weight: 600 !important;
+    margin-top: 0.75rem !important;
+    background: #FFFFFF !important;
+    border: 1px solid rgba(108, 92, 231, 0.25) !important;
+    color: var(--theedu-primary, #6C5CE7) !important;
+    transition: all 0.2s ease !important;
+}
+body.pagelayout-login .login-instructions .btn:hover {
+    background: var(--theedu-primary, #6C5CE7) !important;
+    color: #FFFFFF !important;
+}
+body.pagelayout-login .login-divider {
+    margin: 1.25rem 0 !important;
+    opacity: 0.2;
+}
+body.pagelayout-login .form-control {
+    border-radius: 0.75rem !important;
+    padding: 0.75rem 1rem !important;
+    border: 1px solid rgba(108, 92, 231, 0.2) !important;
+}
+body.pagelayout-login .form-control:focus {
+    border-color: var(--theedu-primary, #6C5CE7) !important;
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.18) !important;
+}
+body.pagelayout-login .btn-primary {
+    border-radius: 2rem !important;
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 700 !important;
+    background: linear-gradient(135deg, var(--theedu-primary, #6C5CE7), var(--theedu-secondary, #00CEC9)) !important;
+    border: none !important;
+    box-shadow: 0 8px 20px rgba(108, 92, 231, 0.25) !important;
+}
+/* Dark Mode Overrides for Login */
+[data-theme="dark"].pagelayout-login .card,
+[data-theme="dark"] body.pagelayout-login .card,
+[data-theme="dark"] .theedu-login-box .card {
+    background: rgba(30, 38, 56, 0.95) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.5) !important;
+    color: #E2E8F0 !important;
+}
+[data-theme="dark"].pagelayout-login .login-instructions,
+[data-theme="dark"] body.pagelayout-login .login-instructions {
+    background: rgba(30, 38, 56, 0.9) !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #CBD5E1 !important;
+}
+[data-theme="dark"].pagelayout-login .login-instructions .btn {
+    background: #273147 !important;
+    color: #E2E8F0 !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+[data-theme="dark"].pagelayout-login .form-control {
+    background: #1A2130 !important;
+    color: #F1F5F9 !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+</style>
+
+<body {{{ bodyattributes }}}>
 <script>
     (function() {
         var saved = localStorage.getItem('theedu_theme_mode');
@@ -33,7 +158,7 @@
             {{/theedu_logos.top_left.enabled}}
         </div>
 
-        <div class="card p-4 shadow-lg border-0" style="max-width: 440px; width: 100%; border-radius: 1.5rem;">
+        <div class="theedu-login-box">
             {{{ output.main_content }}}
         </div>
 

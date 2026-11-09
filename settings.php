@@ -221,6 +221,11 @@ if ($ADMIN->fulltree) {
         get_string('login_bg_image_desc', 'theme_theedu'),
         'login_bg_image'));
 
+    $tab_branding->add(new admin_setting_configtext('theme_theedu/login_bg_url',
+        get_string('login_bg_url', 'theme_theedu'),
+        get_string('login_bg_url_desc', 'theme_theedu'),
+        '', PARAM_RAW_TRIMMED));
+
     // Floating Header Option
     $tab_branding->add(new admin_setting_heading('heading_floating_header',
         get_string('heading_floating_header', 'theme_theedu'),

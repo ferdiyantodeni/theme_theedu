@@ -96,6 +96,8 @@ $string['favicon'] = 'Favicon';
 $string['favicondesc'] = 'Unggah favicon kustom (.ico atau .png).';
 $string['login_bg_image'] = 'Gambar Latar Halaman Login';
 $string['login_bg_image_desc'] = 'Unggah gambar latar kustom untuk halaman login (1920x1080px format JPG atau WebP).';
+$string['login_bg_url'] = 'URL Gambar Latar Belakang Login (Alternatif)';
+$string['login_bg_url_desc'] = 'Tautan URL langsung ke gambar latar belakang login (contoh: https://domain.com/bg.jpg). Digunakan sebagai alternatif jika tidak mengunggah file di atas.';
 
 $string['heading_floating_header'] = 'Header Mengambang (Floating Header)';
 $string['heading_floating_header_desc'] = 'Aktifkan gaya bilah navigasi mengambang modern dengan sudut membulat, margin samping, dan efek blur kaca transparan.';

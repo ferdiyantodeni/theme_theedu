@@ -96,6 +96,8 @@ $string['favicon'] = 'Favicon';
 $string['favicondesc'] = 'Upload a custom favicon (.ico or .png).';
 $string['login_bg_image'] = 'Login Page Background Image';
 $string['login_bg_image_desc'] = 'Upload an optional background image for the login page (1920x1080px JPG or WebP).';
+$string['login_bg_url'] = 'Login Background Image URL (Alternative)';
+$string['login_bg_url_desc'] = 'Optional direct URL to an image for the login background (e.g. https://domain.com/bg.jpg). Used if no file is uploaded above.';
 
 $string['heading_floating_header'] = 'Floating Header (Mengambang)';
 $string['heading_floating_header_desc'] = 'Enable modern floating pill-style header with rounded corners, side margins, and glassmorphic blur.';

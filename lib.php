@@ -104,7 +104,7 @@ function theme_theedu_get_file_url($filearea) {
     global $CFG, $OUTPUT;
     $syscontext = \context_system::instance();
     $fs = get_file_storage();
-    $files = $fs->get_area_files($syscontext->id, 'theme_theedu', $filearea, 0, 'itemid, filepath, filename', false);
+    $files = $fs->get_area_files($syscontext->id, 'theme_theedu', $filearea, false, 'itemid, filepath, filename', false);
 
     if ($files) {
         $file = reset($files);
@@ -112,10 +112,18 @@ function theme_theedu_get_file_url($filearea) {
             $syscontext->id,
             'theme_theedu',
             $filearea,
-            null,
+            $file->get_itemid(),
             '/',
             $file->get_filename()
         )->out(false);
+    }
+
+    // Direct URL setting fallback for login background.
+    if ($filearea === 'login_bg_image') {
+        $bgurl = theme_theedu_get_setting('login_bg_url', '');
+        if (!empty($bgurl)) {
+            return $bgurl;
+        }
     }
 
     // Reliable fallback for logo: use Moodle core logo or bundled theme pix/logo.png
@@ -578,13 +586,17 @@ nav.navbar,
     color: var(--theedu-primary) !important;
     background: rgba(108, 92, 231, 0.08) !important;
 }
-body,
+body:not(.pagelayout-login),
 #page-wrapper,
 #page,
 #page.drawers,
 .theedu-frontpage-container,
 #page-content {
     background-color: var(--theedu-body-bg) !important;
+}
+body.pagelayout-login #page-wrapper {
+    background: transparent !important;
+    background-color: transparent !important;
 }
 .card,
 .theedu-card,
@@ -3022,8 +3034,8 @@ function theme_theedu_get_about_html() {
     global $CFG;
 
     // Dynamically introspect version metadata from version.php
-    $version_number = '2026110905';
-    $version_release = 'v1.5.6';
+    $version_number = '2026110906';
+    $version_release = 'v1.5.7';
     $version_maturity = 'STABLE';
     $version_requires = '2024042200 (Moodle 4.4+)';
 
@@ -3446,13 +3458,37 @@ function theme_theedu_get_about_html() {
                 <span style="font-size: 0.85rem; color: #64748B; font-weight: 500;">Comprehensive Version History</span>
             </div>
 
-            <!-- Version 1.5.6 -->
+            <!-- Version 1.5.7 -->
             <div class="theedu-version-card latest">
                 <div class="theedu-version-meta">
                     <div class="theedu-version-tag">
-                        <i class="fa fa-cube"></i> v1.5.6
+                        <i class="fa fa-cube"></i> v1.5.7
                         <span class="theedu-release-badge badge-latest">Current Release</span>
                     </div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110906</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Login Page Cross-Browser Layout & Anti-Clipping (Edge & Chrome):</strong> Eliminated duplicate nested card wrappers around <code>output.main_content</code> in <code>templates/login.mustache</code> and added <code>overflow: visible !important; height: auto !important;</code>. This prevents Microsoft Edge and Chrome from cutting off guest login notices, password recovery links, or signup instructions.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Login Background Image Rendering:</strong> Resolved <code>#page-wrapper</code> solid background occlusion by declaring <code>background: transparent !important</code> on <code>body.pagelayout-login #page-wrapper</code> and applying full-screen cover rendering with elegant glassmorphic dark gradients. Added alternative <code>login_bg_url</code> setting in Tab 1 (Branding).
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.5.6 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.5.6</div>
                     <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110905</div>
                 </div>
                 <ul>

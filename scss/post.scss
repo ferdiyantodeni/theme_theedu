@@ -187,6 +187,20 @@ body,
     }
 }
 
+// Login Page Card Reset (Anti-Clipping for Edge, Chrome, Safari)
+body.pagelayout-login .card,
+.theedu-login-box .card {
+    height: auto !important;
+    min-height: auto !important;
+    overflow: visible !important;
+    transform: none !important;
+    transition: none !important;
+
+    &:hover {
+        transform: none !important;
+    }
+}
+
 [data-theme="dark"] .theedu-card {
     background-color: var(--theedu-card-bg, #1E2638);
     border-color: rgba(255, 255, 255, 0.08);

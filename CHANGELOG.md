@@ -6,6 +6,35 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.5.7] - 2026-11-09 (Build 2026110906)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Tampilan Halaman Login Terpotong / Tumpang Tindih di Microsoft Edge:**
+   - Pada browser Microsoft Edge, area bawah form login (seperti teks *"Some courses may allow guest access"* dan tombol *"Log in as a guest"*) terpotong secara horizontal oleh batas bawah kartu form login dan saling bertumpukan dengan tombol dark mode.
+   - Di Google Chrome tampilan terlihat normal karena sedikit perbedaan kalkulasi margin/scrollbar, namun di Edge terjadi *layout clipping*.
+   - **Penyebab Teknis:**
+     1. Pada `templates/login.mustache`, `{{{ output.main_content }}}` sebelumnya dibungkus di dalam kartu tambahan `<div class="card p-4 ...">`, padahal Moodle core `loginform` sudah merender elemen `.card` miliknya sendiri (terjadi *double nested card*).
+     2. Di `scss/post.scss`, selektor dasar `.card` memiliki aturan global `height: 100%; overflow: hidden;`. Di mesin layout Edge, kombinasi flexbox `min-vh-100` dan `height: 100% overflow: hidden` pada kartu bertingkat menyebabkan elemen instruksi tamu di bawah form terpotong (*clipped*).
+2. **Background Halaman Login Tidak Tampil Sesuai Pengaturan:**
+   - Meskipun administrator telah mengunggah gambar latar belakang pada pengaturan tema (*Login Page Background Image*), halaman login tetap berlatar belakang putih polos `#F7F9FC`.
+   - **Penyebab Teknis:**
+     1. Di `lib.php` pada fungsi `theme_theedu_get_inline_css()`, elemen `#page-wrapper` memiliki aturan CSS `background-color: var(--theedu-body-bg) !important;`. Elemen `#page-wrapper` membentang seluas layar penuh di atas `<body>`, sehingga menutupi gambar latar belakang `<body>` secara total dengan lapisan solid putih `#F7F9FC`.
+     2. Di `lib.php`, pemanggilan `fs->get_area_files` sebelumnya mengunci parameter `itemid = 0`, sehingga file yang diunggah dengan draft itemid lain tidak terambil secara optimal.
+
+### ✨ Perubahan & Solusi
+1. **Pembersihan Struktur Kartu Login & Anti-Clipping Cross-Browser (`templates/login.mustache` & `scss/post.scss`):**
+   - Menghapus pembungkus `.card` ganda di `templates/login.mustache` dan menggantinya dengan pembungkus bersih `<div class="theedu-login-box">`.
+   - Menerapkan aturan `height: auto !important; min-height: auto !important; overflow: visible !important;` pada seluruh kartu di halaman login (`body.pagelayout-login .card`).
+   - Merancang kontainer khusus yang terpisah dan rapi untuk area akses tamu (`.login-instructions`) dengan background transparan berdimensi (*glassmorphic card*) sehingga tidak akan pernah terpotong atau bertumpukan di Edge maupun Chrome.
+2. **Perbaikan Transparansi `#page-wrapper` & Pemuatan Gambar Latar Login:**
+   - Menetapkan aturan eksplisit `body.pagelayout-login #page-wrapper { background: transparent !important; background-color: transparent !important; }` di `lib.php` dan `templates/login.mustache`.
+   - Gambar latar belakang login kini langsung tampil penuh (*center center / cover no-repeat fixed*) dengan overlay gradien gelap yang elegan agar teks form tetap terbaca jelas.
+   - Jika belum ada gambar yang diunggah, tema otomatis menampilkan latar gradien edukasi modern (`#1E1B4B` ke `#6C5CE7`) alih-alih layar putih polos.
+3. **Penambahan Opsi Alternatif URL Gambar Background Login (`login_bg_url`):**
+   - Menambahkan kolom input `theme_theedu/login_bg_url` pada **Tab 1: Branding** di Site Administration, memberikan keleluasaan bagi administrator untuk memasukkan URL gambar langsung (misal: `https://...`) sebagai alternatif dari unggah berkas.
+
+---
+
 ## [v1.5.6] - 2026-11-09 (Build 2026110905)
 
 ### 🎯 Masalah yang Diselesaikan
