@@ -826,7 +826,7 @@ if ($ADMIN->fulltree) {
     $settings->add($tab_footer);
 
     // =========================================================================
-    // TAB 6: CUSTOM CSS
+    // TAB 9: ADVANCED (CUSTOM CSS)
     // =========================================================================
     $tab_advanced = new admin_settingpage('theme_theedu_advanced', get_string('tab_advanced', 'theme_theedu'));
 
@@ -838,4 +838,15 @@ if ($ADMIN->fulltree) {
         get_string('customcss_desc', 'theme_theedu'), '', PARAM_RAW));
 
     $settings->add($tab_advanced);
+
+    // =========================================================================
+    // TAB 10: ABOUT THEME & RELEASE NOTES
+    // =========================================================================
+    $tab_about = new admin_settingpage('theme_theedu_about', get_string('tab_about', 'theme_theedu'));
+
+    $tab_about->add(new admin_setting_heading('heading_about_theme',
+        get_string('heading_about_theme', 'theme_theedu'),
+        theme_theedu_get_about_html()));
+
+    $settings->add($tab_about);
 }

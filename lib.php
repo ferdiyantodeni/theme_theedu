@@ -3009,3 +3009,642 @@ function theme_theedu_get_activity_navigation($page) {
         'has_jump' => !empty($jumpsections),
     ];
 }
+
+/**
+ * Generates the rich HTML dashboard for the "About Theme & Release Notes" settings tab.
+ *
+ * @return string HTML content for the about page.
+ */
+function theme_theedu_get_about_html() {
+    global $CFG;
+
+    // Dynamically introspect version metadata from version.php
+    $version_number = '2026110902';
+    $version_release = 'v1.5.3';
+    $version_maturity = 'STABLE';
+    $version_requires = '2024042200 (Moodle 4.4+)';
+
+    $version_file = __DIR__ . '/version.php';
+    if (file_exists($version_file)) {
+        $plugin = new stdClass();
+        include($version_file);
+        if (!empty($plugin->version)) {
+            $version_number = (string)$plugin->version;
+        }
+        if (!empty($plugin->release)) {
+            $version_release = (string)$plugin->release;
+        }
+        if (defined('MATURITY_STABLE') && isset($plugin->maturity) && $plugin->maturity === MATURITY_STABLE) {
+            $version_maturity = 'STABLE';
+        }
+        if (!empty($plugin->requires)) {
+            $version_requires = $plugin->requires . ' (Moodle 4.4+)';
+        }
+    }
+
+    $moodle_host = !empty($CFG->release) ? clean_text($CFG->release) : 'Moodle 4.4, 4.5, 5.0, 5.1, 5.2, 5.3+';
+
+    $html = '
+    <div class="theedu-about-container">
+        <style>
+        .theedu-about-container {
+            max-width: 1200px;
+            margin: 0.5rem 0 2rem 0;
+            line-height: 1.6;
+        }
+        .theedu-about-hero {
+            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 40%, #4338CA 75%, #6C5CE7 100%);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 35px rgba(67, 56, 202, 0.25);
+            margin-bottom: 2rem;
+        }
+        .theedu-about-hero::before {
+            content: "";
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 280px;
+            height: 280px;
+            background: radial-gradient(circle, rgba(0, 206, 201, 0.28) 0%, rgba(255, 255, 255, 0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .theedu-about-hero-content {
+            position: relative;
+            z-index: 2;
+        }
+        .theedu-about-logo-badge {
+            width: 58px;
+            height: 58px;
+            border-radius: 1rem;
+            background: linear-gradient(135deg, #00CEC9 0%, #6C5CE7 100%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.85rem;
+            font-weight: 900;
+            color: #FFFFFF;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1.25rem;
+        }
+        .theedu-about-title {
+            font-size: 2.25rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            color: #FFFFFF !important;
+        }
+        .theedu-about-subtitle {
+            font-size: 1.05rem;
+            opacity: 0.92;
+            max-width: 780px;
+            margin-bottom: 1.5rem;
+            line-height: 1.55;
+            color: #E0E7FF;
+        }
+        .theedu-badge-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.65rem;
+            align-items: center;
+        }
+        .theedu-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+        .theedu-pill-version {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #FFFFFF;
+        }
+        .theedu-pill-status {
+            background: #10B981;
+            color: #FFFFFF;
+        }
+        .theedu-pill-license {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #FFFFFF;
+        }
+        .theedu-pill-gh {
+            background: #FFFFFF;
+            color: #1E1B4B;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        .theedu-pill-gh:hover {
+            background: #00CEC9;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+        }
+        .theedu-info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.75rem;
+            margin-bottom: 2.5rem;
+        }
+        .theedu-info-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(108, 92, 231, 0.12);
+            border-radius: 1.25rem;
+            padding: 1.75rem;
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.04);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .theedu-info-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108, 92, 231, 0.08);
+        }
+        .theedu-info-card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.85rem;
+            border-bottom: 1px solid rgba(108, 92, 231, 0.08);
+        }
+        .theedu-card-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(108, 92, 231, 0.1);
+            color: #6C5CE7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+        .theedu-info-card-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1E293B;
+            margin: 0;
+        }
+        .theedu-info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .theedu-info-table tr td {
+            padding: 0.65rem 0;
+            font-size: 0.92rem;
+            border-bottom: 1px dashed rgba(108, 92, 231, 0.08);
+            vertical-align: middle;
+        }
+        .theedu-info-table tr:last-child td {
+            border-bottom: none;
+        }
+        .theedu-info-label {
+            font-weight: 600;
+            color: #64748B;
+            width: 38%;
+        }
+        .theedu-info-val {
+            font-weight: 600;
+            color: #1E293B;
+        }
+        .theedu-release-section {
+            background: #FFFFFF;
+            border: 1px solid rgba(108, 92, 231, 0.12);
+            border-radius: 1.25rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(108, 92, 231, 0.04);
+        }
+        .theedu-release-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(108, 92, 231, 0.1);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .theedu-release-header h3 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            color: #1E293B;
+            margin: 0;
+        }
+        .theedu-version-card {
+            border: 1px solid rgba(108, 92, 231, 0.1);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: #FFFFFF;
+            transition: all 0.2s ease;
+        }
+        .theedu-version-card:hover {
+            border-color: #6C5CE7;
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.08);
+        }
+        .theedu-version-card.latest {
+            border: 2px solid #6C5CE7;
+            background: linear-gradient(180deg, rgba(108, 92, 231, 0.02) 0%, #FFFFFF 100%);
+        }
+        .theedu-version-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .theedu-version-tag {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #6C5CE7;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .theedu-version-date {
+            font-size: 0.85rem;
+            color: #64748B;
+            font-weight: 500;
+        }
+        .theedu-release-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-right: 0.4rem;
+            letter-spacing: 0.02em;
+        }
+        .badge-latest { background: #10B981; color: #FFFFFF; }
+        .badge-new { background: rgba(16, 185, 129, 0.12); color: #059669; }
+        .badge-fix { background: rgba(239, 68, 68, 0.12); color: #DC2626; }
+        .badge-improve { background: rgba(59, 130, 246, 0.12); color: #2563EB; }
+        .badge-ui { background: rgba(108, 92, 231, 0.12); color: #6C5CE7; }
+        .theedu-version-card ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .theedu-version-card ul li {
+            padding: 0.5rem 0;
+            font-size: 0.92rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.65rem;
+            line-height: 1.5;
+        }
+        .theedu-version-card ul li i.bullet {
+            color: #6C5CE7;
+            font-size: 0.65rem;
+            margin-top: 0.45rem;
+            flex-shrink: 0;
+        }
+        .theedu-version-card ul li strong {
+            color: #1E293B;
+        }
+        /* Dark Mode Compatibility */
+        [data-theme="dark"] .theedu-about-container .theedu-info-card,
+        [data-theme="dark"] .theedu-about-container .theedu-release-section,
+        [data-theme="dark"] .theedu-about-container .theedu-version-card {
+            background: #1E2638 !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+            color: #E2E8F0 !important;
+        }
+        [data-theme="dark"] .theedu-about-container .theedu-info-card-title,
+        [data-theme="dark"] .theedu-about-container .theedu-release-header h3,
+        [data-theme="dark"] .theedu-about-container .theedu-info-val,
+        [data-theme="dark"] .theedu-about-container .theedu-version-card ul li strong {
+            color: #F8FAFC !important;
+        }
+        [data-theme="dark"] .theedu-about-container .theedu-info-label,
+        [data-theme="dark"] .theedu-about-container .theedu-version-date {
+            color: #94A3B8 !important;
+        }
+        [data-theme="dark"] .theedu-about-container .theedu-version-card.latest {
+            background: linear-gradient(180deg, rgba(108, 92, 231, 0.15) 0%, #1E2638 100%) !important;
+            border-color: #6C5CE7 !important;
+        }
+        [data-theme="dark"] .theedu-about-container .theedu-info-table tr td {
+            border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+        }
+        @media (max-width: 768px) {
+            .theedu-about-hero { padding: 1.5rem; }
+            .theedu-about-title { font-size: 1.75rem; }
+            .theedu-version-meta { flex-direction: column; align-items: flex-start; }
+        }
+        </style>
+
+        <!-- Hero Header Card -->
+        <div class="theedu-about-hero">
+            <div class="theedu-about-hero-content">
+                <div class="theedu-about-logo-badge">E</div>
+                <h1 class="theedu-about-title">TheEdu Theme for Moodle</h1>
+                <p class="theedu-about-subtitle">An enterprise-grade, accessible, and highly customizable learning theme engineered for Moodle 4.4 through 5.3+. Featuring fluid single-row navigation, soft pastel palettes, automatic dark mode, and dynamic frontpage modules.</p>
+                <div class="theedu-badge-group">
+                    <span class="theedu-pill theedu-pill-version"><i class="fa fa-tag"></i> Release ' . s($version_release) . '</span>
+                    <span class="theedu-pill theedu-pill-status"><i class="fa fa-check-circle"></i> Build ' . s($version_number) . ' (' . s($version_maturity) . ')</span>
+                    <span class="theedu-pill theedu-pill-license"><i class="fa fa-shield-alt"></i> GPL-3.0 License</span>
+                    <a href="https://github.com/ferdiyantodeni/theme_theedu" target="_blank" rel="noopener noreferrer" class="theedu-pill theedu-pill-gh"><i class="fa fa-github fab fa-github"></i> GitHub Repository</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Two-Column Information Grid -->
+        <div class="theedu-info-grid">
+            <!-- Developer & Organization Card -->
+            <div class="theedu-info-card">
+                <div class="theedu-info-card-header">
+                    <div class="theedu-card-icon"><i class="fa fa-code"></i></div>
+                    <h4 class="theedu-info-card-title">Developer & Project Information</h4>
+                </div>
+                <table class="theedu-info-table">
+                    <tr>
+                        <td class="theedu-info-label">Author / Lead Dev</td>
+                        <td class="theedu-info-val">Ferdiyanto Deni</td>
+                    </tr>
+                    <tr>
+                        <td class="theedu-info-label">Organization</td>
+                        <td class="theedu-info-val">PT Astra Daihatsu Motor (ADM Education Center)</td>
+                    </tr>
+                    <tr>
+                        <td class="theedu-info-label">GitHub Profile</td>
+                        <td class="theedu-info-val"><a href="https://github.com/ferdiyantodeni" target="_blank" rel="noopener noreferrer" style="color: #6C5CE7; text-decoration: none; font-weight: 700;">@ferdiyantodeni</a></td>
+                    </tr>
+                    <tr>
+                        <td class="theedu-info-label">Project Repository</td>
+                        <td class="theedu-info-val"><a href="https://github.com/ferdiyantodeni/theme_theedu" target="_blank" rel="noopener noreferrer" style="color: #6C5CE7; text-decoration: none; font-weight: 700;">github.com/ferdiyantodeni/theme_theedu</a></td>
+                    </tr>
+                    <tr>
+                        <td class="theedu-info-label">Open Source License</td>
+                        <td class="theedu-info-val">GNU General Public License v3.0 or later</td>
+                    </tr>
+                    <tr>
+                        <td class="theedu-info-label">Asset Architecture</td>
+                        <td class="theedu-info-val"><span style="color: #059669; font-weight: 700;"><i class="fa fa-check-circle"></i> 100% Self-Contained Offline Assets</span> (Local Fonts & Icons)</td>
+                    </tr>
+                </table>
+            </div>
+
+            <!-- System Specifications Card -->
+            <div class="theedu-info-card">
+                <div class="theedu-info-card-header">
+                    <div class="theedu-card-icon"><i class="fa fa-server"></i></div>
+                    <h4 class="theedu-info-card-title">System Specifications & Compatibility</h4>
+                </div>
+                <table class="theedu-info-table">
+                    <tr>
+                        <td class="theedu-info-label">Current Version</td>
+                        <td class="theedu-info-val"><span style="background: rgba(108, 92, 231, 0.1); color: #6C5CE7; padding: 2px 8px; border-radius: 6px; font-weight: 700;">' . s($version_release) . ' (Build ' . s($version_number) . ')</span></td>
+                    </tr>
+                    <tr>
+                        <td class="theedu-info-label">Moodle Compatibility</td>
+                        <td class="theedu-info-val">Moodle 4.4, 4.5, 5.0, 5.1, 5.2, 5.3+</td>
+                    </tr>
+                    <tr>
+                        <td class="theedu-info-label">Host Environment</td>
+                        <td class="theedu-info-val">' . s($moodle_host) . '</td>
+                    </tr>
+                    <tr>
+                        <td class="theedu-info-label">Base Architecture</td>
+                        <td class="theedu-info-val">Moodle Boost Theme (<code>theme_boost</code>)</td>
+                    </tr>
+                    <tr>
+                        <td class="theedu-info-label">CSS & UI Framework</td>
+                        <td class="theedu-info-val">Bootstrap 5 + SCSS Custom Pipeline</td>
+                    </tr>
+                    <tr>
+                        <td class="theedu-info-label">Icon Engine</td>
+                        <td class="theedu-info-val">FontAwesome 6 Free (Offline Bundled)</td>
+                    </tr>
+                    <tr>
+                        <td class="theedu-info-label">Dark Mode Engine</td>
+                        <td class="theedu-info-val">CSS Custom Properties with Local Storage</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Professional Release Notes in English -->
+        <div class="theedu-release-section">
+            <div class="theedu-release-header">
+                <h3><i class="fa fa-history" style="color: #6C5CE7;"></i> Release Notes & Changelog (English)</h3>
+                <span style="font-size: 0.85rem; color: #64748B; font-weight: 500;">Comprehensive Version History</span>
+            </div>
+
+            <!-- Version 1.5.3 -->
+            <div class="theedu-version-card latest">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag">
+                        <i class="fa fa-cube"></i> v1.5.3
+                        <span class="theedu-release-badge badge-latest">Current Release</span>
+                    </div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110902</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-new">New</span>
+                            <strong>Dedicated "About Theme & Release Notes" Settings Tab:</strong> Added Tab 10 in Site Administration theme settings providing real-time developer credentials, institution metadata, and technical specifications.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-improve">Architecture</span>
+                            <strong>Dynamic Version Introspection:</strong> Real-time reflection of current installed release version, build number, maturity status, and host Moodle compatibility directly from <code>version.php</code>.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">Documentation</span>
+                            <strong>Comprehensive English Release Notes:</strong> Integrated enterprise-grade release history with categorized status badges (<code>[New]</code>, <code>[Fixed]</code>, <code>[Improved]</code>, <code>[UI / UX]</code>, <code>[Security]</code>) documenting all feature additions, UI enhancements, and security hardening.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-improve">Offline</span>
+                            <strong>Zero-CDN Architecture Verification:</strong> Audited all font, icon, and asset pipelines to certify 100% offline functionality in air-gapped intranet environments.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.5.2 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.5.2</div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110901</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Navbar Background Color Customization Resolution:</strong> Resolved an issue where <code>color_navbar_bg</code> and <code>color_navbar_text</code> were locked by the default preset palette. Custom color configurations now immediately take precedence without requiring switching to \'custom\' preset.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-improve">Improved</span>
+                            <strong>Customizable Carousel Slide Badge:</strong> Removed the hardcoded "TheEdu Learning" text badge from slider caption cards. Added a new setting <code>slide_badge_{$i}</code> in Tab 4 (Homepage Slider) allowing administrators to leave it empty (clean layout) or enter custom institution taglines.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.5.1 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.5.1</div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 8, 2026 &bull; Build 2026110821</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">UI / UX</span>
+                            <strong>Modern Category & Subcategory Card Architecture:</strong> Transformed traditional hierarchical Moodle category folder dropdowns into modern elevated cards matching the course card design system.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-new">Feature</span>
+                            <strong>Toggleable Category Thumbnail Image Area:</strong> Added support for category banners (extracting image from description or generating dynamic education gradients across 8 colorways). Added settings toggle (<code>enable_category_thumbnails</code>) to switch between thumbnail banner and compact icon mode.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-improve">Improved</span>
+                            <strong>Subcategory Feature Parity:</strong> Top-level categories and subcategories share identical visual cards, course count pills, subcategory count pills, descriptions, and circular action buttons.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.5.0 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.5.0</div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 8, 2026 &bull; Build 2026110820</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-new">Security</span>
+                            <strong>Multi-Level Frontpage Block Visibility:</strong> Resolved navigation and administration block leakage for unauthenticated guest visitors. Added granular role visibility controls (All Visitors, Guests Only, Logged-in Users, Registered Non-Admin, Administrators Only, or Hidden).
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-improve">Improved</span>
+                            <strong>Guest Navbar Menu Toggle:</strong> Added <code>navbar_guest_visibility</code> in Tab 1 allowing administrators to hide primary navigation items for guests, presenting an ultra-clean landing page with branding and login button.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.4.7 - 1.4.9 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.4.7 &ndash; v1.4.9</div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 8, 2026 &bull; Builds 2026110817 &ndash; 2026110819</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">Layout</span>
+                            <strong>Universal Spacing Standard (Tab 8):</strong> Standardized navbar-to-content distance (20px standard), side margins, card padding, and footer gap across Dashboard, My Courses, Course Content, and Site Admin.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-new">Feature</span>
+                            <strong>Dynamic Course Activity Navigation Bar:</strong> Added Next Activity, Previous Activity, and Jump-to-Topic navigation controls below course materials (PDF, Book, URL, Page), Quiz Finish Review, and Assignment submissions.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Mobile Viewport Floating Menu Stacking:</strong> Resolved z-index and overflow clipping issues causing notification bell and profile popover menus to be occluded on mobile viewports.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.4.0 - 1.4.6 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.4.0 &ndash; v1.4.6</div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 7 &ndash; 8, 2026 &bull; Builds 2026110701 &ndash; 2026110816</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">Layout</span>
+                            <strong>Card Symmetry & Grid Parity:</strong> Synchronized card typography, thumbnail aspect ratio (16:9), teacher avatar pill, and progress bar layout between My Enrolled Courses and Category views with 50% tighter whitespace.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-improve">Core</span>
+                            <strong>4-Logo Multi-Branding Engine:</strong> Full independent management of Top-Left, Top-Right, Footer-Left, and Footer-Right logo placements.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.0.0 - 1.3.5 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.0.0 &ndash; v1.3.5</div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 6, 2026 &bull; Foundation Releases</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-improve">Offline</span>
+                            <strong>100% Offline Font & Icon Architecture:</strong> Self-hosted Plus Jakarta Sans, Inter, Outfit, Poppins, Nunito, and Roboto fonts bundled locally in WOFF2 format along with FontAwesome 6 Free. Zero CDN dependency.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-new">Core</span>
+                            <strong>Bootstrap 5 & Boost Engine:</strong> Engineered on Moodle Boost (<code>theme_boost</code>) with single-row floating navigation bar, 5 designer pastel presets, and instant flicker-free dark mode.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
+    </div>';
+
+    return $html;
+}

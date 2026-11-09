@@ -457,3 +457,8 @@ $string['content_card_padding_desc'] = 'Ruang padding di dalam kartu konten utam
 $string['heading_customcss'] = 'Custom CSS Code';
 $string['customcss'] = 'Custom CSS';
 $string['customcss_desc'] = 'Add custom CSS rules here to override or fine-tune styling without modifying files.';
+
+// Tab 10: About Theme & Release Notes
+$string['tab_about'] = 'About Theme & Release Notes';
+$string['heading_about_theme'] = 'TheEdu Theme Information & Release Notes';
+$string['about_theme_desc'] = 'Technical specifications, developer details, and comprehensive release history.';

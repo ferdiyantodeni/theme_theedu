@@ -6,6 +6,67 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.5.3] - 2026-11-09 (Build 2026110902)
+
+### 🎯 Overview & User Request
+- **Permintaan Pengguna:**
+  "buat di halaman configurasi terkait about theme, isi ada 2 hal terkait developer & versi saat ini, sertakan change log dalam bahasa inggris (buat format provesional seperti release note setiap versi."
+- **Tujuan Pengembangan:**
+  1. Menambahkan tab konfigurasi khusus **"About Theme & Release Notes"** (Tab 10) di *Site Administration* Moodle (`settings.php`).
+  2. Menyajikan informasi identitas developer (*Lead Developer*, Institusi/Organisasi, profil GitHub, repositori kode, dan lisensi GPL-3.0).
+  3. Menampilkan spesifikasi teknis dan versi aktif secara dinamis (*dynamic version introspection* dari `version.php` dan `$CFG->release`).
+  4. Menyertakan changelog / catatan rilis profesional berstandar enterprise dalam Bahasa Inggris (*English Release Notes*) dengan badge status kategorikal (`[New]`, `[Fixed]`, `[Improved]`, `[UI / UX]`, `[Security]`).
+
+---
+
+### ✨ Official Release Notes (English)
+
+#### 🚀 Executive Summary
+TheEdu Theme version **v1.5.3** introduces a centralized **About Theme & Release Notes** executive dashboard directly within Moodle Site Administration. This release equips administrators, institutional stakeholders, and DevOps engineers with instant visibility into developer credentials, licensing, runtime environment compatibility, offline asset guarantees, and a categorized chronological changelog spanning all historical milestones.
+
+#### 🌟 Key Additions & Architectural Enhancements
+1. **Dedicated "About Theme & Release Notes" Settings Tab (Tab 10):**
+   - Registered as `theme_theedu_about` in Moodle Site Administration theme settings hierarchy.
+   - Built with a modern, glassmorphic gradient Hero Banner (`#1E1B4B` to `#6C5CE7`) displaying theme branding, release tag pill, build number, maturity status, and an interactive GitHub repository pill button.
+   - 100% responsive two-column metadata grid featuring:
+     - **Developer & Project Information:** Author/Lead Developer (`Ferdiyanto Deni`), Organization (`PT Astra Daihatsu Motor - ADM Education Center`), GitHub Profile (`@ferdiyantodeni`), Source Code Repository, Open Source License (`GNU General Public License v3.0 or later`), and Asset Architecture verification.
+     - **System Specifications & Compatibility:** Dynamically introspected version numbers, Moodle multi-branch compatibility (`Moodle 4.4, 4.5, 5.0, 5.1, 5.2, 5.3+`), active host environment, Boost core engine, Bootstrap 5 SCSS pipeline, local FontAwesome 6 Free, and instant dark mode engine.
+2. **Dynamic Version Introspection (`theme_theedu_get_about_html`):**
+   - Implemented dynamic file inspection of `version.php` inside `lib.php`, automatically reading `$plugin->version`, `$plugin->release`, and `$plugin->maturity` at runtime.
+   - Eliminates manual version sync errors across administrative views.
+3. **Professional Enterprise Changelog in English:**
+   - Embedded structured release notes categorized with GitHub/Enterprise badges:
+     - `[New]` / `[Feature]`: New capabilities, settings tabs, and UI modules.
+     - `[Fixed]`: Critical bug resolutions, layout edge cases, and override fixes.
+     - `[Improved]` / `[UI / UX]`: Design refinements, spacing harmonizations, and parity.
+     - `[Security]` / `[Role]`: Access control, block isolation, and role-based views.
+     - `[Offline]` / `[Core]`: Air-gapped intranet compatibility and zero-CDN guarantees.
+4. **Dark Mode Integration & Scoped CSS:**
+   - Full compatibility with TheEdu dark mode engine (`[data-theme="dark"]`), featuring elevated dark surface cards (`#1E2638`), subtle border contrasts, and crisp legible typography.
+
+---
+
+### 🇮🇩 Ringkasan Perubahan Bahasa Indonesia
+1. **Tab Baru "About Theme & Release Notes" (Tab 10):**
+   - Terintegrasi langsung pada menu pengaturan tema di *Administrasi Situs > Tampilan > Tema > TheEdu*.
+   - Menggunakan banner gradien modern dengan logo TheEdu ("E"), badge versi dinamis, dan tombol pintas ke repositori GitHub.
+2. **Kartu Informasi Developer & Organisasi:**
+   - Pengembang Utama: Ferdiyanto Deni
+   - Organisasi / Institusi: PT Astra Daihatsu Motor (ADM Education Center)
+   - Tautan Profil GitHub: `https://github.com/ferdiyantodeni`
+   - Tautan Repositori Proyek: `https://github.com/ferdiyantodeni/theme_theedu`
+   - Lisensi: GNU General Public License v3.0 or later (GPL-3.0-or-later)
+   - Jaminan Aset: 100% Self-Contained Offline Assets (Local Fonts & Local Icons, Zero CDN).
+3. **Kartu Spesifikasi Teknis & Versi Sistem:**
+   - Mengambil data versi aktif secara dinamis langsung dari `version.php` (`v1.5.3` / Build `2026110902`).
+   - Kompatibilitas multi-versi Moodle 4.4, 4.5, 5.0, 5.1, 5.2, 5.3+.
+   - Mendeteksi versi Moodle host aktif melalui `$CFG->release`.
+4. **Riwayat Rilis Profesional dalam Bahasa Inggris (Release Notes):**
+   - Disusun runtut dari versi terbaru v1.5.3 hingga versi pondasi awal v1.0.0.
+   - Menggunakan badge kategori warna-warni berstandar GitHub/Enterprise (`[New]`, `[Fixed]`, `[Improved]`, `[UI / UX]`, `[Security]`).
+
+---
+
 ## [v1.5.2] - 2026-11-09 (Build 2026110901)
 
 ### 🎯 Masalah yang Diselesaikan
