@@ -6,6 +6,30 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.5.5] - 2026-11-09 (Build 2026110904)
+
+### 🎯 Masalah yang Diselesaikan
+1. **HTML & CSS Muncul Sebagai Teks Kode Polos (Tidak Ter-compile) di Tab About Theme:**
+   - Pada halaman *About Theme & Release Notes*, elemen UI tidak dirender sebagai tampilan visual (kotak gradien, pill badge, tabel), melainkan tercetak mentah sebagai teks kode:
+     ```html
+     <div class="theedu-about-container">
+         <style>
+         .theedu-about-container { ... }
+     ```
+   - **Penyebab Teknis:** Kelas bawaan Moodle `admin_setting_heading` selalu memproses parameter deskripsi/informasi melalui fungsi `format_text($information, FORMAT_MOODLE)`. Pemfilteran ini:
+     1. Menjalankan *HTML Purifier* yang menghapus tag `<style>` dan atribut khusus.
+     2. Mengubah teks yang berindentasi 4 spasi menjadi blok kode Markdown (`<pre><code>`), sehingga tag HTML di-escape menjadi entitas teks (`&lt;div...&gt;`).
+
+### ✨ Perubahan & Solusi
+1. **Pembuatan Kelas Khusus `theme_theedu_admin_setting_about` (`admin_setting`):**
+   - Mendefinisikan kelas turunan resmi dari `admin_setting` di `settings.php` yang meng-override metode `output_html()`.
+   - Metode `output_html()` mengembalikan string HTML murni secara langsung dari `theme_theedu_get_about_html()` ke Moodle renderer tanpa melewati `format_text()`.
+   - **Hasil:** Browser langsung merender elemen HTML, efek CSS gradient hero card, pill badge, tabel spesifikasi sistem, dan riwayat changelog secara sempurna dan estetik.
+2. **Dukungan Pencarian Administrasi Situs (`is_related`):**
+   - Menambahkan kata kunci pencarian ('about', 'theedu', 'developer', 'release', 'notes', 'changelog', 'version') agar halaman ini mudah ditemukan melalui kolom pencarian *Site Administration*.
+
+---
+
 ## [v1.5.4] - 2026-11-09 (Build 2026110903)
 
 ### 🎯 Masalah yang Diselesaikan

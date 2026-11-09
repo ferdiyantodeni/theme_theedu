@@ -3019,8 +3019,8 @@ function theme_theedu_get_about_html() {
     global $CFG;
 
     // Dynamically introspect version metadata from version.php
-    $version_number = '2026110903';
-    $version_release = 'v1.5.4';
+    $version_number = '2026110904';
+    $version_release = 'v1.5.5';
     $version_maturity = 'STABLE';
     $version_requires = '2024042200 (Moodle 4.4+)';
 
@@ -3443,13 +3443,30 @@ function theme_theedu_get_about_html() {
                 <span style="font-size: 0.85rem; color: #64748B; font-weight: 500;">Comprehensive Version History</span>
             </div>
 
-            <!-- Version 1.5.4 -->
+            <!-- Version 1.5.5 -->
             <div class="theedu-version-card latest">
                 <div class="theedu-version-meta">
                     <div class="theedu-version-tag">
-                        <i class="fa fa-cube"></i> v1.5.4
+                        <i class="fa fa-cube"></i> v1.5.5
                         <span class="theedu-release-badge badge-latest">Current Release</span>
                     </div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110904</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Raw HTML Dashboard Rendering Engine:</strong> Replaced <code>admin_setting_heading</code> with a custom <code>theme_theedu_admin_setting_about</code> class extending <code>admin_setting</code>. This bypasses Moodle\'s <code>format_text()</code> text filter and HTML Purifier, allowing the dashboard styles, gradient cards, and badges to compile and render as clean native HTML rather than raw code text.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.5.4 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.5.4</div>
                     <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110903</div>
                 </div>
                 <ul>

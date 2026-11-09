@@ -26,6 +26,74 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once(__DIR__ . '/lib.php');
 
+if (!class_exists('theme_theedu_admin_setting_about') && class_exists('admin_setting')) {
+    /**
+     * Custom admin setting class to render the raw HTML dashboard for About Theme & Release Notes.
+     * Unlike admin_setting_heading, this avoids format_text() escaping and outputs raw HTML directly.
+     */
+    class theme_theedu_admin_setting_about extends admin_setting {
+        /**
+         * Constructor.
+         */
+        public function __construct() {
+            $this->nosave = true;
+            parent::__construct('theme_theedu_about_dashboard', '', '', '');
+        }
+
+        /**
+         * Always returns true.
+         *
+         * @return bool
+         */
+        public function get_setting() {
+            return true;
+        }
+
+        /**
+         * Always returns empty string (no errors).
+         *
+         * @param mixed $data
+         * @return string
+         */
+        public function write_setting($data) {
+            return '';
+        }
+
+        /**
+         * Searches for related queries.
+         *
+         * @param string $query
+         * @return bool
+         */
+        public function is_related($query) {
+            if (empty($query)) {
+                return false;
+            }
+            $keywords = ['about', 'theedu', 'developer', 'release', 'notes', 'changelog', 'version', 'ferdiyanto'];
+            foreach ($keywords as $kw) {
+                if (stripos($kw, $query) !== false || stripos($query, $kw) !== false) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /**
+         * Outputs the raw HTML dashboard without Moodle text filters.
+         *
+         * @param mixed $data
+         * @param string $query
+         * @return string
+         */
+        public function output_html($data, $query = '') {
+            if (function_exists('theme_theedu_get_about_html')) {
+                return theme_theedu_get_about_html();
+            }
+            return '';
+        }
+    }
+}
+
 if ($ADMIN->fulltree) {
     // Top-level tabbed settings navigation.
     $settings = new theme_boost_admin_settingspage_tabs('themesettingtheedu', get_string('configtitle', 'theme_theedu'));
@@ -846,11 +914,7 @@ if ($ADMIN->fulltree) {
     // =========================================================================
     $tab_about = new admin_settingpage('theme_theedu_about', get_string('tab_about', 'theme_theedu'));
 
-    $about_html = function_exists('theme_theedu_get_about_html') ? theme_theedu_get_about_html() : '';
-
-    $tab_about->add(new admin_setting_heading('heading_about_theme',
-        get_string('heading_about_theme', 'theme_theedu'),
-        $about_html));
+    $tab_about->add(new theme_theedu_admin_setting_about());
 
     $settings->add($tab_about);
 }
