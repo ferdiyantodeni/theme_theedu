@@ -587,7 +587,7 @@ nav.navbar,
     background: rgba(108, 92, 231, 0.08) !important;
 }
 body:not(.pagelayout-login),
-#page-wrapper,
+body:not(.pagelayout-login) #page-wrapper,
 #page,
 #page.drawers,
 .theedu-frontpage-container,
@@ -2122,8 +2122,12 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
         'mycourses_url' => $CFG->wwwroot . '/my/courses.php',
     ];
 
-    // Login Background Image.
-    $context['theedu_login_bg'] = theme_theedu_get_file_url('login_bg_image');
+    // Login Background Image (Supports uploaded file or external image URL).
+    $loginbg = theme_theedu_get_file_url('login_bg_image');
+    if (empty($loginbg)) {
+        $loginbg = theme_theedu_get_setting('login_bg_url');
+    }
+    $context['theedu_login_bg'] = $loginbg;
 
     // 2. Dark Mode configuration.
     $context['theedu_darkmode'] = [

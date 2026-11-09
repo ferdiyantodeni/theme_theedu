@@ -6,6 +6,34 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.5.8] - 2026-11-09 (Build 2026110907)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Form Login Transparan & Teks Sulit Terbaca di atas Gambar Background:**
+   - Setelah background login muncul, elemen form login (logo, judul form, input username, password, dan teks guest access) menjadi transparan tanpa kartu pelindung (*card background*), sehingga teks hitam/gelap langsung berada di atas gambar sawah/pemandangan yang kontrasnya tidak merata (*degradasi kontras*).
+   - Pengguna merasa bingung dan sulit membaca input form dan instruksi login.
+2. **Tampilan Melebihi 1 Layar Penuh (Terdapat Scrollbar Vertikal):**
+   - Padding container yang berlebihan (`py-5`) serta logo yang ditempatkan terpisah di luar area form menyebabkan total tinggi halaman melampaui 100vh pada resolusi standar (1080p, 900p, dan 768p laptop), memicu munculnya scrollbar samping kanan.
+3. **Posisian Form Belum Menyerupai Kartu Melayang (*Floating Center Card*):**
+   - Diinginkan layout tengah (*centered*) yang dinamis, rapi, melayang di tengah layar, tidak menutupi seluruh gambar background (gambar tetap terlihat mengelilingi kartu di 4 sisi), dengan kontras tajam dan estetika modern.
+
+### ✨ Perubahan & Solusi
+1. **Desain Ulang Kartu Melayang (*Floating Centered Card*) (`templates/login.mustache`):**
+   - Mengintegrasikan Logo Perusahaan/Institusi (`theedu_logos.top_left`) langsung ke bagian atas kartu (*card header*), menciptakan satu kesatuan unit form login yang elegan dan kompak.
+   - Kartu form login (`.theedu-login-card`) kini memiliki latar belakang solid dengan efek kaca modern (`background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(20px);`), radius sudut `1.5rem` (24px), serta bayangan melayang berdimensi ganda (`box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4)`).
+   - Teks, judul, dan seluruh elemen di dalam kartu memiliki kontras maksimal `#0F172A` (Slate 900) dengan keterbacaan 100% sempurna tanpa terpengaruh oleh warna/kontur gambar di belakangnya.
+2. **Optimalisasi 1 Layar Penuh Dinamis (*Single-Screen Viewport Fit*):**
+   - Menghapus padding besar `py-5` dan menggantinya dengan layout viewport flexbox `100vh` dengan padding adaptif `1.25rem 1rem`.
+   - Mengatur proporsi vertikal yang seimbang (total tinggi kartu hanya ~540px), sehingga pada layar standar 768p (laptop 14 inch) sekalipun, kartu tetap melayang sempurna di tengah dengan jarak atas 85px dan jarak bawah 133px tanpa pernah memicu scrollbar vertikal.
+3. **Dukungan Dark Mode Penuh pada Kartu Melayang:**
+   - Dalam Mode Gelap, kartu melayang otomatis beralih ke warna slate gelap (`rgba(24, 32, 47, 0.96)`) dengan border tipis berkilau (`rgba(255, 255, 255, 0.12)`) dan teks cerah `#F8FAFC`.
+   - Menambahkan event listener instan langsung di `<script>` body untuk peralihan tema yang seketika (*zero-delay*).
+4. **Penyempurnaan Integrasi Gambar Background (`lib.php`):**
+   - Memastikan selector `#page-wrapper` di `lib.php` tidak tertimpa oleh rule warna latar global `body:not(.pagelayout-login)`.
+   - Menghubungkan variabel context Mustache `theedu_login_bg` ke pengaturan `login_bg_url` sebagai fallback otomatis jika file belum diunggah.
+
+---
+
 ## [v1.5.7] - 2026-11-09 (Build 2026110906)
 
 ### 🎯 Masalah yang Diselesaikan

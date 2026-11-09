@@ -187,9 +187,12 @@ body,
     }
 }
 
-// Login Page Card Reset (Anti-Clipping for Edge, Chrome, Safari)
+// Login Page Card Reset (Anti-Clipping & Dynamic Centering for Edge, Chrome, Safari)
 body.pagelayout-login .card,
-.theedu-login-box .card {
+.theedu-login-box,
+.theedu-login-box .card,
+.theedu-login-card,
+.theedu-login-card .card {
     height: auto !important;
     min-height: auto !important;
     overflow: visible !important;
