@@ -400,6 +400,10 @@ if ($ADMIN->fulltree) {
             get_string('slide_image_desc', 'theme_theedu'),
             "slide_image_{$i}"));
 
+        $tab_slider->add(new admin_setting_configtext("theme_theedu/slide_badge_{$i}",
+            get_string('slide_badge', 'theme_theedu', $i),
+            get_string('slide_badge_desc', 'theme_theedu'), '', PARAM_TEXT));
+
         $defaulttitle = ($i === 1) ? get_string('default_slide1_title', 'theme_theedu') : '';
         $tab_slider->add(new admin_setting_configtext("theme_theedu/slide_title_{$i}",
             get_string('slide_title', 'theme_theedu', $i), '', $defaulttitle, PARAM_TEXT));

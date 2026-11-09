@@ -299,14 +299,26 @@ function theme_theedu_get_presets_palette() {
  * @return string
  */
 function theme_theedu_get_color($key, $default = '') {
+    $custom = theme_theedu_get_setting('color_' . $key, '');
     $preset = theme_theedu_get_setting('brand_preset', 'default');
     $palettes = theme_theedu_get_presets_palette();
 
-    if ($preset !== 'custom' && isset($palettes[$preset][$key])) {
-        return $palettes[$preset][$key];
+    // 1. If brand_preset is explicitly set to 'custom', always use the setting value.
+    if ($preset === 'custom') {
+        return !empty($custom) ? $custom : $default;
     }
 
-    return theme_theedu_get_setting('color_' . $key, $default);
+    // 2. Resolve default value from the active preset palette.
+    $presetcolor = isset($palettes[$preset][$key]) ? $palettes[$preset][$key] : $default;
+
+    // 3. For any color setting (e.g. color_navbar_bg, color_navbar_text, color_body_bg, etc.):
+    // If the administrator has explicitly customized this color in Site Administration
+    // (differing from the preset palette default), immediately honor their custom choice.
+    if (!empty($custom) && strcasecmp($custom, $presetcolor) !== 0) {
+        return $custom;
+    }
+
+    return $presetcolor;
 }
 
 /**
@@ -529,16 +541,32 @@ function theme_theedu_get_inline_css() {
     --theedu-cat-thumb-height: {$catthumbheight}px;
     --theedu-cat-thumbs-enabled: {$catthumbsactive};
 }
-.navbar.fixed-top, nav.fixed-top {
+.navbar,
+.navbar.fixed-top,
+nav.fixed-top,
+header.navbar,
+nav.navbar,
+.theedu-navbar {
     background-color: var(--theedu-navbar-bg) !important;
     color: var(--theedu-navbar-text) !important;
 }
 .navbar.fixed-top .navbar-nav .nav-link,
 .navbar.fixed-top .theedu-site-title,
 .navbar.fixed-top .header-shortcut-btn,
+.navbar.fixed-top .header-shortcut-btn i,
+.navbar.fixed-top .popover-region-toggle i,
+.navbar.fixed-top .popover-region-toggle .icon,
+.navbar.fixed-top .theedu-darkmode-toggle,
+.navbar.fixed-top .theedu-darkmode-toggle i,
+.navbar.fixed-top .theedu-darkmode-toggle svg,
 .navbar.fixed-top .usermenu-wrapper,
 .navbar.fixed-top .theedu-lang-wrapper,
-.navbar.fixed-top .theedu-user-pill .user-name {
+.navbar.fixed-top .theedu-user-pill,
+.navbar.fixed-top .theedu-user-pill .user-name,
+.navbar.fixed-top .theedu-user-pill .user-role-label,
+.navbar.fixed-top .theedu-user-pill i,
+.navbar.fixed-top .navbar-toggler,
+.navbar.fixed-top .navbar-toggler i {
     color: var(--theedu-navbar-text) !important;
 }
 .navbar.fixed-top .navbar-nav .nav-link:hover,
@@ -2177,6 +2205,7 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
         for ($i = 1; $i <= $numslides; $i++) {
             $slideenabled = (bool) theme_theedu_get_setting("slide_enable_{$i}", ($i === 1 ? 1 : 0));
             $imageurl = theme_theedu_get_file_url("slide_image_{$i}");
+            $badge = theme_theedu_get_setting("slide_badge_{$i}", '');
             $title = theme_theedu_get_setting("slide_title_{$i}", '');
             $caption = theme_theedu_get_setting("slide_caption_{$i}", '');
             $btntext = theme_theedu_get_setting("slide_btn_text_{$i}", '');
@@ -2208,6 +2237,8 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
                     'active' => $isactive,
                     'image' => $imageurl,
                     'has_image' => $hasimage,
+                    'badge' => !empty($badge) ? format_text($badge, FORMAT_HTML) : '',
+                    'has_badge' => !empty(trim(strip_tags($badge))),
                     'title' => !empty($title) ? format_text($title, FORMAT_HTML) : '',
                     'caption' => !empty($caption) ? format_text($caption, FORMAT_HTML) : '',
                     'has_content' => $hascontent,
@@ -2225,6 +2256,8 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
                 'active' => true,
                 'image' => '',
                 'has_image' => false,
+                'badge' => '',
+                'has_badge' => false,
                 'title' => format_text($fallbacks[1]['title'], FORMAT_HTML),
                 'caption' => format_text($fallbacks[1]['caption'], FORMAT_HTML),
                 'has_content' => true,

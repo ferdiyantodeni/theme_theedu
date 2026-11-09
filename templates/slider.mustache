@@ -26,7 +26,9 @@
                 {{#has_content}}
                 <div class="slide-overlay">
                     <div class="theedu-caption-card">
-                        <span class="slide-badge">TheEdu Learning</span>
+                        {{#has_badge}}
+                            <span class="slide-badge">{{{ badge }}}</span>
+                        {{/has_badge}}
                         {{#title}}
                             <h2 class="slide-title">{{{ title }}}</h2>
                         {{/title}}

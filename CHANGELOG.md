@@ -6,6 +6,29 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.5.2] - 2026-11-09 (Build 2026110901)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Penggantian Warna Background Navbar (`color_navbar_bg`) Tidak Berfungsi:**
+   - Ketika administrator mengganti warna *Navbar Background Color* pada **Tab 2: Brand Colors & Presets**, perubahan warna tidak diterapkan pada bilah navigasi atas (tetap putih `#FFFFFF`).
+   - **Penyebab:** Fungsi resolusi warna `theme_theedu_get_color()` sebelumnya memprioritaskan array palet `brand_preset` aktif (di mana nilai default untuk semua preset adalah `'navbar_bg' => '#FFFFFF'`). Selama `brand_preset` tidak diubah ke `'custom'`, pengaturan kustom `color_navbar_bg` diabaikan sepenuhnya.
+2. **Teks Statis "THEEDU LEARNING" Muncul pada Banner Slider Beranda:**
+   - Pada kartu caption slider beranda (*Slider Carousel*), terdapat badge pill merah bertuliskan `"THEEDU LEARNING"` yang tersemat secara statis di atas judul slide.
+   - Tidak ada kolom pengaturan di Site Administration untuk mengubah teks tersebut atau menghilangkannya, sehingga mengganggu personalisasi portal institusi/perusahaan (seperti Daihatsu).
+
+### ✨ Perubahan & Solusi
+1. **Perbaikan Resolusi Warna Kustom Navbar & Area UI (`theme_theedu_get_color`):**
+   - Memperbarui logika `theme_theedu_get_color()` di `lib.php` agar secara cerdas mendeteksi dan memprioritaskan warna yang dikonfigurasi administrator di Site Administration (`color_navbar_bg`, `color_navbar_text`, `color_body_bg`, `color_card_bg`, `color_footer_bg`, dll.) jika nilainya berbeda dari default preset, tanpa mewajibkan pengguna mengubah pilihan preset brand utama ke 'custom'.
+   - Memperkuat spesifisitas selector CSS inline navbar di `theme_theedu_get_inline_css()` untuk mencakup `.navbar`, `.navbar.fixed-top`, `nav.fixed-top`, `header.navbar`, seluruh ikon pintasan, toggler, notifikasi, dan pill profil pengguna.
+2. **Penghapusan Hardcoded "THEEDU LEARNING" & Penambahan Setting `slide_badge_{$i}`:**
+   - Menghapus teks statis `<span class="slide-badge">TheEdu Learning</span>` dari `templates/slider.mustache`.
+   - Menambahkan variabel pengaturan baru di **Tab 4 (Homepage Carousel Slider)** di Site Administration untuk setiap slide:
+     - `theme_theedu/slide_badge_{$i}` (*Slide {$a} Badge / Tagline*).
+   - **Hasil Default:** Kolom badge bernilai kosong secara default, sehingga badge merah "THEEDU LEARNING" **HILANG SEPENUHNYA** dan judul slide tampil bersih dan lega.
+   - **Fleksibilitas Kustomisasi:** Jika pengguna ingin menambahkan badge (misalnya "DAIHATSU", "PELATIHAN", "NEWS", dll.), mereka cukup mengisi teks tersebut di pengaturan slide bersangkutan.
+
+---
+
 ## [v1.5.1] - 2026-11-08 (Build 2026110821)
 
 ### 🎯 Masalah yang Diselesaikan
