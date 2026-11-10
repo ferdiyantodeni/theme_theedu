@@ -145,70 +145,83 @@
                 justify-content: center;
             }
 
-            // Footer Language Selector Pill Capsule
-            .theedu-footer-lang-selector {
-                display: inline-flex;
-                align-items: center;
-                background: rgba(255, 255, 255, 0.08);
-                border: 1px solid rgba(255, 255, 255, 0.15);
-                border-radius: 999px;
-                padding: 3px 6px 3px 10px;
-                gap: 6px;
-                transition: all 0.25s ease;
-                white-space: nowrap;
+            // Footer Language Selector Dropdown (Clean, Compact, Dynamic)
+            .theedu-footer-lang-dropdown {
+                position: relative;
 
-                &:hover {
-                    background: rgba(255, 255, 255, 0.14);
-                    border-color: rgba(255, 255, 255, 0.25);
-                }
-
-                .theedu-lang-icon {
-                    font-size: 0.85rem;
-                    color: var(--theedu-primary, #6C5CE7);
-                    opacity: 0.95;
-                    display: inline-flex;
-                    align-items: center;
-                }
-
-                .theedu-lang-pills {
-                    display: inline-flex;
-                    gap: 3px;
-                }
-
-                .theedu-lang-pill {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 5px;
-                    font-size: 0.78rem;
-                    font-weight: 500;
-                    padding: 3px 9px;
-                    border-radius: 999px;
+                .theedu-lang-drop-btn {
+                    background: rgba(255, 255, 255, 0.08);
+                    border: 1px solid rgba(255, 255, 255, 0.18);
                     color: var(--theedu-footer-text, #DFE6E9);
-                    text-decoration: none !important;
+                    border-radius: 2rem;
+                    padding: 0.35rem 0.85rem;
+                    font-size: 0.82rem;
+                    font-weight: 600;
                     transition: all 0.2s ease;
-                    opacity: 0.8;
+                    white-space: nowrap;
+
+                    &:hover,
+                    &:focus,
+                    &[aria-expanded="true"] {
+                        background: rgba(255, 255, 255, 0.16);
+                        border-color: rgba(255, 255, 255, 0.3);
+                        color: #FFFFFF;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+                    }
 
                     .theedu-lang-flag {
-                        font-size: 0.95rem;
+                        font-size: 1rem;
                         line-height: 1;
                     }
 
-                    .theedu-lang-code {
-                        font-weight: 700;
-                        letter-spacing: 0.02em;
+                    .theedu-lang-current-name {
+                        letter-spacing: -0.01em;
                     }
 
-                    &:hover {
-                        color: #FFFFFF;
-                        opacity: 1;
-                        background: rgba(255, 255, 255, 0.15);
+                    &::after {
+                        margin-left: 0.35rem;
+                        vertical-align: 0.15em;
                     }
+                }
 
-                    &.active {
-                        background: var(--theedu-primary, #6C5CE7);
-                        color: #FFFFFF !important;
-                        opacity: 1;
-                        box-shadow: 0 2px 6px rgba(108, 92, 231, 0.35);
+                .theedu-lang-menu {
+                    background: var(--theedu-card-bg, #FFFFFF);
+                    border: 1px solid rgba(108, 92, 231, 0.15);
+                    border-radius: 0.85rem;
+                    padding: 0.4rem 0;
+                    min-width: 180px;
+                    max-height: 280px;
+                    overflow-y: auto;
+                    margin-bottom: 0.5rem !important;
+                    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+                    z-index: 1060;
+
+                    .dropdown-item {
+                        padding: 0.5rem 0.9rem;
+                        font-size: 0.83rem;
+                        font-weight: 500;
+                        color: #334155;
+                        transition: all 0.15s ease;
+
+                        .theedu-lang-flag {
+                            font-size: 1.05rem;
+                            line-height: 1;
+                        }
+
+                        .theedu-lang-name {
+                            font-weight: 600;
+                        }
+
+                        &:hover {
+                            background: rgba(108, 92, 231, 0.08);
+                            color: var(--theedu-primary, #6C5CE7);
+                        }
+
+                        &.active {
+                            background: rgba(108, 92, 231, 0.12);
+                            color: var(--theedu-primary, #6C5CE7);
+                            font-weight: 700;
+                        }
                     }
                 }
             }
@@ -255,6 +268,41 @@
             &:hover {
                 color: var(--theedu-primary, #6C5CE7);
             }
+        }
+    }
+}
+
+// Dark Mode adjustments for footer language menu
+[data-bs-theme="dark"],
+body.theedu-dark-mode {
+    .theedu-footer-lang-dropdown .theedu-lang-menu {
+        background: #1E293B !important;
+        border-color: rgba(255, 255, 255, 0.12) !important;
+
+        .dropdown-item {
+            color: #E2E8F0 !important;
+
+            &:hover {
+                background: rgba(108, 92, 231, 0.25) !important;
+                color: #FFFFFF !important;
+            }
+
+            &.active {
+                background: rgba(108, 92, 231, 0.35) !important;
+                color: #A5B4FC !important;
+            }
+        }
+    }
+}
+
+// Ensure proper spacing and full-width rendering inside drawer layouts
+#page.drawers {
+    #topofscroll {
+        #page-footer {
+            margin-left: calc(-1 * var(--theedu-body-padding-x, 1rem));
+            margin-right: calc(-1 * var(--theedu-body-padding-x, 1rem));
+            width: auto;
+            border-radius: 0;
         }
     }
 }

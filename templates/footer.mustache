@@ -106,17 +106,24 @@
                     {{/theedu_footer.custom_bottom_right}}
 
                     {{#theedu_footer_lang.show_selector}}
-                    <div class="theedu-footer-lang-selector" aria-label="{{#str}}footer_language_select, theme_theedu{{/str}}">
-                        <span class="theedu-lang-icon"><i class="fa fa-globe"></i></span>
-                        <div class="theedu-lang-pills">
+                    <div class="theedu-footer-lang-dropdown dropup d-inline-block">
+                        <button class="btn btn-sm theedu-lang-drop-btn dropdown-toggle d-inline-flex align-items-center gap-2" type="button" id="theeduFooterLangDropdown" data-bs-toggle="dropdown" data-toggle="dropdown" aria-expanded="false" title="{{#str}}footer_language_select, theme_theedu{{/str}}">
+                            <span class="theedu-lang-flag">{{theedu_footer_lang.current_flag}}</span>
+                            <span class="theedu-lang-current-name">{{theedu_footer_lang.current_name}}</span>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end theedu-lang-menu shadow-sm" aria-labelledby="theeduFooterLangDropdown">
                             {{#theedu_footer_lang.languages}}
-                            <a href="{{url}}" class="theedu-lang-pill {{#active}}active{{/active}}" title="{{title}}" aria-label="{{name}}">
-                                <span class="theedu-lang-flag">{{flag}}</span>
-                                <span class="theedu-lang-code">{{short}}</span>
-                                <span class="theedu-lang-fullname d-none d-sm-inline">{{name}}</span>
-                            </a>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between gap-3 {{#active}}active{{/active}}" href="{{url}}">
+                                    <span class="d-flex align-items-center gap-2">
+                                        <span class="theedu-lang-flag">{{flag}}</span>
+                                        <span class="theedu-lang-name">{{name}}</span>
+                                    </span>
+                                    {{#active}}<i class="fa fa-check text-primary small"></i>{{/active}}
+                                </a>
+                            </li>
                             {{/theedu_footer_lang.languages}}
-                        </div>
+                        </ul>
                     </div>
                     {{/theedu_footer_lang.show_selector}}
                 </div>

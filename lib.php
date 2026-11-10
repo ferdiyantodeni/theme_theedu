@@ -3138,7 +3138,7 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
         'linkedin' => theme_theedu_get_setting('footer_linkedin', ''),
     ];
 
-    // Footer Language Selector (English [default] & Indonesia)
+    // Footer Language Selector (Dropdown dynamically derived from installed Moodle language packs)
     $showlangselector = (bool) theme_theedu_get_setting('footer_show_language_selector', 1);
 
     global $SESSION;
@@ -3147,38 +3147,84 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
     $currlang = function_exists('current_language') ? current_language() : 'en';
 
     $actislang = !empty($sesslang) ? $sesslang : (!empty($userlang) ? $userlang : $currlang);
-    $is_id = (strpos($actislang, 'id') === 0);
-    $is_en = !$is_id;
+
+    $translations = [];
+    if (function_exists('get_string_manager')) {
+        $translations = get_string_manager()->get_list_of_translations();
+    }
+    if (empty($translations)) {
+        $translations = ['en' => 'English'];
+    }
+    // Guarantee English and Indonesia are available
+    if (!isset($translations['en'])) {
+        $translations['en'] = 'English';
+    }
+    if (!isset($translations['id'])) {
+        $translations['id'] = 'Bahasa Indonesia';
+    }
 
     $currenturl = !empty($page->url) ? $page->url : new \moodle_url('/');
-    $enurl = new \moodle_url($currenturl, ['lang' => 'en']);
-    $idurl = new \moodle_url($currenturl, ['lang' => 'id']);
+
+    $flagmap = [
+        'en'    => '🇬🇧',
+        'en_us' => '🇺🇸',
+        'id'    => '🇮🇩',
+        'es'    => '🇪🇸',
+        'fr'    => '🇫🇷',
+        'de'    => '🇩🇪',
+        'ja'    => '🇯🇵',
+        'zh_cn' => '🇨🇳',
+        'zh_tw' => '🇹🇼',
+        'ar'    => '🇸🇦',
+        'pt'    => '🇵🇹',
+        'pt_br' => '🇧🇷',
+        'ru'    => '🇷🇺',
+        'ko'    => '🇰🇷',
+        'it'    => '🇮🇹',
+        'nl'    => '🇳🇱',
+        'vi'    => '🇻🇳',
+        'th'    => '🇹🇭',
+        'ms'    => '🇲🇾',
+    ];
+
+    $langitems = [];
+    $currentlangname = 'English';
+    $currentlangflag = '🇬🇧';
+
+    foreach ($translations as $lcode => $lname) {
+        $isactive = ($lcode === $actislang) || (strpos($actislang, $lcode) === 0);
+        $cleanname = trim(preg_replace('/\s*\(.*?\)\s*/', '', $lname));
+        if (empty($cleanname)) {
+            $cleanname = $lname;
+        }
+
+        $basecode = strtolower(str_replace('-', '_', $lcode));
+        $flag = isset($flagmap[$basecode]) ? $flagmap[$basecode] : '🌐';
+
+        if ($isactive) {
+            $currentlangname = $cleanname;
+            $currentlangflag = $flag;
+        }
+
+        $langurl = new \moodle_url($currenturl, ['lang' => $lcode]);
+
+        $langitems[] = [
+            'code'     => $lcode,
+            'name'     => $cleanname,
+            'raw_name' => $lname,
+            'flag'     => $flag,
+            'url'      => $langurl->out(false),
+            'active'   => $isactive,
+        ];
+    }
 
     $context['theedu_footer_lang'] = [
-        'show_selector' => $showlangselector,
+        'show_selector' => $showlangselector && (count($langitems) >= 2),
         'current_lang'  => $actislang,
-        'is_en'         => $is_en,
-        'is_id'         => $is_id,
-        'languages'     => [
-            [
-                'code'   => 'en',
-                'name'   => 'English',
-                'short'  => 'EN',
-                'flag'   => '🇬🇧',
-                'url'    => $enurl->out(false),
-                'active' => $is_en,
-                'title'  => 'Switch to English (Default)',
-            ],
-            [
-                'code'   => 'id',
-                'name'   => 'Indonesia',
-                'short'  => 'ID',
-                'flag'   => '🇮🇩',
-                'url'    => $idurl->out(false),
-                'active' => $is_id,
-                'title'  => 'Ganti ke Bahasa Indonesia',
-            ],
-        ],
+        'current_name'  => $currentlangname,
+        'current_flag'  => $currentlangflag,
+        'has_multiple'  => (count($langitems) >= 2),
+        'languages'     => $langitems,
     ];
 
     // 7. Course Activity Bottom Navigation Bar (Prev, Jump-To, Next).
@@ -3767,13 +3813,37 @@ function theme_theedu_get_about_html() {
                 <span style="font-size: 0.85rem; color: #64748B; font-weight: 500;">Comprehensive Version History</span>
             </div>
 
-            <!-- Version 1.6.1 -->
+            <!-- Version 1.6.2 -->
             <div class="theedu-version-card latest">
                 <div class="theedu-version-meta">
                     <div class="theedu-version-tag">
-                        <i class="fa fa-cube"></i> v1.6.1
+                        <i class="fa fa-cube"></i> v1.6.2
                         <span class="theedu-release-badge badge-latest">Current Release</span>
                     </div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111004</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-new">New</span>
+                            <strong>Dynamic Dropdown Language Selector:</strong> Transformed the footer language switcher into a compact, elegant Dropup menu. Language options dynamically read from all installed Moodle language packs (via <code>get_string_manager()->get_list_of_translations()</code>) with localized names, country flags, and active state indicators.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Dashboard Page Footer Visibility Restoration:</strong> Resolved an issue where the footer failed to render on the dashboard (<code>/my/</code>) and course pages by placing <code>{{> theme_theedu/footer}}</code> inside the primary scrollable <code>#topofscroll</code> container in <code>templates/drawers.mustache</code>.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.6.1 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.6.1</div>
                     <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111003</div>
                 </div>
                 <ul>

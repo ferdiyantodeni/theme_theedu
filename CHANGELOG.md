@@ -6,6 +6,32 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.6.2] - 2026-11-10 (Build 2026111004)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Selector Bahasa di Footer Kurang Rapi & Butuh Format Dropdown Dinamis Berdasarkan Paket Bahasa Terinstal:**
+   - Desain pil horizontal sebelumnya memakan ruang horizontal dan terlihat kurang ringkas di bar bawah footer.
+   - Pengguna meminta agar pemilih bahasa diganti menjadi menu **Dropdown** yang elegan, ringkas, serta pilihan bahasanya secara otomatis membaca seluruh paket bahasa (*language packs*) yang terpasang di Moodle.
+2. **Footer Tidak Muncul di Halaman Dashboard (`/my/`):**
+   - Pada halaman dashboard pengguna (`/my/`), course view, dan layout drawer lainnya, footer tema (`#page-footer`) sama sekali tidak muncul atau terpotong.
+   - **Penyebab Teknis:** Pada `templates/drawers.mustache` sebelumnya, tag partial `{{> theme_theedu/footer }}` diletakkan di luar kontainer `#page.drawers`. Karena Boost menetapkan `overflow-y: auto` dan `height: 100vh` pada `#page`, jendela peramban utama terkunci dan elemen di luar `#page` terdorong ke bawah garis lipatan (*below the fold*) sehingga tidak dapat dijangkau oleh *scroll* peramban.
+
+### ✨ Perubahan & Solusi
+1. **Komponen Pemilih Bahasa Berbasis Dropdown Dropup Dinamis (`templates/footer.mustache`, `lib.php`, `scss/_footer.scss`):**
+   - Mengubah selector bahasa menjadi menu **Dropup** modern (`theedu-footer-lang-dropdown`) yang membuka ke atas (agar tidak terpotong tepi bawah layar peramban).
+   - Memanggil `get_string_manager()->get_list_of_translations()` untuk mengambil seluruh bahasa yang terinstal secara real-time di sistem Moodle.
+   - Menampilkan tombol picu yang ringkas dan elegan: bendera bahasa aktif (🇬🇧 / 🇮🇩 dsb.), nama bahasa aktif, dan panah dropdown kecil (`caret`).
+   - Setiap item dalam menu dropdown menampilkan bendera negara, nama bahasa, dan tanda centang aktif (*active checkmark*).
+   - Mendukung penuh Mode Gelap (*Dark Mode*) dengan warna latar kontras dan teks yang jelas.
+2. **Restorasi Visibilitas Footer di Seluruh Halaman Drawer Termasuk Dashboard (`templates/drawers.mustache`, `scss/_footer.scss`):**
+   - Memindahkan tag `{{> theme_theedu/footer }}` ke dalam kontainer `#topofscroll.main-inner` tepat setelah `#page-content`.
+   - Karena `#topofscroll` berada langsung di dalam alur *scroller* `#page`, saat pengguna menggulir halaman dashboard ke bawah, seluruh footer (termasuk 4 posisi logo, deskripsi, tautan sosial, menu footer, hak cipta, dan pemilih bahasa) kini tampil secara sempurna dan konsisten.
+   - Menambahkan aturan SCSS khusus pada `#page.drawers #topofscroll #page-footer` agar merentang penuh (*full-width*) tanpa terpotong padding kontainer.
+3. **Kenaikan Versi:**
+   - Versi tema dinaikkan ke **`v1.6.2`** (Build `2026111004`).
+
+---
+
 ## [v1.6.1] - 2026-11-10 (Build 2026111003)
 
 ### 🎯 Masalah yang Diselesaikan
