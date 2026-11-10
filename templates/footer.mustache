@@ -88,40 +88,45 @@
 
         {{! Footer Bottom Bar }}
         <div class="theedu-footer-bottom">
-            <div class="theedu-copyright">
-                {{{ theedu_footer.copyright }}}
-            </div>
-            <div class="theedu-footer-bottom-right text-md-end text-center mt-2 mt-md-0 d-flex flex-wrap align-items-center justify-content-md-end justify-content-center gap-2">
-                {{#theedu_footer_lang.show_selector}}
-                <div class="theedu-footer-lang-selector" aria-label="{{#str}}footer_language_select, theme_theedu{{/str}}">
-                    <span class="theedu-lang-icon"><i class="fa fa-globe"></i></span>
-                    <div class="theedu-lang-pills">
-                        {{#theedu_footer_lang.languages}}
-                        <a href="{{url}}" class="theedu-lang-pill {{#active}}active{{/active}}" title="{{title}}" aria-label="{{name}}">
-                            <span class="theedu-lang-flag">{{flag}}</span>
-                            <span class="theedu-lang-code">{{short}}</span>
-                            <span class="theedu-lang-fullname d-none d-sm-inline">{{name}}</span>
-                        </a>
-                        {{/theedu_footer_lang.languages}}
-                    </div>
+            <div class="theedu-footer-bottom-main d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <div class="theedu-copyright">
+                    {{{ theedu_footer.copyright }}}
                 </div>
-                {{/theedu_footer_lang.show_selector}}
-                {{#theedu_footer.custom_bottom_right}}
-                    <div class="theedu-custom-bottom-links mb-1">
-                        {{#theedu_footer.bottom_links}}
-                            <a href="{{url}}" class="text-decoration-none me-3 footer-bottom-link">{{{ title }}}</a>
-                        {{/theedu_footer.bottom_links}}
-                        {{#theedu_footer.has_bottom_right_text}}
-                            <span class="footer-bottom-custom-text d-block d-md-inline mt-1 mt-md-0">{{{ theedu_footer.bottom_right_text }}}</span>
-                        {{/theedu_footer.has_bottom_right_text}}
+
+                <div class="theedu-footer-bottom-actions d-flex flex-wrap align-items-center justify-content-md-end justify-content-center gap-3">
+                    {{#theedu_footer.custom_bottom_right}}
+                        <div class="theedu-custom-bottom-links d-inline-flex flex-wrap align-items-center gap-2">
+                            {{#theedu_footer.bottom_links}}
+                                <a href="{{url}}" class="footer-bottom-link">{{{ title }}}</a>
+                            {{/theedu_footer.bottom_links}}
+                            {{#theedu_footer.has_bottom_right_text}}
+                                <span class="footer-bottom-custom-text ms-1">{{{ theedu_footer.bottom_right_text }}}</span>
+                            {{/theedu_footer.has_bottom_right_text}}
+                        </div>
+                    {{/theedu_footer.custom_bottom_right}}
+
+                    {{#theedu_footer_lang.show_selector}}
+                    <div class="theedu-footer-lang-selector" aria-label="{{#str}}footer_language_select, theme_theedu{{/str}}">
+                        <span class="theedu-lang-icon"><i class="fa fa-globe"></i></span>
+                        <div class="theedu-lang-pills">
+                            {{#theedu_footer_lang.languages}}
+                            <a href="{{url}}" class="theedu-lang-pill {{#active}}active{{/active}}" title="{{title}}" aria-label="{{name}}">
+                                <span class="theedu-lang-flag">{{flag}}</span>
+                                <span class="theedu-lang-code">{{short}}</span>
+                                <span class="theedu-lang-fullname d-none d-sm-inline">{{name}}</span>
+                            </a>
+                            {{/theedu_footer_lang.languages}}
+                        </div>
                     </div>
-                {{/theedu_footer.custom_bottom_right}}
-                {{#theedu_footer.show_standard_footer}}
-                    <div class="theedu-standard-footer small">
-                        {{{ output.standard_footer_html }}}
-                    </div>
-                {{/theedu_footer.show_standard_footer}}
+                    {{/theedu_footer_lang.show_selector}}
+                </div>
             </div>
+
+            {{#theedu_footer.show_standard_footer}}
+            <div class="theedu-footer-standard-row text-center mt-3 pt-3 border-top border-secondary border-opacity-10 small">
+                {{{ output.standard_footer_html }}}
+            </div>
+            {{/theedu_footer.show_standard_footer}}
         </div>
 
     </div>

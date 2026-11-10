@@ -725,14 +725,58 @@ if ($ADMIN->fulltree) {
         get_string('course_columns', 'theme_theedu'),
         get_string('course_columns_desc', 'theme_theedu'), '3', $coursecolopts));
 
-    $statsmodeopts = [
-        'progress' => get_string('stats_mode_progress', 'theme_theedu'),
-        'timeline' => get_string('stats_mode_timeline', 'theme_theedu'),
-        'mixed'    => get_string('stats_mode_mixed', 'theme_theedu'),
-    ];
-    $tab_courses->add(new admin_setting_configselect('theme_theedu/dashboard_stats_mode',
-        get_string('dashboard_stats_mode', 'theme_theedu'),
-        get_string('dashboard_stats_mode_desc', 'theme_theedu'), 'progress', $statsmodeopts));
+    // Dashboard Hero Statistics Cards Settings (Dynamic Enable & Order)
+    $tab_courses->add(new admin_setting_heading('heading_dashboard_stats',
+        get_string('heading_dashboard_stats', 'theme_theedu'),
+        get_string('heading_dashboard_stats_desc', 'theme_theedu')));
+
+    // 1. Enrolled (Terdaftar)
+    $tab_courses->add(new admin_setting_configcheckbox('theme_theedu/stat_card_enrolled_enable',
+        get_string('stat_enrolled', 'theme_theedu'),
+        get_string('stat_card_enrolled_desc', 'theme_theedu'), 1));
+    $tab_courses->add(new admin_setting_configtext('theme_theedu/stat_card_enrolled_order',
+        get_string('stat_card_enrolled_order', 'theme_theedu'),
+        get_string('stat_card_order_desc', 'theme_theedu'), '1', PARAM_INT));
+
+    // 2. In Progress (Berjalan <80%)
+    $tab_courses->add(new admin_setting_configcheckbox('theme_theedu/stat_card_inprogress_enable',
+        get_string('stat_inprogress', 'theme_theedu'),
+        get_string('stat_card_inprogress_desc', 'theme_theedu'), 1));
+    $tab_courses->add(new admin_setting_configtext('theme_theedu/stat_card_inprogress_order',
+        get_string('stat_card_inprogress_order', 'theme_theedu'),
+        get_string('stat_card_order_desc', 'theme_theedu'), '2', PARAM_INT));
+
+    // 3. Completed (Selesai ≥80%)
+    $tab_courses->add(new admin_setting_configcheckbox('theme_theedu/stat_card_completed_enable',
+        get_string('stat_completed', 'theme_theedu'),
+        get_string('stat_card_completed_desc', 'theme_theedu'), 1));
+    $tab_courses->add(new admin_setting_configtext('theme_theedu/stat_card_completed_order',
+        get_string('stat_card_completed_order', 'theme_theedu'),
+        get_string('stat_card_order_desc', 'theme_theedu'), '3', PARAM_INT));
+
+    // 4. Ongoing (Berlangsung Hari Ini)
+    $tab_courses->add(new admin_setting_configcheckbox('theme_theedu/stat_card_ongoing_enable',
+        get_string('stat_ongoing', 'theme_theedu'),
+        get_string('stat_card_ongoing_desc', 'theme_theedu'), 1));
+    $tab_courses->add(new admin_setting_configtext('theme_theedu/stat_card_ongoing_order',
+        get_string('stat_card_ongoing_order', 'theme_theedu'),
+        get_string('stat_card_order_desc', 'theme_theedu'), '4', PARAM_INT));
+
+    // 5. Upcoming (Akan Datang)
+    $tab_courses->add(new admin_setting_configcheckbox('theme_theedu/stat_card_upcoming_enable',
+        get_string('stat_upcoming', 'theme_theedu'),
+        get_string('stat_card_upcoming_desc', 'theme_theedu'), 1));
+    $tab_courses->add(new admin_setting_configtext('theme_theedu/stat_card_upcoming_order',
+        get_string('stat_card_upcoming_order', 'theme_theedu'),
+        get_string('stat_card_order_desc', 'theme_theedu'), '5', PARAM_INT));
+
+    // 6. Past (Lewat / Selesai Lewat Waktu)
+    $tab_courses->add(new admin_setting_configcheckbox('theme_theedu/stat_card_past_enable',
+        get_string('stat_past', 'theme_theedu'),
+        get_string('stat_card_past_desc', 'theme_theedu'), 0));
+    $tab_courses->add(new admin_setting_configtext('theme_theedu/stat_card_past_order',
+        get_string('stat_card_past_order', 'theme_theedu'),
+        get_string('stat_card_order_desc', 'theme_theedu'), '6', PARAM_INT));
 
     // Thumbnail & Icon Settings
     $tab_courses->add(new admin_setting_heading('heading_courses_thumbnail',

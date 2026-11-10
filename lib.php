@@ -25,6 +25,29 @@
 defined('MOODLE_INTERNAL') || die();
 
 /**
+ * Early page initialization hook for theme_theedu.
+ * Handles dynamic language switching across sessions and user preferences.
+ *
+ * @param \moodle_page $page
+ */
+function theme_theedu_page_init(\moodle_page $page) {
+    global $SESSION, $USER;
+
+    $switchlang = optional_param('lang', '', PARAM_SAFEDIR);
+    if (!empty($switchlang) && in_array($switchlang, ['en', 'id', 'id_id', 'en_us'])) {
+        $normalizedlang = (strpos($switchlang, 'id') === 0) ? 'id' : 'en';
+        $SESSION->lang = $normalizedlang;
+
+        if (isloggedin() && !isguestuser()) {
+            $USER->lang = $normalizedlang;
+            if (function_exists('set_user_preference')) {
+                set_user_preference('current_language', $normalizedlang);
+            }
+        }
+    }
+}
+
+/**
  * Serves theme files (logos, slider images, etc.) from theme settings.
  *
  * @param stdClass $course course object
@@ -2238,22 +2261,101 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
         $context['user_ongoing_count']    = $ongoingcount;
         $context['user_upcoming_count']   = $upcomingcount;
         $context['user_has_courses']      = ($enrolledcount > 0);
-    } else {
-        $context['user_avatar_html']      = '';
-        $context['user_role_label']       = get_string('role_guest', 'theme_theedu');
-        $context['user_course_count']     = 0;
-        $context['user_completed_count']  = 0;
-        $context['user_inprogress_count'] = 0;
-        $context['user_past_count']       = 0;
-        $context['user_ongoing_count']    = 0;
-        $context['user_upcoming_count']   = 0;
-        $context['user_has_courses']      = false;
-    }
 
-    $statsmode = theme_theedu_get_setting('dashboard_stats_mode', 'progress');
-    $context['theedu_stats_mode_progress'] = ($statsmode === 'progress');
-    $context['theedu_stats_mode_timeline'] = ($statsmode === 'timeline');
-    $context['theedu_stats_mode_mixed']    = ($statsmode === 'mixed');
+        // Build Dynamic 5+ Cards based on administrator checkboxes and order
+        $cards = [];
+
+        // 1. Enrolled (Terdaftar)
+        if (theme_theedu_get_setting('stat_card_enrolled_enable', 1)) {
+            $cards[] = [
+                'key'         => 'enrolled',
+                'order'       => (int) theme_theedu_get_setting('stat_card_enrolled_order', 1),
+                'count'       => $enrolledcount,
+                'color_class' => 'text-primary',
+                'label'       => get_string('stat_enrolled', 'theme_theedu'),
+                'desc'        => get_string('stat_enrolled_desc', 'theme_theedu'),
+            ];
+        }
+
+        // 2. In Progress (Berjalan < 80%)
+        if (theme_theedu_get_setting('stat_card_inprogress_enable', 1)) {
+            $cards[] = [
+                'key'         => 'inprogress',
+                'order'       => (int) theme_theedu_get_setting('stat_card_inprogress_order', 2),
+                'count'       => $inprogresscount,
+                'color_class' => 'text-info',
+                'label'       => get_string('stat_inprogress', 'theme_theedu'),
+                'desc'        => get_string('stat_inprogress_desc', 'theme_theedu'),
+            ];
+        }
+
+        // 3. Completed (Selesai ≥ 80%)
+        if (theme_theedu_get_setting('stat_card_completed_enable', 1)) {
+            $cards[] = [
+                'key'         => 'completed',
+                'order'       => (int) theme_theedu_get_setting('stat_card_completed_order', 3),
+                'count'       => $completedcount,
+                'color_class' => 'text-success',
+                'label'       => get_string('stat_completed', 'theme_theedu'),
+                'desc'        => get_string('stat_completed_desc', 'theme_theedu'),
+            ];
+        }
+
+        // 4. Ongoing (Berlangsung Hari Ini)
+        if (theme_theedu_get_setting('stat_card_ongoing_enable', 1)) {
+            $cards[] = [
+                'key'         => 'ongoing',
+                'order'       => (int) theme_theedu_get_setting('stat_card_ongoing_order', 4),
+                'count'       => $ongoingcount,
+                'color_class' => 'text-warning',
+                'label'       => get_string('stat_ongoing', 'theme_theedu'),
+                'desc'        => get_string('stat_ongoing_desc', 'theme_theedu'),
+            ];
+        }
+
+        // 5. Upcoming (Akan Datang)
+        if (theme_theedu_get_setting('stat_card_upcoming_enable', 1)) {
+            $cards[] = [
+                'key'         => 'upcoming',
+                'order'       => (int) theme_theedu_get_setting('stat_card_upcoming_order', 5),
+                'count'       => $upcomingcount,
+                'color_class' => 'text-secondary',
+                'label'       => get_string('stat_upcoming', 'theme_theedu'),
+                'desc'        => get_string('stat_upcoming_desc', 'theme_theedu'),
+            ];
+        }
+
+        // 6. Past (Lewat / Sudah Berakhir)
+        if (theme_theedu_get_setting('stat_card_past_enable', 0)) {
+            $cards[] = [
+                'key'         => 'past',
+                'order'       => (int) theme_theedu_get_setting('stat_card_past_order', 6),
+                'count'       => $pastcount,
+                'color_class' => 'text-muted',
+                'label'       => get_string('stat_past', 'theme_theedu'),
+                'desc'        => get_string('stat_past_desc', 'theme_theedu'),
+            ];
+        }
+
+        usort($cards, function($a, $b) {
+            return $a['order'] <=> $b['order'];
+        });
+
+        $context['theedu_dashboard_stat_cards'] = $cards;
+        $context['has_dashboard_stat_cards']   = !empty($cards);
+    } else {
+        $context['user_avatar_html']            = '';
+        $context['user_role_label']             = get_string('role_guest', 'theme_theedu');
+        $context['user_course_count']           = 0;
+        $context['user_completed_count']        = 0;
+        $context['user_inprogress_count']       = 0;
+        $context['user_past_count']             = 0;
+        $context['user_ongoing_count']          = 0;
+        $context['user_upcoming_count']         = 0;
+        $context['user_has_courses']            = false;
+        $context['theedu_dashboard_stat_cards'] = [];
+        $context['has_dashboard_stat_cards']   = false;
+    }
 
     $slidervis = theme_theedu_get_setting('slider_visibility', 'all');
     $enableslider = (bool) theme_theedu_get_setting('enable_slider', 1) && $isfrontpage && theme_theedu_is_visible_to_user($slidervis, $isloggedinuser);
@@ -3038,7 +3140,15 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
 
     // Footer Language Selector (English [default] & Indonesia)
     $showlangselector = (bool) theme_theedu_get_setting('footer_show_language_selector', 1);
-    $currentlang = function_exists('current_language') ? current_language() : 'en';
+
+    global $SESSION;
+    $sesslang = !empty($SESSION->lang) ? $SESSION->lang : '';
+    $userlang = (!empty($USER) && !empty($USER->lang)) ? $USER->lang : '';
+    $currlang = function_exists('current_language') ? current_language() : 'en';
+
+    $actislang = !empty($sesslang) ? $sesslang : (!empty($userlang) ? $userlang : $currlang);
+    $is_id = (strpos($actislang, 'id') === 0);
+    $is_en = !$is_id;
 
     $currenturl = !empty($page->url) ? $page->url : new \moodle_url('/');
     $enurl = new \moodle_url($currenturl, ['lang' => 'en']);
@@ -3046,9 +3156,9 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
 
     $context['theedu_footer_lang'] = [
         'show_selector' => $showlangselector,
-        'current_lang'  => $currentlang,
-        'is_en'         => (strpos($currentlang, 'en') === 0),
-        'is_id'         => (strpos($currentlang, 'id') === 0),
+        'current_lang'  => $actislang,
+        'is_en'         => $is_en,
+        'is_id'         => $is_id,
         'languages'     => [
             [
                 'code'   => 'en',
@@ -3056,7 +3166,7 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
                 'short'  => 'EN',
                 'flag'   => '🇬🇧',
                 'url'    => $enurl->out(false),
-                'active' => (strpos($currentlang, 'en') === 0),
+                'active' => $is_en,
                 'title'  => 'Switch to English (Default)',
             ],
             [
@@ -3065,7 +3175,7 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
                 'short'  => 'ID',
                 'flag'   => '🇮🇩',
                 'url'    => $idurl->out(false),
-                'active' => (strpos($currentlang, 'id') === 0),
+                'active' => $is_id,
                 'title'  => 'Ganti ke Bahasa Indonesia',
             ],
         ],
@@ -3590,7 +3700,7 @@ function theme_theedu_get_about_html() {
                     </tr>
                     <tr>
                         <td class="theedu-info-label">Organization</td>
-                        <td class="theedu-info-val">PT Astra Daihatsu Motor (ADM Education Center)</td>
+                        <td class="theedu-info-val"><a href="https://gridiyans.my.id/" target="_blank" rel="noopener noreferrer" style="color: #6C5CE7; text-decoration: none; font-weight: 700;">Gridiyans Apps - Future Technology</a></td>
                     </tr>
                     <tr>
                         <td class="theedu-info-label">GitHub Profile</td>
@@ -3657,13 +3767,51 @@ function theme_theedu_get_about_html() {
                 <span style="font-size: 0.85rem; color: #64748B; font-weight: 500;">Comprehensive Version History</span>
             </div>
 
-            <!-- Version 1.6.0 -->
+            <!-- Version 1.6.1 -->
             <div class="theedu-version-card latest">
                 <div class="theedu-version-meta">
                     <div class="theedu-version-tag">
-                        <i class="fa fa-cube"></i> v1.6.0
+                        <i class="fa fa-cube"></i> v1.6.1
                         <span class="theedu-release-badge badge-latest">Current Release</span>
                     </div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111003</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-new">New</span>
+                            <strong>Dynamic 5-Card Dashboard Statistics Architecture:</strong> Replaced preset mode dropdown with individual checkbox toggles and numerical display sequence order for all metric cards (Enrolled, In Progress [&lt;80%], Completed [&ge;80%], Ongoing [Today], Upcoming, Past). Administrators can freely enable any combination of cards and customize their left-to-right display order.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Robust Session & User Language Switch Synchronization:</strong> Added <code>theme_theedu_page_init()</code> callback in <code>config.php</code> and <code>lib.php</code> to immediately capture <code>?lang=</code> requests, updating <code>$SESSION->lang</code>, <code>$USER->lang</code>, and user preferences even for authenticated users where default core Moodle ignores query parameters.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">UI / UX</span>
+                            <strong>Footer Bottom Bar De-Cluttering & Anti-Overlap:</strong> Re-architected footer bottom layout into dedicated rows: main row with copyright and cleanly-aligned action capsule (custom links + language pill), and an isolated bottom row for standard Moodle system footer outputs, eliminating all element stacking and collisions.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-improve">Updated</span>
+                            <strong>Organization Metadata:</strong> Updated theme developer organization to <a href="https://gridiyans.my.id/" target="_blank" rel="noopener noreferrer" style="color: #6C5CE7; font-weight: 700;">Gridiyans Apps - Future Technology</a>.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.6.0 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.6.0</div>
                     <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111002</div>
                 </div>
                 <ul>

@@ -33,6 +33,7 @@ $THEME->yuicssmodules = [];
 
 $THEME->rendererfactory = 'theme_overridden_renderer_factory';
 $THEME->iconsystem = \core\output\icon_system::FONTAWESOME;
+$THEME->page_init = 'theme_theedu_page_init';
 
 // SCSS callbacks.
 $THEME->scss = function($theme) {

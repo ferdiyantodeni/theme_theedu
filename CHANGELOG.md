@@ -6,6 +6,45 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.6.1] - 2026-11-10 (Build 2026111003)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Pengaturan Kartu Statistik Hero Dashboard Masih Berbasis Preset Mode:**
+   - Sebelumnya pengaturan statistik menggunakan mode preset dropdown kaku (`progress`, `timeline`, `mixed`), membatasi kartu hanya 3 buah tanpa fleksibilitas untuk memilih sendiri kartu mana yang aktif atau mengubah urutan tampilnya.
+   - Pengguna menginginkan konfigurasi berbasis *checkbox* mandiri dengan total 5 kartu statistik aktif yang dapat dihidupkan/dimatikan sesuka hati, serta dilengkapi pengaturan nomor urutan posisi tampil (*display order*) yang dinamis.
+2. **Pemilih Bahasa Footer Bertumpuk dengan Menu Lain & Belum Berfungsi:**
+   - Pada bar bawah footer, komponen kapsul pengubah bahasa ditempatkan dalam satu kontainer flex bersama tautan kustom bawah dan blok output footer standar Moodle (`output.standard_footer_html`), menyebabkan elemen-elemen tersebut saling bertumpuk (*collision/overlap*) pada berbagai ukuran layar.
+   - Selain itu, pergantian bahasa melalui parameter `?lang=id` tidak langsung mengubah antarmuka bagi pengguna yang sedang login karena Moodle secara bawaan memprioritaskan preferensi bahasa tersimpan pengguna dan mengabaikan parameter query string.
+3. **Pembaruan Profil Organisasi di Halaman About:**
+   - Profil organisasi pengembang tema di halaman *About Theme & Release Notes* perlu diperbarui dari PT Astra Daihatsu Motor menjadi tautan situs resmi pengembang: **[Gridiyans Apps - Future Technology](https://gridiyans.my.id/)**.
+
+### ✨ Perubahan & Solusi
+1. **Arsitektur Kartu Statistik Dinamis Berbasis Checkbox & Urutan Posisi (`settings.php`, `lib.php`, `templates/drawers.mustache`):**
+   - Menghapus mode preset dropdown `dashboard_stats_mode`.
+   - Menambahkan kendali checkbox dan input angka urutan (*order*) mandiri untuk setiap kartu statistik di Site Administration:
+     - **Kartu Terdaftar (*Enrolled*):** Checkbox aktif (Default: `1`), Urutan (Default: `1`).
+     - **Kartu Berjalan (*In Progress <80%*):** Checkbox aktif (Default: `1`), Urutan (Default: `2`).
+     - **Kartu Selesai (*Completed ≥80%*):** Checkbox aktif (Default: `1`), Urutan (Default: `3`).
+     - **Kartu Berlangsung (*Ongoing Hari Ini*):** Checkbox aktif (Default: `1`), Urutan (Default: `4`).
+     - **Kartu Akan Datang (*Upcoming*):** Checkbox aktif (Default: `1`), Urutan (Default: `5`).
+     - **Kartu Lewat (*Past*):** Checkbox aktif (Default: `0`), Urutan (Default: `6`).
+   - Secara default, kelima kartu statistik utama langsung aktif bersamaan (total 5 card), tersusun rapi dari kiri ke kanan.
+   - Logika backend pada `lib.php` mengumpulkan kartu yang aktif, mengurutkannya secara dinamis dengan `usort()` berdasarkan nomor urut, dan mengirimkannya ke `drawers.mustache` untuk dirender secara fleksibel dengan styling adaptif (`_course.scss`).
+2. **Sinkronisasi Bahasa Tingkat Sesi & Early Page Hook (`config.php`, `lib.php`):**
+   - Mendaftarkan fungsi hook `$THEME->page_init = 'theme_theedu_page_init'` pada `config.php`.
+   - Mengimplementasikan `theme_theedu_page_init()` pada `lib.php` yang secara aktif menangkap parameter `?lang=en` atau `?lang=id`, langsung memperbarui `$SESSION->lang`, `$USER->lang`, serta database preferensi pengguna via `set_user_preference('current_language', ...)`.
+   - Hal ini menjamin bahwa pergantian bahasa langsung aktif seketika (bahkan untuk pengguna yang sedang login) dan konsisten di seluruh sesi.
+3. **Desain Ulang Bar Bawah Footer Bebas Tabrakan (*Anti-Overlap Layout*) (`templates/footer.mustache`, `scss/_footer.scss`):**
+   - Memisahkan bar bawah footer menjadi dua tingkat terisolasi:
+     - **Tingkat Utama (`theedu-footer-bottom-main`):** Memuat teks hak cipta (*copyright*) di sisi kiri, serta kapsul bahasa dan tautan kustom di sisi kanan dengan jarak dan wrap yang teratur.
+     - **Tingkat Sistem (`theedu-footer-standard-row`):** Output standar Moodle ditempatkan pada baris terpisah di bagian bawah dengan garis pemisah (*divider*) tipis, menghilangkan risiko elemen bertumpuk secara permanen.
+4. **Pembaruan Organisasi Pengembang (`lib.php`):**
+   - Kolom organisasi pada tabel informasi *About Theme* kini menampilkan tautan aktif ke **[Gridiyans Apps - Future Technology](https://gridiyans.my.id/)**.
+5. **Kenaikan Versi:**
+   - Versi tema dinaikkan ke **`v1.6.1`** (Build `2026111003`).
+
+---
+
 ## [v1.6.0] - 2026-11-10 (Build 2026111002)
 
 ### 🎯 Masalah yang Diselesaikan

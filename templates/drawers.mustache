@@ -78,7 +78,7 @@
             <div class="theedu-dashboard-hero d-print-none mb-4">
                 <div class="theedu-dashboard-hero-card">
                     <div class="row align-items-center g-3">
-                        <div class="col-xl-7 col-lg-6">
+                        <div class="col-xxl-5 col-xl-5 col-lg-5">
                             <div class="d-flex align-items-center gap-3">
                                 {{#user_avatar_html}}
                                 <div class="theedu-hero-avatar-wrap flex-shrink-0">
@@ -103,52 +103,19 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-5 col-lg-6 d-flex justify-content-lg-end justify-content-start">
-                            <div class="theedu-dashboard-stats-grid d-flex flex-wrap gap-2">
-                                {{#theedu_stats_mode_timeline}}
-                                <div class="theedu-stat-box" title="{{#str}}stat_ongoing_desc, theme_theedu{{/str}}">
-                                    <div class="stat-number text-primary">{{user_ongoing_count}}</div>
-                                    <div class="stat-label">{{#str}}stat_ongoing, theme_theedu{{/str}}</div>
+                        <div class="col-xxl-7 col-xl-7 col-lg-7 d-flex justify-content-lg-end justify-content-start">
+                            {{#has_dashboard_stat_cards}}
+                            <div class="theedu-dashboard-stats-grid d-flex flex-wrap gap-2 justify-content-lg-end justify-content-start">
+                                {{#theedu_dashboard_stat_cards}}
+                                <div class="theedu-stat-box" title="{{desc}}" data-stat-card="{{key}}">
+                                    <div class="stat-number {{color_class}}">{{count}}</div>
+                                    <div class="stat-label">{{label}}</div>
                                 </div>
-                                <div class="theedu-stat-box" title="{{#str}}stat_upcoming_desc, theme_theedu{{/str}}">
-                                    <div class="stat-number text-info">{{user_upcoming_count}}</div>
-                                    <div class="stat-label">{{#str}}stat_upcoming, theme_theedu{{/str}}</div>
-                                </div>
-                                <div class="theedu-stat-box" title="{{#str}}stat_past_desc, theme_theedu{{/str}}">
-                                    <div class="stat-number text-muted">{{user_past_count}}</div>
-                                    <div class="stat-label">{{#str}}stat_past, theme_theedu{{/str}}</div>
-                                </div>
-                                {{/theedu_stats_mode_timeline}}
-                                {{#theedu_stats_mode_mixed}}
-                                <div class="theedu-stat-box" title="{{#str}}stat_enrolled_desc, theme_theedu{{/str}}">
-                                    <div class="stat-number text-primary">{{user_course_count}}</div>
-                                    <div class="stat-label">{{#str}}stat_enrolled, theme_theedu{{/str}}</div>
-                                </div>
-                                <div class="theedu-stat-box" title="{{#str}}stat_ongoing_desc, theme_theedu{{/str}}">
-                                    <div class="stat-number text-info">{{user_ongoing_count}}</div>
-                                    <div class="stat-label">{{#str}}stat_ongoing, theme_theedu{{/str}}</div>
-                                </div>
-                                <div class="theedu-stat-box" title="{{#str}}stat_completed_desc, theme_theedu{{/str}}">
-                                    <div class="stat-number text-success">{{user_completed_count}}</div>
-                                    <div class="stat-label">{{#str}}stat_completed, theme_theedu{{/str}}</div>
-                                </div>
-                                {{/theedu_stats_mode_mixed}}
-                                {{#theedu_stats_mode_progress}}
-                                <div class="theedu-stat-box" title="{{#str}}stat_enrolled_desc, theme_theedu{{/str}}">
-                                    <div class="stat-number text-primary">{{user_course_count}}</div>
-                                    <div class="stat-label">{{#str}}stat_enrolled, theme_theedu{{/str}}</div>
-                                </div>
-                                <div class="theedu-stat-box" title="{{#str}}stat_completed_desc, theme_theedu{{/str}}">
-                                    <div class="stat-number text-success">{{user_completed_count}}</div>
-                                    <div class="stat-label">{{#str}}stat_completed, theme_theedu{{/str}}</div>
-                                </div>
-                                <div class="theedu-stat-box" title="{{#str}}stat_inprogress_desc, theme_theedu{{/str}}">
-                                    <div class="stat-number text-info">{{user_inprogress_count}}</div>
-                                    <div class="stat-label">{{#str}}stat_inprogress, theme_theedu{{/str}}</div>
-                                </div>
-                                {{/theedu_stats_mode_progress}}
+                                {{/theedu_dashboard_stat_cards}}
                             </div>
+                            {{/has_dashboard_stat_cards}}
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>

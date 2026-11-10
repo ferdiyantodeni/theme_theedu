@@ -123,20 +123,28 @@
     // Footer Bottom
     .theedu-footer-bottom {
         padding-top: 1.5rem;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
         font-size: 0.85rem;
-        opacity: 0.85;
+        opacity: 0.9;
 
-        @media (max-width: 768px) {
-            flex-direction: column;
-            text-align: center;
+        .theedu-footer-bottom-main {
+            width: 100%;
+
+            @media (max-width: 768px) {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
         }
 
-        .theedu-footer-bottom-right {
+        .theedu-footer-bottom-actions {
+            display: inline-flex;
+            align-items: center;
+
+            @media (max-width: 768px) {
+                flex-direction: column;
+                justify-content: center;
+            }
+
             // Footer Language Selector Pill Capsule
             .theedu-footer-lang-selector {
                 display: inline-flex;
@@ -147,6 +155,7 @@
                 padding: 3px 6px 3px 10px;
                 gap: 6px;
                 transition: all 0.25s ease;
+                white-space: nowrap;
 
                 &:hover {
                     background: rgba(255, 255, 255, 0.14);
@@ -204,22 +213,38 @@
                 }
             }
 
-            .footer-bottom-link {
+            .theedu-custom-bottom-links {
+                .footer-bottom-link {
+                    color: inherit;
+                    text-decoration: underline;
+                    font-size: 0.85rem;
+                    opacity: 0.85;
+                    transition: color 0.2s ease;
+
+                    &:hover {
+                        color: var(--theedu-primary, #6C5CE7);
+                        opacity: 1;
+                    }
+                }
+
+                .footer-bottom-custom-text {
+                    font-size: 0.85rem;
+                    opacity: 0.75;
+                }
+            }
+        }
+
+        .theedu-footer-standard-row {
+            color: inherit;
+            opacity: 0.75;
+
+            a {
                 color: inherit;
                 text-decoration: underline;
-                font-size: 0.85rem;
-                opacity: 0.85;
-                transition: color 0.2s ease;
 
                 &:hover {
                     color: var(--theedu-primary, #6C5CE7);
-                    opacity: 1;
                 }
-            }
-
-            .footer-bottom-custom-text {
-                font-size: 0.85rem;
-                opacity: 0.75;
             }
         }
 

@@ -452,11 +452,23 @@ $string['stat_upcoming'] = 'Akan Datang';
 $string['stat_upcoming_desc'] = 'Kursus yang dijadwalkan di masa mendatang';
 $string['stat_past'] = 'Lewat';
 $string['stat_past_desc'] = 'Kursus yang tanggal pelaksanaannya telah lewat';
-$string['dashboard_stats_mode'] = 'Tampilan Statistik Hero Dashboard';
-$string['dashboard_stats_mode_desc'] = 'Pilih 3 kartu metrik statistik yang ditampilkan pada hero profil dashboard pengguna.';
-$string['stats_mode_progress'] = 'Mode Progres: Terdaftar, Berjalan (<80%), Selesai (≥80%) [Default]';
-$string['stats_mode_timeline'] = 'Mode Jadwal: Berlangsung (Hari Ini), Akan Datang, Lewat (Selesai)';
-$string['stats_mode_mixed'] = 'Mode Campuran: Terdaftar, Berlangsung, Selesai (≥80%)';
+
+// Pengaturan Kartu Statistik Hero Dashboard Dinamis
+$string['heading_dashboard_stats'] = 'Kartu Statistik Hero Dashboard';
+$string['heading_dashboard_stats_desc'] = 'Pilih kartu statistik yang ingin diaktifkan pada hero banner dashboard pengguna dan atur urutan posisi tampilnya secara dinamis.';
+$string['stat_card_order_desc'] = 'Urutan posisi tampil (contoh: 1, 2, 3, 4, 5). Angka lebih kecil akan muncul lebih awal di sisi kiri.';
+$string['stat_card_enrolled_desc'] = 'Tampilkan kartu total kursus aktif yang diikuti (terdaftar).';
+$string['stat_card_enrolled_order'] = 'Urutan Tampil Kartu Terdaftar';
+$string['stat_card_inprogress_desc'] = 'Tampilkan kartu kursus yang sedang berjalan (progres <80%).';
+$string['stat_card_inprogress_order'] = 'Urutan Tampil Kartu Berjalan';
+$string['stat_card_completed_desc'] = 'Tampilkan kartu kursus yang telah selesai (progres ≥80%).';
+$string['stat_card_completed_order'] = 'Urutan Tampil Kartu Selesai';
+$string['stat_card_ongoing_desc'] = 'Tampilkan kartu kursus yang aktif berlangsung hari ini.';
+$string['stat_card_ongoing_order'] = 'Urutan Tampil Kartu Berlangsung';
+$string['stat_card_upcoming_desc'] = 'Tampilkan kartu kursus dengan jadwal mulai di masa mendatang.';
+$string['stat_card_upcoming_order'] = 'Urutan Tampil Kartu Akan Datang';
+$string['stat_card_past_desc'] = 'Tampilkan kartu kursus yang jadwal pelaksanaannya telah lampau/lewat.';
+$string['stat_card_past_order'] = 'Urutan Tampil Kartu Lewat';
 
 // Pemilih Bahasa Footer
 $string['heading_footer_language'] = 'Pemilih Bahasa Footer';

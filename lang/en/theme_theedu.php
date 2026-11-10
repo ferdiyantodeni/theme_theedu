@@ -491,11 +491,23 @@ $string['stat_upcoming'] = 'Upcoming';
 $string['stat_upcoming_desc'] = 'Courses scheduled to start in the future';
 $string['stat_past'] = 'Past';
 $string['stat_past_desc'] = 'Courses that have ended past today';
-$string['dashboard_stats_mode'] = 'Dashboard Hero Stats Display';
-$string['dashboard_stats_mode_desc'] = 'Select which 3 metric cards to display in the user profile dashboard hero.';
-$string['stats_mode_progress'] = 'Progress Mode: Enrolled, In Progress (<80%), Completed (≥80%) [Default]';
-$string['stats_mode_timeline'] = 'Timeline Mode: Ongoing (Today), Upcoming (Future), Past (Ended)';
-$string['stats_mode_mixed'] = 'Mixed Mode: Enrolled, Ongoing (Today), Completed (≥80%)';
+
+// Dynamic Dashboard Hero Statistic Cards Settings
+$string['heading_dashboard_stats'] = 'Dashboard Hero Statistic Cards';
+$string['heading_dashboard_stats_desc'] = 'Select which statistic cards appear on the user dashboard hero banner and configure their dynamic display sequence order.';
+$string['stat_card_order_desc'] = 'Display sequence order (e.g. 1, 2, 3, 4, 5). Lower numbers appear first.';
+$string['stat_card_enrolled_desc'] = 'Show card for total active enrolled courses.';
+$string['stat_card_enrolled_order'] = 'Enrolled Card Display Order';
+$string['stat_card_inprogress_desc'] = 'Show card for courses in progress (completion progress <80%).';
+$string['stat_card_inprogress_order'] = 'In Progress Card Display Order';
+$string['stat_card_completed_desc'] = 'Show card for completed courses (completion progress ≥80%).';
+$string['stat_card_completed_order'] = 'Completed Card Display Order';
+$string['stat_card_ongoing_desc'] = 'Show card for courses active/occurring today.';
+$string['stat_card_ongoing_order'] = 'Ongoing Card Display Order';
+$string['stat_card_upcoming_desc'] = 'Show card for courses scheduled to start in the future.';
+$string['stat_card_upcoming_order'] = 'Upcoming Card Display Order';
+$string['stat_card_past_desc'] = 'Show card for courses that have ended past today.';
+$string['stat_card_past_order'] = 'Past Card Display Order';
 
 // Footer Language Selector
 $string['heading_footer_language'] = 'Footer Language Selector';

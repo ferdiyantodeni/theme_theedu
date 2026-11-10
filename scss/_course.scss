@@ -373,15 +373,26 @@
         }
 
         .theedu-dashboard-stats-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+
             .theedu-stat-box {
                 background: var(--theedu-card-bg, #FFFFFF);
                 border: 1px solid rgba(108, 92, 231, 0.12);
                 border-radius: 1.15rem;
-                padding: 0.75rem 1.25rem;
-                min-width: 100px;
+                padding: 0.65rem 1.1rem;
+                min-width: 90px;
+                flex: 1 1 auto;
+                max-width: 135px;
                 text-align: center;
                 box-shadow: 0 4px 14px rgba(108, 92, 231, 0.05);
                 transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+                @media (max-width: 768px) {
+                    min-width: 80px;
+                    padding: 0.5rem 0.75rem;
+                }
 
                 &:hover {
                     transform: translateY(-2px);
@@ -389,18 +400,19 @@
                 }
 
                 .stat-number {
-                    font-size: 1.5rem;
+                    font-size: 1.45rem;
                     font-weight: 800;
                     line-height: 1.1;
                     margin-bottom: 2px;
                 }
 
                 .stat-label {
-                    font-size: 0.75rem;
+                    font-size: 0.72rem;
                     font-weight: 700;
                     color: #64748B;
                     text-transform: uppercase;
                     letter-spacing: 0.03em;
+                    white-space: nowrap;
                 }
             }
         }
