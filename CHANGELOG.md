@@ -6,6 +6,30 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.6.3] - 2026-11-10 (Build 2026111005)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Teks Dropup Pemilih Bahasa Tidak Terlihat (Blending dengan Warna Background):**
+   - Pada selector bahasa footer (`.theedu-footer-lang-dropdown`), menu dropup yang muncul menampilkan teks yang hampir tidak terbaca atau sama sekali membaur (*blending*) dengan warna latar belakang menu (`#FFFFFF`).
+   - **Penyebab Teknis:** Di dalam `scss/_footer.scss`, selektor `#page-footer a` memiliki aturan `color: inherit;` dengan spesifisitas ID + elemen `(0, 1, 1)` yang mengabaikan selektor kelas `.dropdown-item { color: #334155; }`. Akibatnya, tautan di dalam menu mewarisi warna teks abu-abu terang / putih dari footer (`#DFE6E9`), menghasilkan teks putih di atas latar putih.
+2. **Jarak Antar Tautan Menu Footer dan Pemilih Bahasa Terlalu Berdempetan:**
+   - Link menu di bagian bawah footer (`.theedu-custom-bottom-links`) hanya memiliki jarak horizontal yang sangat sempit (`gap: 0.5rem` / `gap-2`) tanpa padding vertikal, dan jarak antara deretan link kustom dengan tombol pemilih bahasa terlalu padat tanpa batas pemisah visual yang jelas.
+
+### ✨ Perubahan & Solusi
+1. **Peningkatan Kontras Tinggi & Keterbacaan Teks Menu Dropup (`scss/_footer.scss`):**
+   - Menerapkan aturan CSS spesifik dengan `!important` pada `#page-footer .theedu-lang-menu .dropdown-item` dan `.theedu-lang-name`.
+   - Menggunakan warna *dark slate* kontras tinggi (`#1E293B !important`) untuk tema terang di atas latar putih (`#FFFFFF`).
+   - Pada Mode Gelap (*Dark Mode*), menu berlatar *deep navy* (`#1E293B`) dengan teks terang kontras tinggi (`#F8FAFC !important`).
+   - Tombol pemicu dropup (`.theedu-lang-drop-btn`) distilasi lebih elegan dengan teks putih bersih (`#FFFFFF !important`), padding nyaman (`0.4rem 1rem`), border semi-transparan, elevasi halus, dan efek hover *purple glow*.
+2. **Pelegaan Tata Letak & Pemisah Elemen Bawah Footer (`templates/footer.mustache`, `scss/_footer.scss`):**
+   - Memperluas jarak antar link footer bawah menjadi `gap-3 gap-md-4` (`1.25rem` di desktop) dan menambahkan padding vertikal pada setiap link (`padding: 0.2rem 0`).
+   - Menambahkan garis pemisah vertikal elegan (`.theedu-footer-divider`) antara tautan kustom dan tombol pemilih bahasa dropup dengan warna `rgba(255, 255, 255, 0.25)`.
+   - Menambahkan bayangan halus `shadow-lg` pada menu dropup agar tampak mengapung secara premium di atas footer.
+3. **Kenaikan Versi:**
+   - Versi tema dinaikkan ke **`v1.6.3`** (Build `2026111005`).
+
+---
+
 ## [v1.6.2] - 2026-11-10 (Build 2026111004)
 
 ### 🎯 Masalah yang Diselesaikan

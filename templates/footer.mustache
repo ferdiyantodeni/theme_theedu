@@ -93,16 +93,19 @@
                     {{{ theedu_footer.copyright }}}
                 </div>
 
-                <div class="theedu-footer-bottom-actions d-flex flex-wrap align-items-center justify-content-md-end justify-content-center gap-3">
+                <div class="theedu-footer-bottom-actions d-flex flex-wrap align-items-center justify-content-md-end justify-content-center gap-3 gap-md-4">
                     {{#theedu_footer.custom_bottom_right}}
-                        <div class="theedu-custom-bottom-links d-inline-flex flex-wrap align-items-center gap-2">
+                        <div class="theedu-custom-bottom-links d-inline-flex flex-wrap align-items-center gap-3 gap-md-4">
                             {{#theedu_footer.bottom_links}}
                                 <a href="{{url}}" class="footer-bottom-link">{{{ title }}}</a>
                             {{/theedu_footer.bottom_links}}
                             {{#theedu_footer.has_bottom_right_text}}
-                                <span class="footer-bottom-custom-text ms-1">{{{ theedu_footer.bottom_right_text }}}</span>
+                                <span class="footer-bottom-custom-text">{{{ theedu_footer.bottom_right_text }}}</span>
                             {{/theedu_footer.has_bottom_right_text}}
                         </div>
+                        {{#theedu_footer_lang.show_selector}}
+                            <span class="theedu-footer-divider d-none d-md-inline-block" aria-hidden="true"></span>
+                        {{/theedu_footer_lang.show_selector}}
                     {{/theedu_footer.custom_bottom_right}}
 
                     {{#theedu_footer_lang.show_selector}}
@@ -111,7 +114,7 @@
                             <span class="theedu-lang-flag">{{theedu_footer_lang.current_flag}}</span>
                             <span class="theedu-lang-current-name">{{theedu_footer_lang.current_name}}</span>
                         </button>
-                        <ul class="dropdown-menu dropdown-menu-end theedu-lang-menu shadow-sm" aria-labelledby="theeduFooterLangDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end theedu-lang-menu shadow-lg" aria-labelledby="theeduFooterLangDropdown">
                             {{#theedu_footer_lang.languages}}
                             <li>
                                 <a class="dropdown-item d-flex align-items-center justify-content-between gap-3 {{#active}}active{{/active}}" href="{{url}}">
@@ -119,7 +122,7 @@
                                         <span class="theedu-lang-flag">{{flag}}</span>
                                         <span class="theedu-lang-name">{{name}}</span>
                                     </span>
-                                    {{#active}}<i class="fa fa-check text-primary small"></i>{{/active}}
+                                    {{#active}}<i class="fa fa-check text-primary small ms-2"></i>{{/active}}
                                 </a>
                             </li>
                             {{/theedu_footer_lang.languages}}

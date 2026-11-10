@@ -3813,13 +3813,37 @@ function theme_theedu_get_about_html() {
                 <span style="font-size: 0.85rem; color: #64748B; font-weight: 500;">Comprehensive Version History</span>
             </div>
 
-            <!-- Version 1.6.2 -->
+            <!-- Version 1.6.3 -->
             <div class="theedu-version-card latest">
                 <div class="theedu-version-meta">
                     <div class="theedu-version-tag">
-                        <i class="fa fa-cube"></i> v1.6.2
+                        <i class="fa fa-cube"></i> v1.6.3
                         <span class="theedu-release-badge badge-latest">Current Release</span>
                     </div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111005</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Dropup Menu High-Contrast Text & Readability Resolution:</strong> Eliminated text blending inside the dropup language menu by enforcing dark slate <code>#1E293B</code> text color on light backgrounds and bright white <code>#F8FAFC</code> in dark mode via strict high-specificity CSS overrides, preventing inheritance collisions from <code>#page-footer a</code>.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">UI / UX</span>
+                            <strong>Footer Navigation Spacing & Elegant Divider:</strong> Expanded spacing between footer bottom menu links (<code>gap: 1.25rem</code>) and added a subtle vertical divider line separating custom links from the language switcher to eliminate visual crowding.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.6.2 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.6.2</div>
                     <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111004</div>
                 </div>
                 <ul>

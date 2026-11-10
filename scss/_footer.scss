@@ -139,110 +139,168 @@
         .theedu-footer-bottom-actions {
             display: inline-flex;
             align-items: center;
+            gap: 1.5rem;
 
             @media (max-width: 768px) {
                 flex-direction: column;
                 justify-content: center;
-            }
-
-            // Footer Language Selector Dropdown (Clean, Compact, Dynamic)
-            .theedu-footer-lang-dropdown {
-                position: relative;
-
-                .theedu-lang-drop-btn {
-                    background: rgba(255, 255, 255, 0.08);
-                    border: 1px solid rgba(255, 255, 255, 0.18);
-                    color: var(--theedu-footer-text, #DFE6E9);
-                    border-radius: 2rem;
-                    padding: 0.35rem 0.85rem;
-                    font-size: 0.82rem;
-                    font-weight: 600;
-                    transition: all 0.2s ease;
-                    white-space: nowrap;
-
-                    &:hover,
-                    &:focus,
-                    &[aria-expanded="true"] {
-                        background: rgba(255, 255, 255, 0.16);
-                        border-color: rgba(255, 255, 255, 0.3);
-                        color: #FFFFFF;
-                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-                    }
-
-                    .theedu-lang-flag {
-                        font-size: 1rem;
-                        line-height: 1;
-                    }
-
-                    .theedu-lang-current-name {
-                        letter-spacing: -0.01em;
-                    }
-
-                    &::after {
-                        margin-left: 0.35rem;
-                        vertical-align: 0.15em;
-                    }
-                }
-
-                .theedu-lang-menu {
-                    background: var(--theedu-card-bg, #FFFFFF);
-                    border: 1px solid rgba(108, 92, 231, 0.15);
-                    border-radius: 0.85rem;
-                    padding: 0.4rem 0;
-                    min-width: 180px;
-                    max-height: 280px;
-                    overflow-y: auto;
-                    margin-bottom: 0.5rem !important;
-                    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
-                    z-index: 1060;
-
-                    .dropdown-item {
-                        padding: 0.5rem 0.9rem;
-                        font-size: 0.83rem;
-                        font-weight: 500;
-                        color: #334155;
-                        transition: all 0.15s ease;
-
-                        .theedu-lang-flag {
-                            font-size: 1.05rem;
-                            line-height: 1;
-                        }
-
-                        .theedu-lang-name {
-                            font-weight: 600;
-                        }
-
-                        &:hover {
-                            background: rgba(108, 92, 231, 0.08);
-                            color: var(--theedu-primary, #6C5CE7);
-                        }
-
-                        &.active {
-                            background: rgba(108, 92, 231, 0.12);
-                            color: var(--theedu-primary, #6C5CE7);
-                            font-weight: 700;
-                        }
-                    }
-                }
+                gap: 1rem;
             }
 
             .theedu-custom-bottom-links {
+                display: inline-flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 1.25rem;
+
+                @media (max-width: 768px) {
+                    justify-content: center;
+                    gap: 0.85rem;
+                }
+
                 .footer-bottom-link {
-                    color: inherit;
-                    text-decoration: underline;
+                    color: var(--theedu-footer-text, #DFE6E9);
+                    text-decoration: none !important;
                     font-size: 0.85rem;
+                    font-weight: 500;
                     opacity: 0.85;
-                    transition: color 0.2s ease;
+                    transition: all 0.2s ease;
+                    padding: 0.2rem 0;
 
                     &:hover {
-                        color: var(--theedu-primary, #6C5CE7);
+                        color: #FFFFFF !important;
                         opacity: 1;
+                        text-decoration: underline !important;
                     }
                 }
 
                 .footer-bottom-custom-text {
                     font-size: 0.85rem;
                     opacity: 0.75;
+                }
+            }
+
+            // Clean vertical divider between links and language selector
+            .theedu-footer-divider {
+                display: inline-block;
+                width: 1px;
+                height: 18px;
+                background: rgba(255, 255, 255, 0.25);
+                vertical-align: middle;
+                margin: 0 0.25rem;
+            }
+
+            // Footer Language Selector Dropdown (Clean, High-Contrast, Dynamic)
+            .theedu-footer-lang-dropdown {
+                position: relative;
+
+                .theedu-lang-drop-btn {
+                    background: rgba(255, 255, 255, 0.12) !important;
+                    border: 1px solid rgba(255, 255, 255, 0.25) !important;
+                    color: #FFFFFF !important;
+                    border-radius: 2rem !important;
+                    padding: 0.4rem 1rem !important;
+                    font-size: 0.84rem !important;
+                    font-weight: 600 !important;
+                    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15) !important;
+                    transition: all 0.25s ease !important;
+                    white-space: nowrap;
+
+                    &:hover,
+                    &:focus,
+                    &[aria-expanded="true"],
+                    &.show {
+                        background: var(--theedu-primary, #6C5CE7) !important;
+                        border-color: var(--theedu-primary, #6C5CE7) !important;
+                        color: #FFFFFF !important;
+                        box-shadow: 0 4px 14px rgba(108, 92, 231, 0.35) !important;
+                        transform: translateY(-1px);
+                    }
+
+                    .theedu-lang-flag {
+                        font-size: 1.05rem;
+                        line-height: 1;
+                    }
+
+                    .theedu-lang-current-name {
+                        color: #FFFFFF !important;
+                        letter-spacing: -0.01em;
+                    }
+
+                    &::after {
+                        margin-left: 0.4rem;
+                        vertical-align: 0.15em;
+                        border-top-color: #FFFFFF !important;
+                        border-bottom-color: #FFFFFF !important;
+                    }
+                }
+
+                .theedu-lang-menu {
+                    background-color: #FFFFFF !important;
+                    border: 1px solid rgba(0, 0, 0, 0.15) !important;
+                    border-radius: 0.85rem !important;
+                    padding: 0.45rem 0 !important;
+                    min-width: 190px !important;
+                    max-height: 280px !important;
+                    overflow-y: auto !important;
+                    margin-bottom: 0.65rem !important;
+                    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3) !important;
+                    z-index: 1080 !important;
+
+                    li {
+                        list-style: none !important;
+                        margin: 0 !important;
+                        padding: 0 !important;
+                    }
+
+                    .dropdown-item,
+                    a.dropdown-item {
+                        display: flex !important;
+                        align-items: center !important;
+                        justify-content: space-between !important;
+                        padding: 0.55rem 1rem !important;
+                        font-size: 0.85rem !important;
+                        font-weight: 600 !important;
+                        color: #1E293B !important; // Dark Slate - 100% visible and high contrast on white background!
+                        text-decoration: none !important;
+                        background: transparent !important;
+                        transition: all 0.15s ease !important;
+
+                        .theedu-lang-flag {
+                            font-size: 1.1rem !important;
+                            line-height: 1 !important;
+                        }
+
+                        .theedu-lang-name {
+                            color: #1E293B !important;
+                            font-weight: 600 !important;
+                        }
+
+                        .fa-check {
+                            color: var(--theedu-primary, #6C5CE7) !important;
+                            font-size: 0.85rem !important;
+                        }
+
+                        &:hover,
+                        &:focus {
+                            background-color: rgba(108, 92, 231, 0.1) !important;
+                            color: var(--theedu-primary, #6C5CE7) !important;
+
+                            .theedu-lang-name {
+                                color: var(--theedu-primary, #6C5CE7) !important;
+                            }
+                        }
+
+                        &.active {
+                            background-color: rgba(108, 92, 231, 0.14) !important;
+                            color: var(--theedu-primary, #6C5CE7) !important;
+
+                            .theedu-lang-name {
+                                color: var(--theedu-primary, #6C5CE7) !important;
+                                font-weight: 700 !important;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -273,23 +331,45 @@
 }
 
 // Dark Mode adjustments for footer language menu
-[data-bs-theme="dark"],
-body.theedu-dark-mode {
-    .theedu-footer-lang-dropdown .theedu-lang-menu {
-        background: #1E293B !important;
-        border-color: rgba(255, 255, 255, 0.12) !important;
+[data-bs-theme="dark"] #page-footer,
+body.theedu-dark-mode #page-footer {
+    .theedu-footer-lang-dropdown {
+        .theedu-lang-menu {
+            background-color: #1E293B !important;
+            border-color: rgba(255, 255, 255, 0.18) !important;
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5) !important;
 
-        .dropdown-item {
-            color: #E2E8F0 !important;
+            .dropdown-item,
+            a.dropdown-item {
+                color: #F8FAFC !important;
 
-            &:hover {
-                background: rgba(108, 92, 231, 0.25) !important;
-                color: #FFFFFF !important;
-            }
+                .theedu-lang-name {
+                    color: #F8FAFC !important;
+                }
 
-            &.active {
-                background: rgba(108, 92, 231, 0.35) !important;
-                color: #A5B4FC !important;
+                .fa-check {
+                    color: #A5B4FC !important;
+                }
+
+                &:hover,
+                &:focus {
+                    background-color: rgba(108, 92, 231, 0.28) !important;
+                    color: #FFFFFF !important;
+
+                    .theedu-lang-name {
+                        color: #FFFFFF !important;
+                    }
+                }
+
+                &.active {
+                    background-color: rgba(108, 92, 231, 0.38) !important;
+                    color: #C7D2FE !important;
+
+                    .theedu-lang-name {
+                        color: #C7D2FE !important;
+                        font-weight: 700 !important;
+                    }
+                }
             }
         }
     }
