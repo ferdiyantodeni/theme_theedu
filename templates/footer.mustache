@@ -91,7 +91,21 @@
             <div class="theedu-copyright">
                 {{{ theedu_footer.copyright }}}
             </div>
-            <div class="theedu-footer-bottom-right text-md-end text-center mt-2 mt-md-0">
+            <div class="theedu-footer-bottom-right text-md-end text-center mt-2 mt-md-0 d-flex flex-wrap align-items-center justify-content-md-end justify-content-center gap-2">
+                {{#theedu_footer_lang.show_selector}}
+                <div class="theedu-footer-lang-selector" aria-label="{{#str}}footer_language_select, theme_theedu{{/str}}">
+                    <span class="theedu-lang-icon"><i class="fa fa-globe"></i></span>
+                    <div class="theedu-lang-pills">
+                        {{#theedu_footer_lang.languages}}
+                        <a href="{{url}}" class="theedu-lang-pill {{#active}}active{{/active}}" title="{{title}}" aria-label="{{name}}">
+                            <span class="theedu-lang-flag">{{flag}}</span>
+                            <span class="theedu-lang-code">{{short}}</span>
+                            <span class="theedu-lang-fullname d-none d-sm-inline">{{name}}</span>
+                        </a>
+                        {{/theedu_footer_lang.languages}}
+                    </div>
+                </div>
+                {{/theedu_footer_lang.show_selector}}
                 {{#theedu_footer.custom_bottom_right}}
                     <div class="theedu-custom-bottom-links mb-1">
                         {{#theedu_footer.bottom_links}}

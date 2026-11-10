@@ -725,6 +725,15 @@ if ($ADMIN->fulltree) {
         get_string('course_columns', 'theme_theedu'),
         get_string('course_columns_desc', 'theme_theedu'), '3', $coursecolopts));
 
+    $statsmodeopts = [
+        'progress' => get_string('stats_mode_progress', 'theme_theedu'),
+        'timeline' => get_string('stats_mode_timeline', 'theme_theedu'),
+        'mixed'    => get_string('stats_mode_mixed', 'theme_theedu'),
+    ];
+    $tab_courses->add(new admin_setting_configselect('theme_theedu/dashboard_stats_mode',
+        get_string('dashboard_stats_mode', 'theme_theedu'),
+        get_string('dashboard_stats_mode_desc', 'theme_theedu'), 'progress', $statsmodeopts));
+
     // Thumbnail & Icon Settings
     $tab_courses->add(new admin_setting_heading('heading_courses_thumbnail',
         get_string('heading_courses_thumbnail', 'theme_theedu'),
@@ -906,6 +915,15 @@ if ($ADMIN->fulltree) {
 
     $tab_footer->add(new admin_setting_configtext('theme_theedu/footer_linkedin',
         'LinkedIn URL', '', '', PARAM_RAW_TRIMMED));
+
+    // Footer Language Selector (English [default] & Indonesia)
+    $tab_footer->add(new admin_setting_heading('heading_footer_language',
+        get_string('heading_footer_language', 'theme_theedu'),
+        get_string('heading_footer_language_desc', 'theme_theedu')));
+
+    $tab_footer->add(new admin_setting_configcheckbox('theme_theedu/footer_show_language_selector',
+        get_string('footer_show_language_selector', 'theme_theedu'),
+        get_string('footer_show_language_selector_desc', 'theme_theedu'), 1));
 
     $settings->add($tab_footer);
 

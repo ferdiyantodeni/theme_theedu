@@ -137,6 +137,73 @@
         }
 
         .theedu-footer-bottom-right {
+            // Footer Language Selector Pill Capsule
+            .theedu-footer-lang-selector {
+                display: inline-flex;
+                align-items: center;
+                background: rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 999px;
+                padding: 3px 6px 3px 10px;
+                gap: 6px;
+                transition: all 0.25s ease;
+
+                &:hover {
+                    background: rgba(255, 255, 255, 0.14);
+                    border-color: rgba(255, 255, 255, 0.25);
+                }
+
+                .theedu-lang-icon {
+                    font-size: 0.85rem;
+                    color: var(--theedu-primary, #6C5CE7);
+                    opacity: 0.95;
+                    display: inline-flex;
+                    align-items: center;
+                }
+
+                .theedu-lang-pills {
+                    display: inline-flex;
+                    gap: 3px;
+                }
+
+                .theedu-lang-pill {
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 5px;
+                    font-size: 0.78rem;
+                    font-weight: 500;
+                    padding: 3px 9px;
+                    border-radius: 999px;
+                    color: var(--theedu-footer-text, #DFE6E9);
+                    text-decoration: none !important;
+                    transition: all 0.2s ease;
+                    opacity: 0.8;
+
+                    .theedu-lang-flag {
+                        font-size: 0.95rem;
+                        line-height: 1;
+                    }
+
+                    .theedu-lang-code {
+                        font-weight: 700;
+                        letter-spacing: 0.02em;
+                    }
+
+                    &:hover {
+                        color: #FFFFFF;
+                        opacity: 1;
+                        background: rgba(255, 255, 255, 0.15);
+                    }
+
+                    &.active {
+                        background: var(--theedu-primary, #6C5CE7);
+                        color: #FFFFFF !important;
+                        opacity: 1;
+                        box-shadow: 0 2px 6px rgba(108, 92, 231, 0.35);
+                    }
+                }
+            }
+
             .footer-bottom-link {
                 color: inherit;
                 text-decoration: underline;

@@ -6,6 +6,50 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.6.0] - 2026-11-10 (Build 2026111002)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Perhitungan Statistik Hero Dashboard & Formula Metrik Kursus:**
+   - Sebelumnya 3 kotak kartu statistik di profil/hero dashboard hanya mengandalkan pengecekan biner `$cinfo->is_course_complete($USER->id)`. Jika kursus tidak mengaktifkan tracking kelulusan formal secara ketat atau siswa baru menyelesaikan sebagian (misal 80%+), angka selesai tetap 0.
+   - Pengguna membutuhkan kalkulasi matematis yang akurat untuk 6 kategori status pembelajaran:
+     - **Terdaftar (*Enrolled*):** Seluruh kursus yang aktif diikuti oleh pengguna saat ini (di luar SITEID/Frontpage).
+     - **Lewat (*Past*):** Kursus terdaftar yang tanggal akhirnya telah lampau sebelum hari ini (`enddate < today midnight`).
+     - **Berlangsung (*Ongoing*):** Kursus terdaftar yang aktif berjalan hari ini (`startdate <= today 23:59:59 && (enddate == 0 || enddate >= today midnight)`).
+     - **Akan Datang (*Upcoming*):** Kursus terdaftar yang jadwal mulainya di masa mendatang (`startdate > today 23:59:59`).
+     - **Berjalan (*In Progress*):** Kursus terdaftar dengan tingkat kemajuan (*completion progress*) kurang dari 80% (`< 80%`).
+     - **Complete (*Completed*):** Kursus terdaftar dengan tingkat kemajuan 80% atau lebih (`>= 80%`) atau telah ditandai tuntas oleh API kelulusan Moodle.
+2. **Bahasa Campur-Campur di Area Dashboard Hero (*Mixed Language Inconsistency*):**
+   - Teks sapaan (*"Selamat Datang kembali, [Nama]! 👋"*), deskripsi (*"Pantau aktivitas pembelajaran, tugas, dan kursus aktif Anda di sini."*), label role (*"Peserta Pembelajaran"*, *"Tamu"*), dan label statistik (*"Terdaftar"*, *"Selesai"*, *"Berjalan"*) sebelumnya tertulis statis (*hardcoded*) dalam bahasa Indonesia di dalam berkas template `drawers.mustache` dan `lib.php`.
+   - Akibatnya, ketika antarmuka situs atau pengguna memilih bahasa Inggris (*English*), teks di hero dashboard tetap berbahasa Indonesia sehingga tampilan menjadi tidak seragam dan kurang profesional.
+3. **Ketiadaan Menu Pilihan Bahasa Interaktif di Footer:**
+   - Belum tersedia pengubah bahasa (*language switcher*) yang mudah dijangkau di bar bawah footer situs untuk memudahkan pengguna berganti antara bahasa Inggris (*English [default]*) dan bahasa Indonesia (*Indonesia*).
+
+### ✨ Perubahan & Solusi
+1. **Kalkulasi Metrik Kursus & Statistik Multi-Mode Presisi (`lib.php`):**
+   - Menghitung persentase kemajuan siswa secara real-time via `\core_completion\progress::get_course_progress_percentage($ucourse, $USER->id)`.
+   - Menetapkan aturan ambang batas tegas: kemajuan $\ge 80\%$ dihitung sebagai **Completed / Selesai**, sedangkan kemajuan $< 80\%$ dihitung sebagai **In Progress / Berjalan**.
+   - Menghitung segmentasi waktu terhadap stempel waktu hari ini (`today midnight` dan `tomorrow midnight - 1`), mengelompokkan kursus secara tepat ke dalam **Ongoing / Berlangsung**, **Upcoming / Akan Datang**, dan **Past / Lewat**.
+   - Menambahkan pengaturan baru di Site Administration: **Tampilan Statistik Hero Dashboard** (`theme_theedu/dashboard_stats_mode`) dengan 3 pilihan mode:
+     - `progress` (Default): Menampilkan **Enrolled**, **Completed ($\ge 80\%$)**, dan **In Progress ($< 80\%$)**.
+     - `timeline`: Menampilkan **Ongoing (Hari Ini)**, **Upcoming (Masa Datang)**, dan **Past (Lewat)**.
+     - `mixed`: Menampilkan **Enrolled**, **Ongoing**, dan **Completed ($\ge 80\%$)**.
+2. **Eliminasi Total String Hardcode & Lokalisasi Bersih (`templates/drawers.mustache`, `lib.php`):**
+   - Seluruh teks pada dashboard hero kini 100% menggunakan sistem lokalisasi bawaan Moodle melalui tag `{{#str}}` dan fungsi `get_string()`.
+   - Saat bahasa Inggris aktif, seluruh label tampil bersih dalam bahasa Inggris profesional: *"Welcome back, [Name]! 👋"*, *"Track your learning progress, activities, and active courses here."*, *"Enrolled"*, *"Completed"*, *"In Progress"*, *"Learner"*, *"Administrator"*, *"Guest"*.
+   - Saat bahasa Indonesia aktif, seluruh label tampil rapi dan tepat dalam tata bahasa Indonesia baku.
+3. **Komponen Pemilih Bahasa Cepat di Bar Bawah Footer (`templates/footer.mustache`, `scss/_footer.scss`):**
+   - Menambahkan kapsul pengubah bahasa modern di bar bawah footer (`theedu-footer-lang-selector`) dengan ikon bola dunia dan tombol pill bendera:
+     - 🇬🇧 **EN English** (Default)
+     - 🇮🇩 **ID Indonesia**
+   - Menggunakan mekanisme tautan bahasa asli Moodle (`new \moodle_url($PAGE->url, ['lang' => $langcode])`) sehingga ketika diklik, halaman aktif saat itu juga langsung dimuat ulang dalam bahasa yang dipilih tanpa kehilangan konteks halaman.
+   - Tombol bahasa yang sedang aktif disorot dengan warna aksen tema (*elevated active pill*), sedangkan bahasa alternatif dapat diklik secara instan.
+   - Dilengkapi opsi pengaturan di tab Footer (`theme_theedu/footer_show_language_selector`) agar administrator dapat menampilkan atau menyembunyikan pemilih bahasa sesuai kebutuhan situs.
+4. **Pembaruan Berkas Rilis & Dokumentasi Teknis:**
+   - Versi tema dinaikkan ke **`v1.6.0`** (Build `2026111002`) pada `version.php`.
+   - Menambahkan rilis v1.6.0, v1.5.9, dan v1.5.8 ke dalam kartu catatan rilis dinamis di halaman konfigurasi *About Theme & Release Notes*.
+
+---
+
 ## [v1.5.9] - 2026-11-10 (Build 2026111001)
 
 ### 🎯 Masalah yang Diselesaikan

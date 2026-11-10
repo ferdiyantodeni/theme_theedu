@@ -95,28 +95,58 @@
                                         {{/user_date}}
                                     </div>
                                     <h2 class="theedu-hero-title fw-bold mb-1">
-                                        Selamat Datang kembali, <span class="theedu-hero-name">{{user_firstname}}</span>! 👋
+                                        {{#str}}welcome_back, theme_theedu{{/str}}, <span class="theedu-hero-name">{{user_firstname}}</span>! 👋
                                     </h2>
                                     <p class="theedu-hero-desc text-muted mb-0 small">
-                                        Pantau aktivitas pembelajaran, tugas, dan kursus aktif Anda di sini.
+                                        {{#str}}dashboard_hero_desc, theme_theedu{{/str}}
                                     </p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-5 col-lg-6 d-flex justify-content-lg-end justify-content-start">
                             <div class="theedu-dashboard-stats-grid d-flex flex-wrap gap-2">
-                                <div class="theedu-stat-box">
+                                {{#theedu_stats_mode_timeline}}
+                                <div class="theedu-stat-box" title="{{#str}}stat_ongoing_desc, theme_theedu{{/str}}">
+                                    <div class="stat-number text-primary">{{user_ongoing_count}}</div>
+                                    <div class="stat-label">{{#str}}stat_ongoing, theme_theedu{{/str}}</div>
+                                </div>
+                                <div class="theedu-stat-box" title="{{#str}}stat_upcoming_desc, theme_theedu{{/str}}">
+                                    <div class="stat-number text-info">{{user_upcoming_count}}</div>
+                                    <div class="stat-label">{{#str}}stat_upcoming, theme_theedu{{/str}}</div>
+                                </div>
+                                <div class="theedu-stat-box" title="{{#str}}stat_past_desc, theme_theedu{{/str}}">
+                                    <div class="stat-number text-muted">{{user_past_count}}</div>
+                                    <div class="stat-label">{{#str}}stat_past, theme_theedu{{/str}}</div>
+                                </div>
+                                {{/theedu_stats_mode_timeline}}
+                                {{#theedu_stats_mode_mixed}}
+                                <div class="theedu-stat-box" title="{{#str}}stat_enrolled_desc, theme_theedu{{/str}}">
                                     <div class="stat-number text-primary">{{user_course_count}}</div>
-                                    <div class="stat-label">Terdaftar</div>
+                                    <div class="stat-label">{{#str}}stat_enrolled, theme_theedu{{/str}}</div>
                                 </div>
-                                <div class="theedu-stat-box">
+                                <div class="theedu-stat-box" title="{{#str}}stat_ongoing_desc, theme_theedu{{/str}}">
+                                    <div class="stat-number text-info">{{user_ongoing_count}}</div>
+                                    <div class="stat-label">{{#str}}stat_ongoing, theme_theedu{{/str}}</div>
+                                </div>
+                                <div class="theedu-stat-box" title="{{#str}}stat_completed_desc, theme_theedu{{/str}}">
                                     <div class="stat-number text-success">{{user_completed_count}}</div>
-                                    <div class="stat-label">Selesai</div>
+                                    <div class="stat-label">{{#str}}stat_completed, theme_theedu{{/str}}</div>
                                 </div>
-                                <div class="theedu-stat-box">
+                                {{/theedu_stats_mode_mixed}}
+                                {{#theedu_stats_mode_progress}}
+                                <div class="theedu-stat-box" title="{{#str}}stat_enrolled_desc, theme_theedu{{/str}}">
+                                    <div class="stat-number text-primary">{{user_course_count}}</div>
+                                    <div class="stat-label">{{#str}}stat_enrolled, theme_theedu{{/str}}</div>
+                                </div>
+                                <div class="theedu-stat-box" title="{{#str}}stat_completed_desc, theme_theedu{{/str}}">
+                                    <div class="stat-number text-success">{{user_completed_count}}</div>
+                                    <div class="stat-label">{{#str}}stat_completed, theme_theedu{{/str}}</div>
+                                </div>
+                                <div class="theedu-stat-box" title="{{#str}}stat_inprogress_desc, theme_theedu{{/str}}">
                                     <div class="stat-number text-info">{{user_inprogress_count}}</div>
-                                    <div class="stat-label">Berjalan</div>
+                                    <div class="stat-label">{{#str}}stat_inprogress, theme_theedu{{/str}}</div>
                                 </div>
+                                {{/theedu_stats_mode_progress}}
                             </div>
                         </div>
                     </div>

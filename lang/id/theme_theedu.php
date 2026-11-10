@@ -433,3 +433,34 @@ $string['content_card_padding_desc'] = 'Ruang padding di dalam kartu konten utam
 $string['tab_about'] = 'About Theme & Release Notes';
 $string['heading_about_theme'] = 'Informasi Tema TheEdu & Catatan Rilis';
 $string['about_theme_desc'] = 'Spesifikasi teknis, profil pengembang, dan riwayat rilis komprehensif.';
+
+// Dashboard Hero & Statistik
+$string['welcome_back'] = 'Selamat datang kembali';
+$string['dashboard_hero_desc'] = 'Pantau kemajuan pembelajaran, aktivitas, dan kursus aktif Anda di sini.';
+$string['role_learner'] = 'Peserta Pembelajaran';
+$string['role_admin'] = 'Administrator';
+$string['role_guest'] = 'Tamu';
+$string['stat_enrolled'] = 'Terdaftar';
+$string['stat_enrolled_desc'] = 'Total kursus yang diikuti';
+$string['stat_completed'] = 'Selesai';
+$string['stat_completed_desc'] = 'Kursus dengan kemajuan belajar 80% atau lebih';
+$string['stat_inprogress'] = 'Berjalan';
+$string['stat_inprogress_desc'] = 'Kursus yang sedang berjalan (<80%)';
+$string['stat_ongoing'] = 'Berlangsung';
+$string['stat_ongoing_desc'] = 'Kursus yang aktif berlangsung hari ini';
+$string['stat_upcoming'] = 'Akan Datang';
+$string['stat_upcoming_desc'] = 'Kursus yang dijadwalkan di masa mendatang';
+$string['stat_past'] = 'Lewat';
+$string['stat_past_desc'] = 'Kursus yang tanggal pelaksanaannya telah lewat';
+$string['dashboard_stats_mode'] = 'Tampilan Statistik Hero Dashboard';
+$string['dashboard_stats_mode_desc'] = 'Pilih 3 kartu metrik statistik yang ditampilkan pada hero profil dashboard pengguna.';
+$string['stats_mode_progress'] = 'Mode Progres: Terdaftar, Berjalan (<80%), Selesai (≥80%) [Default]';
+$string['stats_mode_timeline'] = 'Mode Jadwal: Berlangsung (Hari Ini), Akan Datang, Lewat (Selesai)';
+$string['stats_mode_mixed'] = 'Mode Campuran: Terdaftar, Berlangsung, Selesai (≥80%)';
+
+// Pemilih Bahasa Footer
+$string['heading_footer_language'] = 'Pemilih Bahasa Footer';
+$string['heading_footer_language_desc'] = 'Tampilkan menu pengubah bahasa interaktif di bar bawah footer.';
+$string['footer_show_language_selector'] = 'Tampilkan Pemilih Bahasa di Footer';
+$string['footer_show_language_selector_desc'] = 'Tampilkan pilihan bahasa English [default] & Indonesia di bar bawah footer.';
+$string['footer_language_select'] = 'Bahasa';

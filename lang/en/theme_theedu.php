@@ -472,3 +472,34 @@ $string['customcss_desc'] = 'Add custom CSS rules here to override or fine-tune 
 $string['tab_about'] = 'About Theme & Release Notes';
 $string['heading_about_theme'] = 'TheEdu Theme Information & Release Notes';
 $string['about_theme_desc'] = 'Technical specifications, developer details, and comprehensive release history.';
+
+// Dashboard Hero & Stats (Strict English)
+$string['welcome_back'] = 'Welcome back';
+$string['dashboard_hero_desc'] = 'Track your learning progress, activities, and active courses here.';
+$string['role_learner'] = 'Learner';
+$string['role_admin'] = 'Administrator';
+$string['role_guest'] = 'Guest';
+$string['stat_enrolled'] = 'Enrolled';
+$string['stat_enrolled_desc'] = 'Total enrolled courses';
+$string['stat_completed'] = 'Completed';
+$string['stat_completed_desc'] = 'Courses with completion progress of 80% or higher';
+$string['stat_inprogress'] = 'In Progress';
+$string['stat_inprogress_desc'] = 'Courses currently in progress (<80%)';
+$string['stat_ongoing'] = 'Ongoing';
+$string['stat_ongoing_desc'] = 'Courses active today';
+$string['stat_upcoming'] = 'Upcoming';
+$string['stat_upcoming_desc'] = 'Courses scheduled to start in the future';
+$string['stat_past'] = 'Past';
+$string['stat_past_desc'] = 'Courses that have ended past today';
+$string['dashboard_stats_mode'] = 'Dashboard Hero Stats Display';
+$string['dashboard_stats_mode_desc'] = 'Select which 3 metric cards to display in the user profile dashboard hero.';
+$string['stats_mode_progress'] = 'Progress Mode: Enrolled, In Progress (<80%), Completed (≥80%) [Default]';
+$string['stats_mode_timeline'] = 'Timeline Mode: Ongoing (Today), Upcoming (Future), Past (Ended)';
+$string['stats_mode_mixed'] = 'Mixed Mode: Enrolled, Ongoing (Today), Completed (≥80%)';
+
+// Footer Language Selector
+$string['heading_footer_language'] = 'Footer Language Selector';
+$string['heading_footer_language_desc'] = 'Display an interactive language switcher in the bottom footer bar.';
+$string['footer_show_language_selector'] = 'Show Language Selector in Footer';
+$string['footer_show_language_selector_desc'] = 'Display an English [default] & Indonesia language switcher in the footer bottom bar.';
+$string['footer_language_select'] = 'Language';

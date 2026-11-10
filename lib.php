@@ -2153,17 +2153,17 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
     $context['is_dashboard'] = $isdashboard;
     $context['is_course'] = $iscourse;
     $context['user_fullname'] = isloggedin() ? fullname($USER) : '';
-    $context['user_firstname'] = isloggedin() ? (!empty($USER->firstname) ? $USER->firstname : fullname($USER)) : 'Pelajar';
+    $context['user_firstname'] = isloggedin() ? (!empty($USER->firstname) ? $USER->firstname : fullname($USER)) : get_string('role_learner', 'theme_theedu');
     if (function_exists('userdate')) {
         $context['user_date'] = userdate(time(), get_string('strftimedatefullshort', 'core_langconfig'));
     } else {
         $context['user_date'] = date('l, d F Y');
     }
 
-    // Moove-inspired Live User Dashboard Stats
+    // Moove-inspired Live User Dashboard Stats & Course Metrics
     if (isloggedin() && !isguestuser()) {
         $context['user_avatar_html'] = !empty($OUTPUT) ? $OUTPUT->user_picture($USER, ['size' => 64, 'class' => 'theedu-hero-avatar rounded-circle']) : '';
-        $context['user_role_label'] = is_siteadmin() ? 'Administrator' : 'Peserta Pembelajaran';
+        $context['user_role_label'] = is_siteadmin() ? get_string('role_admin', 'theme_theedu') : get_string('role_learner', 'theme_theedu');
 
         $usercourses = function_exists('enrol_get_users_courses') ? enrol_get_users_courses($USER->id, true) : [];
         if (!empty($usercourses)) {
@@ -2171,31 +2171,89 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
                 return (int)$c->id !== SITEID;
             });
         }
-        $enrolledcount = count($usercourses);
-        $completedcount = 0;
 
-        if (!empty($CFG->enablecompletion) && !empty($usercourses)) {
+        $enrolledcount   = count($usercourses);
+        $completedcount  = 0;
+        $inprogresscount = 0;
+        $pastcount       = 0;
+        $ongoingcount    = 0;
+        $upcomingcount   = 0;
+
+        $todaystart = strtotime('today midnight');
+        $todayend   = strtotime('tomorrow midnight') - 1;
+
+        if (!empty($CFG->enablecompletion)) {
             require_once($CFG->libdir . '/completionlib.php');
-            foreach ($usercourses as $ucourse) {
+        }
+
+        foreach ($usercourses as $ucourse) {
+            // Timeline metrics:
+            // Akan Datang (Upcoming): Scheduled after today
+            // Lewat (Past): Ended before today
+            // Berlangsung (Ongoing): Active today (including startdate = today)
+            $startdate = !empty($ucourse->startdate) ? (int)$ucourse->startdate : 0;
+            $enddate   = !empty($ucourse->enddate) ? (int)$ucourse->enddate : 0;
+
+            if ($startdate > $todayend) {
+                $upcomingcount++;
+            } else if ($enddate > 0 && $enddate < $todaystart) {
+                $pastcount++;
+            } else {
+                $ongoingcount++;
+            }
+
+            // Progress metrics:
+            // Berjalan (In Progress): Course completion progress < 80%
+            // Complete (Completed): Course completion progress >= 80%
+            $iscompleted = false;
+
+            if (class_exists('\core_completion\progress')) {
+                $p = \core_completion\progress::get_course_progress_percentage($ucourse, $USER->id);
+                if ($p !== null) {
+                    $progval = (float)$p;
+                    if ($progval >= 80.0) {
+                        $iscompleted = true;
+                    }
+                }
+            }
+
+            if (!$iscompleted && !empty($CFG->enablecompletion)) {
                 $cinfo = new \completion_info($ucourse);
                 if ($cinfo->is_enabled() && $cinfo->is_course_complete($USER->id)) {
-                    $completedcount++;
+                    $iscompleted = true;
                 }
+            }
+
+            if ($iscompleted) {
+                $completedcount++;
+            } else {
+                $inprogresscount++;
             }
         }
 
-        $context['user_course_count'] = $enrolledcount;
-        $context['user_completed_count'] = $completedcount;
-        $context['user_inprogress_count'] = max(0, $enrolledcount - $completedcount);
-        $context['user_has_courses'] = ($enrolledcount > 0);
+        $context['user_course_count']     = $enrolledcount;
+        $context['user_completed_count']  = $completedcount;
+        $context['user_inprogress_count'] = $inprogresscount;
+        $context['user_past_count']       = $pastcount;
+        $context['user_ongoing_count']    = $ongoingcount;
+        $context['user_upcoming_count']   = $upcomingcount;
+        $context['user_has_courses']      = ($enrolledcount > 0);
     } else {
-        $context['user_avatar_html'] = '';
-        $context['user_role_label'] = 'Tamu';
-        $context['user_course_count'] = 0;
-        $context['user_completed_count'] = 0;
+        $context['user_avatar_html']      = '';
+        $context['user_role_label']       = get_string('role_guest', 'theme_theedu');
+        $context['user_course_count']     = 0;
+        $context['user_completed_count']  = 0;
         $context['user_inprogress_count'] = 0;
-        $context['user_has_courses'] = false;
+        $context['user_past_count']       = 0;
+        $context['user_ongoing_count']    = 0;
+        $context['user_upcoming_count']   = 0;
+        $context['user_has_courses']      = false;
     }
+
+    $statsmode = theme_theedu_get_setting('dashboard_stats_mode', 'progress');
+    $context['theedu_stats_mode_progress'] = ($statsmode === 'progress');
+    $context['theedu_stats_mode_timeline'] = ($statsmode === 'timeline');
+    $context['theedu_stats_mode_mixed']    = ($statsmode === 'mixed');
 
     $slidervis = theme_theedu_get_setting('slider_visibility', 'all');
     $enableslider = (bool) theme_theedu_get_setting('enable_slider', 1) && $isfrontpage && theme_theedu_is_visible_to_user($slidervis, $isloggedinuser);
@@ -2978,6 +3036,41 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
         'linkedin' => theme_theedu_get_setting('footer_linkedin', ''),
     ];
 
+    // Footer Language Selector (English [default] & Indonesia)
+    $showlangselector = (bool) theme_theedu_get_setting('footer_show_language_selector', 1);
+    $currentlang = function_exists('current_language') ? current_language() : 'en';
+
+    $currenturl = !empty($page->url) ? $page->url : new \moodle_url('/');
+    $enurl = new \moodle_url($currenturl, ['lang' => 'en']);
+    $idurl = new \moodle_url($currenturl, ['lang' => 'id']);
+
+    $context['theedu_footer_lang'] = [
+        'show_selector' => $showlangselector,
+        'current_lang'  => $currentlang,
+        'is_en'         => (strpos($currentlang, 'en') === 0),
+        'is_id'         => (strpos($currentlang, 'id') === 0),
+        'languages'     => [
+            [
+                'code'   => 'en',
+                'name'   => 'English',
+                'short'  => 'EN',
+                'flag'   => '🇬🇧',
+                'url'    => $enurl->out(false),
+                'active' => (strpos($currentlang, 'en') === 0),
+                'title'  => 'Switch to English (Default)',
+            ],
+            [
+                'code'   => 'id',
+                'name'   => 'Indonesia',
+                'short'  => 'ID',
+                'flag'   => '🇮🇩',
+                'url'    => $idurl->out(false),
+                'active' => (strpos($currentlang, 'id') === 0),
+                'title'  => 'Ganti ke Bahasa Indonesia',
+            ],
+        ],
+    ];
+
     // 7. Course Activity Bottom Navigation Bar (Prev, Jump-To, Next).
     $enableactivitynav = (bool) theme_theedu_get_setting('enable_activity_nav', 1);
     if ($enableactivitynav) {
@@ -3564,13 +3657,85 @@ function theme_theedu_get_about_html() {
                 <span style="font-size: 0.85rem; color: #64748B; font-weight: 500;">Comprehensive Version History</span>
             </div>
 
-            <!-- Version 1.5.7 -->
+            <!-- Version 1.6.0 -->
             <div class="theedu-version-card latest">
                 <div class="theedu-version-meta">
                     <div class="theedu-version-tag">
-                        <i class="fa fa-cube"></i> v1.5.7
+                        <i class="fa fa-cube"></i> v1.6.0
                         <span class="theedu-release-badge badge-latest">Current Release</span>
                     </div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111002</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-new">New</span>
+                            <strong>Dashboard Hero Course Metrics & Multi-Mode Display:</strong> Integrated explicit course metric calculations:
+                            <br>&bull; <em>In Progress:</em> Enrolled courses with completion progress &lt; 80%.
+                            <br>&bull; <em>Completed:</em> Enrolled courses with completion progress &ge; 80% (or marked complete via completion API).
+                            <br>&bull; <em>Past:</em> Enrolled courses with end date prior to today midnight.
+                            <br>&bull; <em>Ongoing:</em> Enrolled courses active today (start date &le; today end and not yet ended).
+                            <br>&bull; <em>Upcoming:</em> Enrolled courses scheduled to start after today.
+                            <br>&bull; <em>Enrolled:</em> Total active enrolled courses.
+                            Added settings switch <code>dashboard_stats_mode</code> supporting Progress, Timeline, and Mixed modes.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Zero-Mixed-Language Localization & English Default:</strong> Cleaned all hardcoded Indonesian strings from <code>templates/drawers.mustache</code> and <code>lib.php</code>. All dashboard labels, greetings, role badges, and descriptions now use proper Moodle language strings (<code>{{#str}}</code>) ensuring 100% professional English by default.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">UI / UX</span>
+                            <strong>Footer Interactive Language Selector:</strong> Added an elegant pill-style language switcher in the footer bottom bar with flag indicators (🇬🇧 English [default] & 🇮🇩 Indonesia) allowing seamless 1-click language toggling.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.5.9 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.5.9</div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111001</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Strict Enrolled Courses Isolation:</strong> Fixed "My Enrolled Courses" section on the frontpage incorrectly showing un-enrolled courses by eliminating the runaway <code>get_courses(\'all\')</code> fallback for logged-in users and enforcing strict <code>is_enrolled($coursecontext, $USER->id, \'\', true)</code> access verification.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.5.8 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.5.8</div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110907</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">UI / UX</span>
+                            <strong>Floating Centered Login Card:</strong> Transformed login page into a modern centered floating card with compact responsive padding, frosted-glass backdrop, and centered brand logo, ensuring full visibility of background scenery without edge cutoffs.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.5.7 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.5.7</div>
                     <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 9, 2026 &bull; Build 2026110906</div>
                 </div>
                 <ul>
