@@ -29,23 +29,27 @@
 
 // 2. Secondary Navigation Tabs (Settings, Participants, Grades, Reports, More)
 .secondary-navigation {
-    background: transparent !important;
+    background: var(--theedu-secnav-bar-bg, transparent) !important;
     border-bottom: none !important;
     margin-bottom: 1.5rem;
+    padding: var(--theedu-secnav-bar-padding, 0) !important;
+    border-radius: var(--theedu-secnav-bar-radius, 0px) !important;
     position: relative;
     z-index: 10;
 
     .navigation {
         border-bottom: none !important;
+        justify-content: var(--theedu-secnav-align, flex-start) !important;
     }
 
     .more-nav,
     .nav-tabs {
         border-bottom: none !important;
-        gap: 0.4rem;
+        gap: var(--theedu-secnav-btn-gap, 0.4rem) !important;
         display: flex;
         flex-wrap: wrap; // Allows core/moremenu to calculate height and collapse overflowing tabs
         align-items: center;
+        justify-content: var(--theedu-secnav-align, flex-start) !important;
 
         .dropdown-menu {
             z-index: 1050 !important;
@@ -56,28 +60,32 @@
         }
 
         .nav-link {
-            border: 1px solid rgba(108, 92, 231, 0.12) !important;
-            border-radius: 2rem !important;
-            padding: 0.45rem 1.15rem !important;
-            font-size: 0.9rem !important;
+            border: var(--theedu-secnav-btn-border-width, 1px) solid var(--theedu-secnav-btn-border, rgba(108, 92, 231, 0.12)) !important;
+            border-radius: var(--theedu-secnav-btn-radius, 2rem) !important;
+            padding: var(--theedu-secnav-btn-padding, 0.45rem 1.15rem) !important;
+            font-size: var(--theedu-secnav-btn-fontsize, 0.9rem) !important;
             font-weight: 600 !important;
-            color: var(--theedu-navbar-text, #2D3436) !important;
-            background-color: var(--theedu-card-bg, #FFFFFF) !important;
+            color: var(--theedu-secnav-btn-text, #2D3436) !important;
+            background-color: var(--theedu-secnav-btn-bg, #FFFFFF) !important;
             box-shadow: 0 2px 6px rgba(108, 92, 231, 0.04);
             transition: all 0.2s ease;
+            text-decoration: none !important;
 
-            &:hover {
-                background-color: rgba(108, 92, 231, 0.08) !important;
-                border-color: var(--theedu-primary, #6C5CE7) !important;
-                color: var(--theedu-primary, #6C5CE7) !important;
+            &:hover,
+            &:focus {
+                background-color: var(--theedu-secnav-btn-hover-bg, rgba(108, 92, 231, 0.08)) !important;
+                border-color: var(--theedu-secnav-btn-hover-border, var(--theedu-primary, #6C5CE7)) !important;
+                color: var(--theedu-secnav-btn-hover-text, var(--theedu-primary, #6C5CE7)) !important;
                 transform: translateY(-1px);
+                text-decoration: none !important;
             }
 
             &.active {
-                background: linear-gradient(135deg, var(--theedu-primary, #6C5CE7), #7F71EB) !important;
-                border-color: var(--theedu-primary, #6C5CE7) !important;
-                color: #FFFFFF !important;
-                box-shadow: 0 4px 14px rgba(108, 92, 231, 0.3) !important;
+                background: var(--theedu-secnav-btn-active-bg, linear-gradient(135deg, var(--theedu-primary, #6C5CE7), #7F71EB)) !important;
+                border-color: var(--theedu-secnav-btn-active-border, var(--theedu-primary, #6C5CE7)) !important;
+                color: var(--theedu-secnav-btn-active-text, #FFFFFF) !important;
+                box-shadow: var(--theedu-secnav-btn-active-shadow, 0 4px 14px rgba(108, 92, 231, 0.3)) !important;
+                text-decoration: none !important;
             }
         }
     }

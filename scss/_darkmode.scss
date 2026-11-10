@@ -44,15 +44,28 @@ html, body, .navbar, .card, .drawer, footer {
 
     // Secondary navigation
     .secondary-navigation {
-        background-color: var(--theedu-navbar-bg, #1A2130) !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        background-color: var(--theedu-secnav-bar-bg, transparent) !important;
+        border-bottom: none !important;
 
+        .more-nav .nav-link,
+        .nav-tabs .nav-link,
         .navigation .nav-link {
-            color: #CBD5E1 !important;
+            background-color: var(--theedu-secnav-btn-bg, #1E2638) !important;
+            border-color: var(--theedu-secnav-btn-border, rgba(255, 255, 255, 0.1)) !important;
+            color: var(--theedu-secnav-btn-text, #CBD5E1) !important;
+
+            &:hover,
+            &:focus {
+                background-color: var(--theedu-secnav-btn-hover-bg, rgba(255, 255, 255, 0.08)) !important;
+                border-color: var(--theedu-secnav-btn-hover-border, var(--theedu-primary, #8E7CFF)) !important;
+                color: var(--theedu-secnav-btn-hover-text, #FFFFFF) !important;
+            }
 
             &.active {
-                color: var(--theedu-primary, #8E7CFF) !important;
-                border-bottom-color: var(--theedu-primary, #8E7CFF) !important;
+                background: var(--theedu-secnav-btn-active-bg, linear-gradient(135deg, #8E7CFF, #A29BFE)) !important;
+                border-color: var(--theedu-secnav-btn-active-border, transparent) !important;
+                color: var(--theedu-secnav-btn-active-text, #121824) !important;
+                box-shadow: var(--theedu-secnav-btn-active-shadow, 0 4px 14px rgba(142, 124, 255, 0.35)) !important;
             }
         }
     }

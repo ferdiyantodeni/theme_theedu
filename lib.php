@@ -353,6 +353,345 @@ function theme_theedu_get_color($key, $default = '') {
 }
 
 /**
+ * Returns available design presets for Secondary Navigation & Tabs.
+ *
+ * @return array
+ */
+function theme_theedu_get_secnav_presets_list() {
+    return [
+        'default' => [
+            'name'            => 'Modern Pill (TheEdu Purple Gradient)',
+            'radius'          => '2rem',
+            'padding'         => '0.45rem 1.15rem',
+            'fontsize'        => '0.9rem',
+            'gap'             => '0.4rem',
+            'border_width'    => '1px',
+            'btn_bg'          => '#FFFFFF',
+            'btn_text'        => '#2D3436',
+            'btn_border'      => 'rgba(108, 92, 231, 0.15)',
+            'hover_bg'        => 'rgba(108, 92, 231, 0.08)',
+            'hover_text'      => '#6C5CE7',
+            'hover_border'    => '#6C5CE7',
+            'active_bg'       => 'linear-gradient(135deg, #6C5CE7 0%, #7F71EB 100%)',
+            'active_text'     => '#FFFFFF',
+            'active_border'   => '#6C5CE7',
+            'active_shadow'   => '0 4px 14px rgba(108, 92, 231, 0.35)',
+            'bar_bg'          => 'transparent',
+            'bar_padding'     => '0',
+            'bar_radius'      => '0px',
+            'align'           => 'flex-start',
+            'dark_btn_bg'     => '#1E2638',
+            'dark_btn_text'   => '#CBD5E1',
+            'dark_btn_border' => 'rgba(255, 255, 255, 0.1)',
+            'dark_hover_bg'   => 'rgba(255, 255, 255, 0.08)',
+            'dark_hover_text' => '#FFFFFF',
+            'dark_active_bg'  => 'linear-gradient(135deg, #8E7CFF 0%, #A29BFE 100%)',
+            'dark_active_text'=> '#121824',
+        ],
+        'soft_rounded' => [
+            'name'            => 'Soft Rounded (Indigo 8px)',
+            'radius'          => '8px',
+            'padding'         => '0.45rem 1.15rem',
+            'fontsize'        => '0.9rem',
+            'gap'             => '0.4rem',
+            'border_width'    => '1px',
+            'btn_bg'          => '#FFFFFF',
+            'btn_text'        => '#334155',
+            'btn_border'      => '#E2E8F0',
+            'hover_bg'        => '#F1F5F9',
+            'hover_text'      => '#1E293B',
+            'hover_border'    => '#CBD5E1',
+            'active_bg'       => 'linear-gradient(135deg, #4F46E5 0%, #6366F1 100%)',
+            'active_text'     => '#FFFFFF',
+            'active_border'   => '#4F46E5',
+            'active_shadow'   => '0 4px 12px rgba(79, 70, 229, 0.3)',
+            'bar_bg'          => 'transparent',
+            'bar_padding'     => '0',
+            'bar_radius'      => '0px',
+            'align'           => 'flex-start',
+            'dark_btn_bg'     => '#1E293B',
+            'dark_btn_text'   => '#E2E8F0',
+            'dark_btn_border' => '#334155',
+            'dark_hover_bg'   => '#334155',
+            'dark_hover_text' => '#FFFFFF',
+            'dark_active_bg'  => '#6366F1',
+            'dark_active_text'=> '#FFFFFF',
+        ],
+        'minimal_flat' => [
+            'name'            => 'Minimal Clean (Dark Slate 6px)',
+            'radius'          => '6px',
+            'padding'         => '0.45rem 1rem',
+            'fontsize'        => '0.9rem',
+            'gap'             => '0.35rem',
+            'border_width'    => '1px',
+            'btn_bg'          => 'transparent',
+            'btn_text'        => '#64748B',
+            'btn_border'      => 'transparent',
+            'hover_bg'        => '#F1F5F9',
+            'hover_text'      => '#0F172A',
+            'hover_border'    => 'transparent',
+            'active_bg'       => '#0F172A',
+            'active_text'     => '#FFFFFF',
+            'active_border'   => '#0F172A',
+            'active_shadow'   => 'none',
+            'bar_bg'          => 'transparent',
+            'bar_padding'     => '0',
+            'bar_radius'      => '0px',
+            'align'           => 'flex-start',
+            'dark_btn_bg'     => 'transparent',
+            'dark_btn_text'   => '#94A3B8',
+            'dark_btn_border' => 'transparent',
+            'dark_hover_bg'   => '#1E293B',
+            'dark_hover_text' => '#FFFFFF',
+            'dark_active_bg'  => '#F8FAFC',
+            'dark_active_text'=> '#0F172A',
+        ],
+        'outline_ghost' => [
+            'name'            => 'Ghost Outline (Bordered Pill)',
+            'radius'          => '2rem',
+            'padding'         => '0.45rem 1.15rem',
+            'fontsize'        => '0.9rem',
+            'gap'             => '0.4rem',
+            'border_width'    => '1.5px',
+            'btn_bg'          => 'transparent',
+            'btn_text'        => '#475569',
+            'btn_border'      => '#CBD5E1',
+            'hover_bg'        => 'rgba(108, 92, 231, 0.06)',
+            'hover_text'      => '#6C5CE7',
+            'hover_border'    => '#6C5CE7',
+            'active_bg'       => '#6C5CE7',
+            'active_text'     => '#FFFFFF',
+            'active_border'   => '#6C5CE7',
+            'active_shadow'   => '0 3px 10px rgba(108, 92, 231, 0.25)',
+            'bar_bg'          => 'transparent',
+            'bar_padding'     => '0',
+            'bar_radius'      => '0px',
+            'align'           => 'flex-start',
+            'dark_btn_bg'     => 'transparent',
+            'dark_btn_text'   => '#CBD5E1',
+            'dark_btn_border' => '#475569',
+            'dark_hover_bg'   => 'rgba(142, 124, 255, 0.12)',
+            'dark_hover_text' => '#8E7CFF',
+            'dark_active_bg'  => '#8E7CFF',
+            'dark_active_text'=> '#121824',
+        ],
+        'gradient_emerald' => [
+            'name'            => 'Fresh Emerald (Teal Gradient)',
+            'radius'          => '2rem',
+            'padding'         => '0.45rem 1.15rem',
+            'fontsize'        => '0.9rem',
+            'gap'             => '0.4rem',
+            'border_width'    => '1px',
+            'btn_bg'          => '#FFFFFF',
+            'btn_text'        => '#1E293B',
+            'btn_border'      => 'rgba(16, 185, 129, 0.25)',
+            'hover_bg'        => 'rgba(16, 185, 129, 0.1)',
+            'hover_text'      => '#059669',
+            'hover_border'    => '#10B981',
+            'active_bg'       => 'linear-gradient(135deg, #059669 0%, #10B981 100%)',
+            'active_text'     => '#FFFFFF',
+            'active_border'   => '#059669',
+            'active_shadow'   => '0 4px 14px rgba(16, 185, 129, 0.35)',
+            'bar_bg'          => 'transparent',
+            'bar_padding'     => '0',
+            'bar_radius'      => '0px',
+            'align'           => 'flex-start',
+            'dark_btn_bg'     => '#1E2638',
+            'dark_btn_text'   => '#A7F3D0',
+            'dark_btn_border' => 'rgba(16, 185, 129, 0.3)',
+            'dark_hover_bg'   => 'rgba(16, 185, 129, 0.15)',
+            'dark_hover_text' => '#34D399',
+            'dark_active_bg'  => '#10B981',
+            'dark_active_text'=> '#064E3B',
+        ],
+        'corporate_blue' => [
+            'name'            => 'Executive Blue (Ocean Gradient 8px)',
+            'radius'          => '8px',
+            'padding'         => '0.45rem 1.15rem',
+            'fontsize'        => '0.9rem',
+            'gap'             => '0.4rem',
+            'border_width'    => '1px',
+            'btn_bg'          => '#FFFFFF',
+            'btn_text'        => '#1E3A8A',
+            'btn_border'      => '#DBEAFE',
+            'hover_bg'        => '#EFF6FF',
+            'hover_text'      => '#1D4ED8',
+            'hover_border'    => '#3B82F6',
+            'active_bg'       => 'linear-gradient(135deg, #1E40AF 0%, #3B82F6 100%)',
+            'active_text'     => '#FFFFFF',
+            'active_border'   => '#1E40AF',
+            'active_shadow'   => '0 4px 12px rgba(30, 64, 175, 0.3)',
+            'bar_bg'          => 'transparent',
+            'bar_padding'     => '0',
+            'bar_radius'      => '0px',
+            'align'           => 'flex-start',
+            'dark_btn_bg'     => '#1E293B',
+            'dark_btn_text'   => '#BFDBFE',
+            'dark_btn_border' => '#2563EB',
+            'dark_hover_bg'   => 'rgba(59, 130, 246, 0.15)',
+            'dark_hover_text' => '#60A5FA',
+            'dark_active_bg'  => '#3B82F6',
+            'dark_active_text'=> '#FFFFFF',
+        ],
+        'card_container' => [
+            'name'            => 'Enclosed Bar (Pill on Card Background)',
+            'radius'          => '2rem',
+            'padding'         => '0.4rem 1.1rem',
+            'fontsize'        => '0.9rem',
+            'gap'             => '0.35rem',
+            'border_width'    => '1px',
+            'btn_bg'          => '#FFFFFF',
+            'btn_text'        => '#334155',
+            'btn_border'      => 'transparent',
+            'hover_bg'        => 'rgba(108, 92, 231, 0.1)',
+            'hover_text'      => '#6C5CE7',
+            'hover_border'    => 'transparent',
+            'active_bg'       => 'linear-gradient(135deg, #6C5CE7 0%, #7F71EB 100%)',
+            'active_text'     => '#FFFFFF',
+            'active_border'   => 'transparent',
+            'active_shadow'   => '0 3px 10px rgba(108, 92, 231, 0.3)',
+            'bar_bg'          => '#F1F5F9',
+            'bar_padding'     => '0.4rem 0.6rem',
+            'bar_radius'      => '2.5rem',
+            'align'           => 'flex-start',
+            'dark_btn_bg'     => '#1E2638',
+            'dark_btn_text'   => '#CBD5E1',
+            'dark_btn_border' => 'transparent',
+            'dark_hover_bg'   => 'rgba(142, 124, 255, 0.2)',
+            'dark_hover_text' => '#8E7CFF',
+            'dark_active_bg'  => '#8E7CFF',
+            'dark_active_text'=> '#121824',
+        ],
+        'custom' => [
+            'name'            => 'Custom (Use Individual Settings Below)',
+            'radius'          => '2rem',
+            'padding'         => '0.45rem 1.15rem',
+            'fontsize'        => '0.9rem',
+            'gap'             => '0.4rem',
+            'border_width'    => '1px',
+            'btn_bg'          => '#FFFFFF',
+            'btn_text'        => '#2D3436',
+            'btn_border'      => 'rgba(108, 92, 231, 0.15)',
+            'hover_bg'        => 'rgba(108, 92, 231, 0.08)',
+            'hover_text'      => '#6C5CE7',
+            'hover_border'    => '#6C5CE7',
+            'active_bg'       => 'linear-gradient(135deg, #6C5CE7 0%, #7F71EB 100%)',
+            'active_text'     => '#FFFFFF',
+            'active_border'   => '#6C5CE7',
+            'active_shadow'   => '0 4px 14px rgba(108, 92, 231, 0.35)',
+            'bar_bg'          => 'transparent',
+            'bar_padding'     => '0',
+            'bar_radius'      => '0px',
+            'align'           => 'flex-start',
+            'dark_btn_bg'     => '#1E2638',
+            'dark_btn_text'   => '#CBD5E1',
+            'dark_btn_border' => 'rgba(255, 255, 255, 0.1)',
+            'dark_hover_bg'   => 'rgba(255, 255, 255, 0.08)',
+            'dark_hover_text' => '#FFFFFF',
+            'dark_active_bg'  => '#8E7CFF',
+            'dark_active_text'=> '#121824',
+        ],
+    ];
+}
+
+/**
+ * Resolves the active secondary navigation palette based on preset and user settings.
+ *
+ * @return array
+ */
+function theme_theedu_get_secnav_palette() {
+    $preset = theme_theedu_get_setting('secnav_preset', 'default');
+    $presets = theme_theedu_get_secnav_presets_list();
+
+    $base = isset($presets[$preset]) ? $presets[$preset] : $presets['default'];
+
+    if ($preset === 'custom') {
+        $radius = theme_theedu_get_setting('secnav_btn_radius', '2rem');
+        $padding = theme_theedu_get_setting('secnav_btn_padding', '0.45rem 1.15rem');
+        $fontsize = theme_theedu_get_setting('secnav_btn_fontsize', '0.9rem');
+        $gap = theme_theedu_get_setting('secnav_btn_gap', '0.4rem');
+        $borderwidth = theme_theedu_get_setting('secnav_btn_border_width', '1px');
+
+        $btnbg = theme_theedu_get_setting('secnav_btn_bg', '#FFFFFF');
+        $btntext = theme_theedu_get_setting('secnav_btn_text', '#2D3436');
+        $btnborder = theme_theedu_get_setting('secnav_btn_border', 'rgba(108, 92, 231, 0.15)');
+
+        $hoverbg = theme_theedu_get_setting('secnav_btn_hover_bg', 'rgba(108, 92, 231, 0.08)');
+        $hovertext = theme_theedu_get_setting('secnav_btn_hover_text', '#6C5CE7');
+        $hoverborder = theme_theedu_get_setting('secnav_btn_hover_border', '#6C5CE7');
+
+        $activebg = theme_theedu_get_setting('secnav_btn_active_bg', '#6C5CE7');
+        $activegradient = theme_theedu_get_setting('secnav_btn_active_gradient', '#7F71EB');
+        $activetext = theme_theedu_get_setting('secnav_btn_active_text', '#FFFFFF');
+        $activeborder = theme_theedu_get_setting('secnav_btn_active_border', '#6C5CE7');
+        $activeshadow = (bool) theme_theedu_get_setting('secnav_btn_active_shadow', 1);
+
+        $barbg = theme_theedu_get_setting('secnav_bar_bg', '');
+        $barpadding = theme_theedu_get_setting('secnav_bar_padding', '0');
+        $barradius = theme_theedu_get_setting('secnav_bar_radius', '0px');
+        $align = theme_theedu_get_setting('secnav_align', 'flex-start');
+
+        $darkbtnbg = theme_theedu_get_setting('dark_secnav_btn_bg', '#1E2638');
+        $darkbtntext = theme_theedu_get_setting('dark_secnav_btn_text', '#CBD5E1');
+        $darkbtnborder = theme_theedu_get_setting('dark_secnav_btn_border', 'rgba(255, 255, 255, 0.1)');
+        $darkhoverbg = theme_theedu_get_setting('dark_secnav_btn_hover_bg', 'rgba(255, 255, 255, 0.08)');
+        $darkhovertext = theme_theedu_get_setting('dark_secnav_btn_hover_text', '#FFFFFF');
+        $darkactivebg = theme_theedu_get_setting('dark_secnav_btn_active_bg', '#8E7CFF');
+        $darkactivetext = theme_theedu_get_setting('dark_secnav_btn_active_text', '#121824');
+
+        $activebgvalue = $activebg;
+        if (!empty($activegradient) && ($activegradient !== $activebg)) {
+            $activebgvalue = "linear-gradient(135deg, {$activebg} 0%, {$activegradient} 100%)";
+        }
+
+        return [
+            'radius'          => !empty($radius) ? $radius : '2rem',
+            'padding'         => !empty($padding) ? $padding : '0.45rem 1.15rem',
+            'fontsize'        => !empty($fontsize) ? $fontsize : '0.9rem',
+            'gap'             => !empty($gap) ? $gap : '0.4rem',
+            'border_width'    => !empty($borderwidth) ? $borderwidth : '1px',
+            'btn_bg'          => !empty($btnbg) ? $btnbg : '#FFFFFF',
+            'btn_text'        => !empty($btntext) ? $btntext : '#2D3436',
+            'btn_border'      => !empty($btnborder) ? $btnborder : 'rgba(108, 92, 231, 0.15)',
+            'hover_bg'        => !empty($hoverbg) ? $hoverbg : 'rgba(108, 92, 231, 0.08)',
+            'hover_text'      => !empty($hovertext) ? $hovertext : '#6C5CE7',
+            'hover_border'    => !empty($hoverborder) ? $hoverborder : '#6C5CE7',
+            'active_bg'       => $activebgvalue,
+            'active_text'     => !empty($activetext) ? $activetext : '#FFFFFF',
+            'active_border'   => !empty($activeborder) ? $activeborder : '#6C5CE7',
+            'active_shadow'   => $activeshadow ? '0 4px 14px rgba(108, 92, 231, 0.35)' : 'none',
+            'bar_bg'          => !empty($barbg) ? $barbg : 'transparent',
+            'bar_padding'     => !empty($barpadding) ? $barpadding : '0',
+            'bar_radius'      => !empty($barradius) ? $barradius : '0px',
+            'align'           => !empty($align) ? $align : 'flex-start',
+            'dark_btn_bg'     => !empty($darkbtnbg) ? $darkbtnbg : '#1E2638',
+            'dark_btn_text'   => !empty($darkbtntext) ? $darkbtntext : '#CBD5E1',
+            'dark_btn_border' => !empty($darkbtnborder) ? $darkbtnborder : 'rgba(255, 255, 255, 0.1)',
+            'dark_hover_bg'   => !empty($darkhoverbg) ? $darkhoverbg : 'rgba(255, 255, 255, 0.08)',
+            'dark_hover_text' => !empty($darkhovertext) ? $darkhovertext : '#FFFFFF',
+            'dark_active_bg'  => !empty($darkactivebg) ? $darkactivebg : '#8E7CFF',
+            'dark_active_text'=> !empty($darkactivetext) ? $darkactivetext : '#121824',
+        ];
+    }
+
+    // For named presets, allow individual custom overrides if explicitly set by admin.
+    $customradius = theme_theedu_get_setting('secnav_btn_radius', '');
+    if (!empty($customradius)) {
+        $base['radius'] = $customradius;
+    }
+    $custompadding = theme_theedu_get_setting('secnav_btn_padding', '');
+    if (!empty($custompadding)) {
+        $base['padding'] = $custompadding;
+    }
+    $customalign = theme_theedu_get_setting('secnav_align', '');
+    if (!empty($customalign)) {
+        $base['align'] = $customalign;
+    }
+
+    return $base;
+}
+
+/**
  * Injects SCSS variables before compiling.
  *
  * @param theme_config $theme
@@ -553,6 +892,9 @@ function theme_theedu_get_inline_css() {
     $catcardstyle = theme_theedu_get_setting('category_card_style', 'banner');
     $catthumbsactive = ($enablecatthumbs && ($catcardstyle === 'banner')) ? '1' : '0';
 
+    // Secondary Navigation & Tabs (Course tabs, Admin tabs, etc.) Palette & Presets.
+    $secnav = theme_theedu_get_secnav_palette();
+
     return "<style id=\"theedu-dynamic-colors\" data-brand-preset=\"{$activepreset}\">
 :root {
     --theedu-primary: {$primary};
@@ -571,6 +913,25 @@ function theme_theedu_get_inline_css() {
     --theedu-content-card-padding: {$contentcardpadding}px;
     --theedu-cat-thumb-height: {$catthumbheight}px;
     --theedu-cat-thumbs-enabled: {$catthumbsactive};
+    --theedu-secnav-btn-radius: {$secnav['radius']};
+    --theedu-secnav-btn-padding: {$secnav['padding']};
+    --theedu-secnav-btn-fontsize: {$secnav['fontsize']};
+    --theedu-secnav-btn-gap: {$secnav['gap']};
+    --theedu-secnav-btn-border-width: {$secnav['border_width']};
+    --theedu-secnav-btn-bg: {$secnav['btn_bg']};
+    --theedu-secnav-btn-text: {$secnav['btn_text']};
+    --theedu-secnav-btn-border: {$secnav['btn_border']};
+    --theedu-secnav-btn-hover-bg: {$secnav['hover_bg']};
+    --theedu-secnav-btn-hover-text: {$secnav['hover_text']};
+    --theedu-secnav-btn-hover-border: {$secnav['hover_border']};
+    --theedu-secnav-btn-active-bg: {$secnav['active_bg']};
+    --theedu-secnav-btn-active-text: {$secnav['active_text']};
+    --theedu-secnav-btn-active-border: {$secnav['active_border']};
+    --theedu-secnav-btn-active-shadow: {$secnav['active_shadow']};
+    --theedu-secnav-bar-bg: {$secnav['bar_bg']};
+    --theedu-secnav-bar-padding: {$secnav['bar_padding']};
+    --theedu-secnav-bar-radius: {$secnav['bar_radius']};
+    --theedu-secnav-align: {$secnav['align']};
 }
 #page-wrapper.theedu-floating-header .navbar.fixed-top,
 .theedu-floating-header .navbar.fixed-top,
@@ -679,7 +1040,9 @@ a:not(.btn):not(.nav-link):not(.dropdown-item) {
 #page-footer a:hover {
     color: var(--theedu-primary) !important;
 }
-[data-theme=\"dark\"] {
+[data-theme=\"dark\"],
+[data-bs-theme=\"dark\"],
+body.theedu-dark-mode {
     --theedu-primary: {$darkprimary};
     --theedu-body-bg: {$darkbodybg};
     --theedu-card-bg: {$darkcardbg};
@@ -687,6 +1050,63 @@ a:not(.btn):not(.nav-link):not(.dropdown-item) {
     --theedu-navbar-text: #E4E7EB;
     --theedu-footer-bg: #0D121B;
     --theedu-footer-text: #CBD5E1;
+    --theedu-secnav-btn-bg: {$secnav['dark_btn_bg']};
+    --theedu-secnav-btn-text: {$secnav['dark_btn_text']};
+    --theedu-secnav-btn-border: {$secnav['dark_btn_border']};
+    --theedu-secnav-btn-hover-bg: {$secnav['dark_hover_bg']};
+    --theedu-secnav-btn-hover-text: {$secnav['dark_hover_text']};
+    --theedu-secnav-btn-active-bg: {$secnav['dark_active_bg']};
+    --theedu-secnav-btn-active-text: {$secnav['dark_active_text']};
+}
+/* Secondary Navigation & Tabs Dynamic Customization */
+.secondary-navigation,
+#page .secondary-navigation {
+    background: var(--theedu-secnav-bar-bg) !important;
+    padding: var(--theedu-secnav-bar-padding) !important;
+    border-radius: var(--theedu-secnav-bar-radius) !important;
+    border-bottom: none !important;
+}
+.secondary-navigation .navigation,
+.secondary-navigation .more-nav,
+.secondary-navigation .nav-tabs {
+    justify-content: var(--theedu-secnav-align) !important;
+    gap: var(--theedu-secnav-btn-gap) !important;
+    border-bottom: none !important;
+}
+.secondary-navigation .nav-tabs .nav-link,
+.secondary-navigation .more-nav .nav-link,
+.secondary-navigation .navigation .nav-link,
+.secondary-navigation .moremenu .nav-link {
+    border-radius: var(--theedu-secnav-btn-radius) !important;
+    padding: var(--theedu-secnav-btn-padding) !important;
+    font-size: var(--theedu-secnav-btn-fontsize) !important;
+    font-weight: 600 !important;
+    border: var(--theedu-secnav-btn-border-width) solid var(--theedu-secnav-btn-border) !important;
+    color: var(--theedu-secnav-btn-text) !important;
+    background-color: var(--theedu-secnav-btn-bg) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    transition: all 0.2s ease !important;
+    text-decoration: none !important;
+}
+.secondary-navigation .nav-tabs .nav-link:hover,
+.secondary-navigation .more-nav .nav-link:hover,
+.secondary-navigation .navigation .nav-link:hover,
+.secondary-navigation .moremenu .nav-link:hover {
+    background-color: var(--theedu-secnav-btn-hover-bg) !important;
+    border-color: var(--theedu-secnav-btn-hover-border) !important;
+    color: var(--theedu-secnav-btn-hover-text) !important;
+    transform: translateY(-1px) !important;
+    text-decoration: none !important;
+}
+.secondary-navigation .nav-tabs .nav-link.active,
+.secondary-navigation .more-nav .nav-link.active,
+.secondary-navigation .navigation .nav-link.active,
+.secondary-navigation .moremenu .nav-link.active {
+    background: var(--theedu-secnav-btn-active-bg) !important;
+    border-color: var(--theedu-secnav-btn-active-border) !important;
+    color: var(--theedu-secnav-btn-active-text) !important;
+    box-shadow: var(--theedu-secnav-btn-active-shadow) !important;
+    text-decoration: none !important;
 }
 @media (max-width: 768px) {
     .navbar.fixed-top .primary-navigation {
@@ -3880,13 +4300,44 @@ function theme_theedu_get_about_html() {
                 <span style="font-size: 0.85rem; color: #64748B; font-weight: 500;">Comprehensive Version History</span>
             </div>
 
-            <!-- Version 1.6.4 -->
+            <!-- Version 1.7.0 -->
             <div class="theedu-version-card latest">
                 <div class="theedu-version-meta">
                     <div class="theedu-version-tag">
-                        <i class="fa fa-cube"></i> v1.6.4
+                        <i class="fa fa-cube"></i> v1.7.0
                         <span class="theedu-release-badge badge-latest">Current Release</span>
                     </div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111007</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-feature">New Feature</span>
+                            <strong>Secondary Navigation & Tab Buttons Customization Suite:</strong> Added a full-fledged dedicated administration tab (<code>theme_theedu_secnav</code>) with 7 curated design presets (Modern Pill, Soft Rounded 8px, Minimal Clean Flat, Ghost Outline, Fresh Emerald, Executive Blue, Enclosed Bar Card) plus Custom mode.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">UI / UX</span>
+                            <strong>Fine-Grained Geometry & Color Controls:</strong> Full control over button corner curvature (border radius e.g. <code>2rem</code>, <code>8px</code>, <code>4px</code>, <code>0px</code>), padding, font size, button gap, normal background/text/border, hover state colors, active gradient/solid colors, soft glow elevation shadows, bar background/padding, and alignment (left, center, right).
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">UI / UX</span>
+                            <strong>Instant Live Updates & Dark Mode Synchronization:</strong> Dynamically injects CSS variables and overrides into <code>:root</code>, allowing immediate visual updates without theme cache purging across course views, Site Administration, gradebook, and user profile tabs.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.6.4 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.6.4</div>
                     <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111006</div>
                 </div>
                 <ul>

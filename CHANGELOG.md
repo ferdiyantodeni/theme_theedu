@@ -6,6 +6,45 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.7.0] - 2026-11-10 (Build 2026111007)
+
+### 🎯 Masalah & Permintaan Pengguna
+1. **Pengaturan Kustomisasi Tombol Navigasi Sekunder (Secondary Navigation / Tabs):**
+   - Pengguna meminta penambahan pengaturan khusus untuk area tombol navigasi sekunder / tab bar (seperti menu `Course`, `Settings`, `Participants`, `Grades`, `Reports`, `More` pada tampilan kursus, serta menu `General`, `Users`, `Courses`, `Appearance`, dll. pada Site Administration).
+   - Pengaturan yang diminta meliputi:
+     - Latar belakang tombol (*background color*).
+     - Kelengkungan sudut tombol (*border radius / rounded*).
+     - Warna dan efek saat kursor mengarah (*hover color*).
+     - Warna tombol saat aktif (*active state*).
+     - Pilihan **Preset Pengaturan Desain Siap Pakai** (*Presets*) agar administrator dapat langsung memilih tema visual tombol secara instan dengan 1 klik.
+
+### ✨ Perubahan & Solusi
+1. **Penambahan Tab Khusus di Site Administration (`settings.php`):**
+   - Menambahkan tab baru **`tab_secnav`** (*Secondary Navigation & Tab Buttons* / *Navigasi Sekunder & Tombol Tab*) di Site Administration Tema TheEdu.
+2. **7 Pilihan Preset Desain Instan + Mode Kustom (`lib.php`, `settings.php`):**
+   - Menghadirkan pengaturan `secnav_preset` dengan 7 preset visual profesional:
+     - `default`: **Modern Pill** (Gradasi ungu TheEdu dengan kelengkungan bulat penuh `2rem` dan bayangan lembut).
+     - `soft_rounded`: **Soft Rounded** (Sudut melengkung halus `8px` dengan aksen Indigo).
+     - `minimal_flat`: **Minimal Clean Flat** (Sudut `6px`, latar transparan tanpa border, aksen slate gelap).
+     - `outline_ghost`: **Ghost Outline** (Pill transparan bergaris tepi tegas, terisi warna saat hover/aktif).
+     - `gradient_emerald`: **Fresh Emerald** (Gradasi hijau zamrud dan teal cerah).
+     - `corporate_blue`: **Executive Blue** (Gradasi biru laut modern dengan sudut `8px`).
+     - `card_container`: **Enclosed Bar** (Tombol pill di atas bilah kontainer kartu berlatar abu-abu lembut).
+     - `custom`: **Mode Kustom** (Memberikan kontrol penuh atas setiap nilai warna dan geometri di bawah).
+3. **Kontrol Geometri & Warna Lengkap (`settings.php`, `lib.php`, `scss/_course.scss`, `scss/_darkmode.scss`):**
+   - **Bentuk & Spasi:** `secnav_btn_radius` (contoh: `2rem`, `8px`, `4px`, `0px`), `secnav_btn_padding`, `secnav_btn_fontsize`, `secnav_btn_gap`, `secnav_btn_border_width`.
+   - **Normal State:** `secnav_btn_bg`, `secnav_btn_text`, `secnav_btn_border`.
+   - **Hover State:** `secnav_btn_hover_bg`, `secnav_btn_hover_text`, `secnav_btn_hover_border`.
+   - **Active State:** `secnav_btn_active_bg`, `secnav_btn_active_gradient` (dukungan gradasi halus 135° atau warna solid), `secnav_btn_active_text`, `secnav_btn_active_border`, `secnav_btn_active_shadow` (*glow* elevasi lembut).
+   - **Bilah Kontainer & Perataan:** `secnav_bar_bg`, `secnav_bar_padding`, `secnav_bar_radius`, `secnav_align` (*left*, *center*, *right*).
+   - **Mode Gelap:** Pengaturan mandiri untuk latar, teks, border, hover, dan aktif di Mode Gelap.
+4. **Sistem Pembaruan Langsung Tanpa Purge Cache (`theme_theedu_get_inline_css` di `lib.php`):**
+   - Pengaturan sekunder navigasi di-injeksikan secara real-time melalui variabel CSS `:root` dan aturan spesifisitas tinggi sehingga perubahan langsung tampil seketika saat disimpan.
+5. **Kenaikan Versi:**
+   - Versi tema dinaikkan ke **`v1.7.0`** (Build `2026111007`).
+
+---
+
 ## [v1.6.4] - 2026-11-10 (Build 2026111006)
 
 ### 🎯 Masalah yang Diselesaikan

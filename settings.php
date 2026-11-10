@@ -378,7 +378,172 @@ if ($ADMIN->fulltree) {
     $settings->add($tab_colors);
 
     // =========================================================================
-    // TAB 3: DARK MODE
+    // TAB 3: SECONDARY NAVIGATION & TAB BUTTONS
+    // =========================================================================
+    $tab_secnav = new admin_settingpage('theme_theedu_secnav', get_string('tab_secnav', 'theme_theedu'));
+
+    // 1. Presets
+    $tab_secnav->add(new admin_setting_heading('heading_secnav_presets',
+        get_string('heading_secnav_presets', 'theme_theedu'),
+        get_string('heading_secnav_presets_desc', 'theme_theedu')));
+
+    $secnavpresets = [
+        'default'          => get_string('secnav_preset_default', 'theme_theedu'),
+        'soft_rounded'     => get_string('secnav_preset_soft_rounded', 'theme_theedu'),
+        'minimal_flat'     => get_string('secnav_preset_minimal_flat', 'theme_theedu'),
+        'outline_ghost'    => get_string('secnav_preset_outline_ghost', 'theme_theedu'),
+        'gradient_emerald' => get_string('secnav_preset_gradient_emerald', 'theme_theedu'),
+        'corporate_blue'   => get_string('secnav_preset_corporate_blue', 'theme_theedu'),
+        'card_container'   => get_string('secnav_preset_card_container', 'theme_theedu'),
+        'custom'           => get_string('secnav_preset_custom', 'theme_theedu'),
+    ];
+    $tab_secnav->add(new admin_setting_configselect('theme_theedu/secnav_preset',
+        get_string('secnav_preset', 'theme_theedu'),
+        get_string('secnav_preset_desc', 'theme_theedu'), 'default', $secnavpresets));
+
+    // 2. Button Shape & Spacing
+    $tab_secnav->add(new admin_setting_heading('heading_secnav_shape',
+        get_string('heading_secnav_shape', 'theme_theedu'),
+        get_string('heading_secnav_shape_desc', 'theme_theedu')));
+
+    $tab_secnav->add(new admin_setting_configtext('theme_theedu/secnav_btn_radius',
+        get_string('secnav_btn_radius', 'theme_theedu'),
+        get_string('secnav_btn_radius_desc', 'theme_theedu'), '2rem'));
+
+    $tab_secnav->add(new admin_setting_configtext('theme_theedu/secnav_btn_padding',
+        get_string('secnav_btn_padding', 'theme_theedu'),
+        get_string('secnav_btn_padding_desc', 'theme_theedu'), '0.45rem 1.15rem'));
+
+    $tab_secnav->add(new admin_setting_configtext('theme_theedu/secnav_btn_fontsize',
+        get_string('secnav_btn_fontsize', 'theme_theedu'),
+        get_string('secnav_btn_fontsize_desc', 'theme_theedu'), '0.9rem'));
+
+    $tab_secnav->add(new admin_setting_configtext('theme_theedu/secnav_btn_gap',
+        get_string('secnav_btn_gap', 'theme_theedu'),
+        get_string('secnav_btn_gap_desc', 'theme_theedu'), '0.4rem'));
+
+    $tab_secnav->add(new admin_setting_configtext('theme_theedu/secnav_btn_border_width',
+        get_string('secnav_btn_border_width', 'theme_theedu'),
+        get_string('secnav_btn_border_width_desc', 'theme_theedu'), '1px'));
+
+    // 3. Normal State
+    $tab_secnav->add(new admin_setting_heading('heading_secnav_normal',
+        get_string('heading_secnav_normal', 'theme_theedu'), ''));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/secnav_btn_bg',
+        get_string('secnav_btn_bg', 'theme_theedu'),
+        get_string('secnav_btn_bg_desc', 'theme_theedu'), '#FFFFFF'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/secnav_btn_text',
+        get_string('secnav_btn_text', 'theme_theedu'),
+        get_string('secnav_btn_text_desc', 'theme_theedu'), '#2D3436'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/secnav_btn_border',
+        get_string('secnav_btn_border', 'theme_theedu'),
+        get_string('secnav_btn_border_desc', 'theme_theedu'), 'rgba(108, 92, 231, 0.15)'));
+
+    // 4. Hover State
+    $tab_secnav->add(new admin_setting_heading('heading_secnav_hover',
+        get_string('heading_secnav_hover', 'theme_theedu'), ''));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/secnav_btn_hover_bg',
+        get_string('secnav_btn_hover_bg', 'theme_theedu'),
+        get_string('secnav_btn_hover_bg_desc', 'theme_theedu'), 'rgba(108, 92, 231, 0.08)'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/secnav_btn_hover_text',
+        get_string('secnav_btn_hover_text', 'theme_theedu'),
+        get_string('secnav_btn_hover_text_desc', 'theme_theedu'), '#6C5CE7'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/secnav_btn_hover_border',
+        get_string('secnav_btn_hover_border', 'theme_theedu'),
+        get_string('secnav_btn_hover_border_desc', 'theme_theedu'), '#6C5CE7'));
+
+    // 5. Active State
+    $tab_secnav->add(new admin_setting_heading('heading_secnav_active',
+        get_string('heading_secnav_active', 'theme_theedu'), ''));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/secnav_btn_active_bg',
+        get_string('secnav_btn_active_bg', 'theme_theedu'),
+        get_string('secnav_btn_active_bg_desc', 'theme_theedu'), '#6C5CE7'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/secnav_btn_active_gradient',
+        get_string('secnav_btn_active_gradient', 'theme_theedu'),
+        get_string('secnav_btn_active_gradient_desc', 'theme_theedu'), '#7F71EB'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/secnav_btn_active_text',
+        get_string('secnav_btn_active_text', 'theme_theedu'),
+        get_string('secnav_btn_active_text_desc', 'theme_theedu'), '#FFFFFF'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/secnav_btn_active_border',
+        get_string('secnav_btn_active_border', 'theme_theedu'),
+        get_string('secnav_btn_active_border_desc', 'theme_theedu'), '#6C5CE7'));
+
+    $tab_secnav->add(new admin_setting_configcheckbox('theme_theedu/secnav_btn_active_shadow',
+        get_string('secnav_btn_active_shadow', 'theme_theedu'),
+        get_string('secnav_btn_active_shadow_desc', 'theme_theedu'), 1));
+
+    // 6. Container Bar & Alignment
+    $tab_secnav->add(new admin_setting_heading('heading_secnav_container',
+        get_string('heading_secnav_container', 'theme_theedu'), ''));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/secnav_bar_bg',
+        get_string('secnav_bar_bg', 'theme_theedu'),
+        get_string('secnav_bar_bg_desc', 'theme_theedu'), ''));
+
+    $tab_secnav->add(new admin_setting_configtext('theme_theedu/secnav_bar_padding',
+        get_string('secnav_bar_padding', 'theme_theedu'),
+        get_string('secnav_bar_padding_desc', 'theme_theedu'), '0'));
+
+    $tab_secnav->add(new admin_setting_configtext('theme_theedu/secnav_bar_radius',
+        get_string('secnav_bar_radius', 'theme_theedu'),
+        get_string('secnav_bar_radius_desc', 'theme_theedu'), '0px'));
+
+    $alignoptions = [
+        'flex-start' => get_string('secnav_align_left', 'theme_theedu'),
+        'center'     => get_string('secnav_align_center', 'theme_theedu'),
+        'flex-end'   => get_string('secnav_align_right', 'theme_theedu'),
+    ];
+    $tab_secnav->add(new admin_setting_configselect('theme_theedu/secnav_align',
+        get_string('secnav_align', 'theme_theedu'),
+        get_string('secnav_align_desc', 'theme_theedu'), 'flex-start', $alignoptions));
+
+    // 7. Dark Mode
+    $tab_secnav->add(new admin_setting_heading('heading_secnav_darkmode',
+        get_string('heading_secnav_darkmode', 'theme_theedu'),
+        get_string('heading_secnav_darkmode_desc', 'theme_theedu')));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/dark_secnav_btn_bg',
+        get_string('dark_secnav_btn_bg', 'theme_theedu'),
+        get_string('dark_secnav_btn_bg_desc', 'theme_theedu'), '#1E2638'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/dark_secnav_btn_text',
+        get_string('dark_secnav_btn_text', 'theme_theedu'),
+        get_string('dark_secnav_btn_text_desc', 'theme_theedu'), '#CBD5E1'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/dark_secnav_btn_border',
+        get_string('dark_secnav_btn_border', 'theme_theedu'),
+        get_string('dark_secnav_btn_border_desc', 'theme_theedu'), 'rgba(255, 255, 255, 0.1)'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/dark_secnav_btn_hover_bg',
+        get_string('dark_secnav_btn_hover_bg', 'theme_theedu'),
+        get_string('dark_secnav_btn_hover_bg_desc', 'theme_theedu'), 'rgba(255, 255, 255, 0.08)'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/dark_secnav_btn_hover_text',
+        get_string('dark_secnav_btn_hover_text', 'theme_theedu'),
+        get_string('dark_secnav_btn_hover_text_desc', 'theme_theedu'), '#FFFFFF'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/dark_secnav_btn_active_bg',
+        get_string('dark_secnav_btn_active_bg', 'theme_theedu'),
+        get_string('dark_secnav_btn_active_bg_desc', 'theme_theedu'), '#8E7CFF'));
+
+    $tab_secnav->add(new admin_setting_configcolourpicker('theme_theedu/dark_secnav_btn_active_text',
+        get_string('dark_secnav_btn_active_text', 'theme_theedu'),
+        get_string('dark_secnav_btn_active_text_desc', 'theme_theedu'), '#121824'));
+
+    $settings->add($tab_secnav);
+
+    // =========================================================================
+    // TAB 4: DARK MODE
     // =========================================================================
     $tab_darkmode = new admin_settingpage('theme_theedu_darkmode', get_string('tab_darkmode', 'theme_theedu'));
 
