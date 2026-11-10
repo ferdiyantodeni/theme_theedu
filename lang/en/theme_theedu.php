@@ -123,6 +123,7 @@ $string['heading_typography'] = 'Theme Typography & Fonts';
 $string['heading_typography_desc'] = 'Select the primary font used throughout the site.';
 $string['theme_font'] = 'Main Font Family';
 $string['theme_font_desc'] = 'Select one of the curated web fonts or specify a custom Google Font.';
+$string['font_bahnschrift'] = 'Bahnschrift (DIN 1451 Geometric & Technical)';
 $string['custom_font_name'] = 'Custom Font Name';
 $string['custom_font_name_desc'] = 'Exact font family name (e.g. "Plus Jakarta Sans", "Outfit", "Space Grotesk").';
 $string['custom_font_url'] = 'Custom Google Font URL';

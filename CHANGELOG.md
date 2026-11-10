@@ -6,6 +6,27 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.7.1] - 2026-11-10 (Build 2026111008)
+
+### 🎯 Masalah & Permintaan Pengguna
+1. **Penambahan Preset Font Bahnschrift:**
+   - Pengguna meminta penambahan jenis font **Bahnschrift** ke dalam daftar pilihan preset tipografi tema TheEdu.
+   - Bahnschrift adalah jenis huruf geometris dan teknikal berbasis standar Jerman **DIN 1451** yang sangat populer di industri manufaktur, teknik, dan otomotif (seperti Astra Daihatsu Motor) karena tingkat keterbacaan (*legibility*) yang sangat tinggi pada angka, label, dan teks teknis.
+
+### ✨ Perubahan & Solusi
+1. **Integrasi Preset Tipografi Bahnschrift (`settings.php`, `lib.php`, `lang/`):**
+   - Menambahkan opsi **`bahnschrift`** (*Bahnschrift - DIN 1451 Geometric & Technical*) pada dropdown pengaturan font utama tema (`theme_font`).
+   - Menyusun tumpukan font (*font stack*) yang optimal:
+     `'Bahnschrift', 'DIN Alternate', 'Barlow', 'Franklin Gothic Medium', 'Segoe UI', sans-serif`.
+   - Pada komputer Windows (Windows 10/11), browser akan langsung me-load font native Bahnschrift dari sistem operasi secara instan tanpa latensi unduhan jaringan.
+   - Pada perangkat non-Windows (macOS, iOS, Android, Linux), sistem menyediakan fallback halus via DIN Alternate dan Google Font Barlow (standar DIN open-source).
+2. **Pembaruan Font Instan Tanpa Purge Cache (`lib.php`):**
+   - Menambahkan variabel `--theedu-font-family` langsung ke dalam *dynamic inline CSS* di `lib.php`, sehingga begitu administrator mengganti font dan menyimpan pengaturan, perubahan font langsung diterapkan ke seluruh halaman tanpa perlu menghapus cache tema Moodle (*purge caches*).
+3. **Kenaikan Versi:**
+   - Versi tema dinaikkan ke **`v1.7.1`** (Build `2026111008`).
+
+---
+
 ## [v1.7.0] - 2026-11-10 (Build 2026111007)
 
 ### 🎯 Masalah & Permintaan Pengguna

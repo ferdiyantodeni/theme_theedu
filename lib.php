@@ -755,32 +755,7 @@ function theme_theedu_get_extra_scss($theme) {
     $catthumbsactive = ($enablecatthumbs && ($catcardstyle === 'banner')) ? '1' : '0';
 
     // Font Configuration.
-    $themefont = theme_theedu_get_setting('theme_font', 'plus_jakarta_sans');
-    $fontfamily = "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
-
-    switch ($themefont) {
-        case 'inter':
-            $fontfamily = "'Inter', sans-serif";
-            break;
-        case 'poppins':
-            $fontfamily = "'Poppins', sans-serif";
-            break;
-        case 'nunito':
-            $fontfamily = "'Nunito', sans-serif";
-            break;
-        case 'outfit':
-            $fontfamily = "'Outfit', sans-serif";
-            break;
-        case 'roboto':
-            $fontfamily = "'Roboto', sans-serif";
-            break;
-        case 'custom':
-            $customfontname = theme_theedu_get_setting('custom_font_name', '');
-            if (!empty($customfontname)) {
-                $fontfamily = "'{$customfontname}', sans-serif";
-            }
-            break;
-    }
+    $fontfamily = theme_theedu_get_font_family();
 
     $extra = "
 :root {
@@ -826,6 +801,38 @@ body, .navbar, .card, h1, h2, h3, h4, h5, h6, .btn, input, select, textarea {
 }
 
 /**
+ * Resolves the CSS font-family string based on the theme_font setting.
+ *
+ * @return string CSS font-family stack
+ */
+function theme_theedu_get_font_family() {
+    $themefont = theme_theedu_get_setting('theme_font', 'plus_jakarta_sans');
+    switch ($themefont) {
+        case 'bahnschrift':
+            return "'Bahnschrift', 'DIN Alternate', 'Barlow', 'Franklin Gothic Medium', 'Segoe UI', sans-serif";
+        case 'inter':
+            return "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        case 'poppins':
+            return "'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        case 'nunito':
+            return "'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        case 'outfit':
+            return "'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        case 'roboto':
+            return "'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        case 'custom':
+            $customfontname = theme_theedu_get_setting('custom_font_name', '');
+            if (!empty($customfontname)) {
+                return "'{$customfontname}', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+            }
+            return "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+        case 'plus_jakarta_sans':
+        default:
+            return "'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif";
+    }
+}
+
+/**
  * Returns Google Font stylesheet URL based on theme settings.
  *
  * @return string
@@ -833,6 +840,9 @@ body, .navbar, .card, h1, h2, h3, h4, h5, h6, .btn, input, select, textarea {
 function theme_theedu_get_font_url() {
     $themefont = theme_theedu_get_setting('theme_font', 'plus_jakarta_sans');
     switch ($themefont) {
+        case 'bahnschrift':
+            // Bahnschrift is native on Windows (DIN 1451). Barlow provides the closest open-source fallback on non-Windows devices.
+            return 'https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&display=swap';
         case 'inter':
             return 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap';
         case 'poppins':
@@ -895,8 +905,12 @@ function theme_theedu_get_inline_css() {
     // Secondary Navigation & Tabs (Course tabs, Admin tabs, etc.) Palette & Presets.
     $secnav = theme_theedu_get_secnav_palette();
 
+    // Typography Font Family.
+    $fontfamily = theme_theedu_get_font_family();
+
     return "<style id=\"theedu-dynamic-colors\" data-brand-preset=\"{$activepreset}\">
 :root {
+    --theedu-font-family: {$fontfamily};
     --theedu-primary: {$primary};
     --theedu-secondary: {$secondary};
     --theedu-accent: {$accent};
@@ -932,6 +946,9 @@ function theme_theedu_get_inline_css() {
     --theedu-secnav-bar-padding: {$secnav['bar_padding']};
     --theedu-secnav-bar-radius: {$secnav['bar_radius']};
     --theedu-secnav-align: {$secnav['align']};
+}
+body, .navbar, .card, h1, h2, h3, h4, h5, h6, .btn, input, select, textarea, .nav-link, .secondary-navigation {
+    font-family: var(--theedu-font-family) !important;
 }
 #page-wrapper.theedu-floating-header .navbar.fixed-top,
 .theedu-floating-header .navbar.fixed-top,
@@ -4300,13 +4317,37 @@ function theme_theedu_get_about_html() {
                 <span style="font-size: 0.85rem; color: #64748B; font-weight: 500;">Comprehensive Version History</span>
             </div>
 
-            <!-- Version 1.7.0 -->
+            <!-- Version 1.7.1 -->
             <div class="theedu-version-card latest">
                 <div class="theedu-version-meta">
                     <div class="theedu-version-tag">
-                        <i class="fa fa-cube"></i> v1.7.0
+                        <i class="fa fa-cube"></i> v1.7.1
                         <span class="theedu-release-badge badge-latest">Current Release</span>
                     </div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111008</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-feature">New Feature</span>
+                            <strong>Bahnschrift Typography Preset Integration:</strong> Added <code>Bahnschrift (DIN 1451 Geometric & Technical)</code> to the curated Main Font Family presets. Leverages Windows 10/11 native variable font rendering for ultra-crisp engineering legibility with seamless DIN/Barlow fallbacks for non-Windows devices.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">UI / UX</span>
+                            <strong>Instant Live Font Updating:</strong> Integrated typography font family directly into dynamic inline CSS (<code>--theedu-font-family</code>), allowing immediate live application across all pages upon saving in Site Administration without requiring a manual theme cache purge.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.7.0 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.7.0</div>
                     <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111007</div>
                 </div>
                 <ul>

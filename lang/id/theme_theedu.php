@@ -123,6 +123,7 @@ $string['heading_typography'] = 'Tipografi & Font Tema';
 $string['heading_typography_desc'] = 'Pilih font utama yang diterapkan pada seluruh teks situs.';
 $string['theme_font'] = 'Keluarga Font Utama';
 $string['theme_font_desc'] = 'Pilih salah satu font web modern atau gunakan font Google kustom.';
+$string['font_bahnschrift'] = 'Bahnschrift (DIN 1451 Geometris & Teknikal)';
 $string['custom_font_name'] = 'Nama Font Kustom';
 $string['custom_font_name_desc'] = 'Nama keluarga font yang tepat (contoh: "Plus Jakarta Sans", "Outfit", "Space Grotesk").';
 $string['custom_font_url'] = 'URL Font Google Kustom';

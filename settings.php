@@ -282,6 +282,7 @@ if ($ADMIN->fulltree) {
 
     $fontoptions = [
         'plus_jakarta_sans' => 'Plus Jakarta Sans (Modern & Clean - Default)',
+        'bahnschrift'       => 'Bahnschrift (DIN 1451 Geometric & Technical)',
         'inter'             => 'Inter (Crisp & Professional)',
         'poppins'           => 'Poppins (Friendly & Rounded)',
         'nunito'            => 'Nunito (Soft Pastel Curves)',
