@@ -2079,6 +2079,68 @@ function theme_theedu_get_category_fallback_gradient($index = 0) {
 }
 
 /**
+ * Generate a standalone crisp vector SVG flag or globe icon for a language code.
+ * Eliminates missing emoji flag glyphs on Windows and guarantees crisp rendering across all browsers.
+ *
+ * @param string $lcode Language code (e.g. 'id', 'en', 'en_us', 'ja', 'ja_wp', etc.)
+ * @return string Safe inline SVG HTML
+ */
+function theme_theedu_get_lang_flag_svg($lcode) {
+    $code = strtolower(str_replace('-', '_', trim($lcode)));
+
+    // 1. Indonesia (Red & White)
+    if ($code === 'id' || strpos($code, 'id_') === 0) {
+        return '<svg class="theedu-flag-svg" width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;overflow:hidden;" aria-hidden="true"><rect width="20" height="7" fill="#E70011"/><rect y="7" width="20" height="7" fill="#FFFFFF"/></svg>';
+    }
+
+    // 2. English (UK / US)
+    if ($code === 'en_us') {
+        return '<svg class="theedu-flag-svg" width="20" height="14" viewBox="0 0 38 20" style="border-radius:2px;overflow:hidden;" aria-hidden="true"><rect width="38" height="20" fill="#B22234"/><path d="M0,3h38 M0,6h38 M0,9h38 M0,12h38 M0,15h38 M0,18h38" stroke="#FFFFFF" stroke-width="1.5"/><rect width="16" height="11" fill="#3C3B6E"/></svg>';
+    }
+    if ($code === 'en' || strpos($code, 'en_') === 0) {
+        return '<svg class="theedu-flag-svg" width="20" height="14" viewBox="0 0 60 30" style="border-radius:2px;overflow:hidden;" aria-hidden="true"><rect width="60" height="30" fill="#012169"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#FFFFFF" stroke-width="6"/><path d="M0,0 L60,30 M60,0 L0,30" stroke="#C8102E" stroke-width="2"/><path d="M30,0 v30 M0,15 h60" stroke="#FFFFFF" stroke-width="10"/><path d="M30,0 v30 M0,15 h60" stroke="#C8102E" stroke-width="6"/></svg>';
+    }
+
+    // 3. Japan (White background + Red circle) - includes ja, ja_wp (Workplace Japanese)
+    if ($code === 'ja' || strpos($code, 'ja_') === 0) {
+        return '<svg class="theedu-flag-svg" width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;overflow:hidden;" aria-hidden="true"><rect width="20" height="14" fill="#FFFFFF"/><circle cx="10" cy="7" r="4.2" fill="#BC002D"/></svg>';
+    }
+
+    // 4. Germany (Black, Red, Gold)
+    if ($code === 'de' || strpos($code, 'de_') === 0) {
+        return '<svg class="theedu-flag-svg" width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;overflow:hidden;" aria-hidden="true"><rect width="20" height="4.66" fill="#000000"/><rect y="4.66" width="20" height="4.66" fill="#DD0000"/><rect y="9.33" width="20" height="4.67" fill="#FFCE00"/></svg>';
+    }
+
+    // 5. France (Blue, White, Red)
+    if ($code === 'fr' || strpos($code, 'fr_') === 0) {
+        return '<svg class="theedu-flag-svg" width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;overflow:hidden;" aria-hidden="true"><rect width="6.66" height="14" fill="#002395"/><rect x="6.66" width="6.66" height="14" fill="#FFFFFF"/><rect x="13.33" width="6.67" height="14" fill="#ED2939"/></svg>';
+    }
+
+    // 6. Spain (Red, Yellow, Red)
+    if ($code === 'es' || strpos($code, 'es_') === 0) {
+        return '<svg class="theedu-flag-svg" width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;overflow:hidden;" aria-hidden="true"><rect width="20" height="3.5" fill="#AA151B"/><rect y="3.5" width="20" height="7" fill="#F1BF00"/><rect y="10.5" width="20" height="3.5" fill="#AA151B"/></svg>';
+    }
+
+    // 7. Italy (Green, White, Red)
+    if ($code === 'it' || strpos($code, 'it_') === 0) {
+        return '<svg class="theedu-flag-svg" width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;overflow:hidden;" aria-hidden="true"><rect width="6.66" height="14" fill="#009246"/><rect x="6.66" width="6.66" height="14" fill="#FFFFFF"/><rect x="13.33" width="6.67" height="14" fill="#CE2B37"/></svg>';
+    }
+
+    // 8. Netherlands (Red, White, Blue)
+    if ($code === 'nl' || strpos($code, 'nl_') === 0) {
+        return '<svg class="theedu-flag-svg" width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;overflow:hidden;" aria-hidden="true"><rect width="20" height="4.66" fill="#AE1C28"/><rect y="4.66" width="20" height="4.66" fill="#FFFFFF"/><rect y="9.33" width="20" height="4.67" fill="#21468B"/></svg>';
+    }
+
+    // 9. China (Red)
+    if ($code === 'zh_cn' || $code === 'zh_tw' || strpos($code, 'zh') === 0) {
+        return '<svg class="theedu-flag-svg" width="20" height="14" viewBox="0 0 20 14" style="border-radius:2px;overflow:hidden;" aria-hidden="true"><rect width="20" height="14" fill="#DE2910"/><circle cx="5" cy="4" r="1.5" fill="#FFDE00"/></svg>';
+    }
+
+    // Fallback: Crisp modern vector Globe icon
+    return '<svg class="theedu-flag-svg theedu-flag-globe" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>';
+}
+
+/**
  * Prepares template context data for TheEdu layouts.
  *
  * @param moodle_page $page
@@ -3091,7 +3153,7 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
         $bline = trim($bline);
         if (!empty($bline)) {
             $parts = explode('|', $bline, 2);
-            $btitle = trim($parts[0]);
+            $btitle = trim(rtrim(trim($parts[0]), ',;'));
             $burl = isset($parts[1]) ? trim($parts[1]) : '#';
             if (strpos($burl, 'http://') !== 0 && strpos($burl, 'https://') !== 0 && strpos($burl, '//') !== 0 && strpos($burl, '#') !== 0) {
                 if (strpos($burl, '/') === 0) {
@@ -3190,6 +3252,7 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
     $langitems = [];
     $currentlangname = 'English';
     $currentlangflag = '🇬🇧';
+    $currentlangflaghtml = theme_theedu_get_lang_flag_svg($actislang);
 
     foreach ($translations as $lcode => $lname) {
         $isactive = ($lcode === $actislang) || (strpos($actislang, $lcode) === 0);
@@ -3200,31 +3263,35 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
 
         $basecode = strtolower(str_replace('-', '_', $lcode));
         $flag = isset($flagmap[$basecode]) ? $flagmap[$basecode] : '🌐';
+        $flaghtml = theme_theedu_get_lang_flag_svg($lcode);
 
         if ($isactive) {
             $currentlangname = $cleanname;
             $currentlangflag = $flag;
+            $currentlangflaghtml = $flaghtml;
         }
 
         $langurl = new \moodle_url($currenturl, ['lang' => $lcode]);
 
         $langitems[] = [
-            'code'     => $lcode,
-            'name'     => $cleanname,
-            'raw_name' => $lname,
-            'flag'     => $flag,
-            'url'      => $langurl->out(false),
-            'active'   => $isactive,
+            'code'      => $lcode,
+            'name'      => $cleanname,
+            'raw_name'  => $lname,
+            'flag'      => $flag,
+            'flag_html' => $flaghtml,
+            'url'       => $langurl->out(false),
+            'active'    => $isactive,
         ];
     }
 
     $context['theedu_footer_lang'] = [
-        'show_selector' => $showlangselector && (count($langitems) >= 2),
-        'current_lang'  => $actislang,
-        'current_name'  => $currentlangname,
-        'current_flag'  => $currentlangflag,
-        'has_multiple'  => (count($langitems) >= 2),
-        'languages'     => $langitems,
+        'show_selector'     => $showlangselector && (count($langitems) >= 2),
+        'current_lang'      => $actislang,
+        'current_name'      => $currentlangname,
+        'current_flag'      => $currentlangflag,
+        'current_flag_html' => $currentlangflaghtml,
+        'has_multiple'      => (count($langitems) >= 2),
+        'languages'         => $langitems,
     ];
 
     // 7. Course Activity Bottom Navigation Bar (Prev, Jump-To, Next).
@@ -3813,13 +3880,44 @@ function theme_theedu_get_about_html() {
                 <span style="font-size: 0.85rem; color: #64748B; font-weight: 500;">Comprehensive Version History</span>
             </div>
 
-            <!-- Version 1.6.3 -->
+            <!-- Version 1.6.4 -->
             <div class="theedu-version-card latest">
                 <div class="theedu-version-meta">
                     <div class="theedu-version-tag">
-                        <i class="fa fa-cube"></i> v1.6.3
+                        <i class="fa fa-cube"></i> v1.6.4
                         <span class="theedu-release-badge badge-latest">Current Release</span>
                     </div>
+                    <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111006</div>
+                </div>
+                <ul>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-fix">Fixed</span>
+                            <strong>Active Language Checkmark Display:</strong> Replaced font glyph icon with an unmistakable inline vector SVG checkmark (<code>stroke-width: 3</code>) enclosed in an accent circular badge, completely eliminating missing character glyph boxes (<code>[X]</code>) across all operating systems.
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">UI / UX</span>
+                            <strong>Native Vector SVG Country Flags:</strong> Replaced Unicode emoji regional indicator flags with crisp, dedicated inline SVG vector flags for Indonesia, United Kingdom, United States, Japan, Germany, France, Spain, and global fallback icons, completely resolving Windows emoji flag limitations (where flags rendered as jammed text characters like <code>ID</code>, <code>GB</code>, <code>JP</code>).
+                        </div>
+                    </li>
+                    <li>
+                        <i class="fa fa-circle bullet"></i>
+                        <div>
+                            <span class="theedu-release-badge badge-ui">UI / UX</span>
+                            <strong>Language Dropdown Layout & Comma Cleanup:</strong> Expanded dropup menu container width to <code>min-width: 220px; max-width: 340px</code> for comfortable multi-byte scripts (e.g. Japanese), enforced zero link text-decoration, and sanitized trailing commas on custom footer links.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Version 1.6.3 -->
+            <div class="theedu-version-card">
+                <div class="theedu-version-meta">
+                    <div class="theedu-version-tag"><i class="fa fa-cube"></i> v1.6.3</div>
                     <div class="theedu-version-date"><i class="fa fa-calendar-alt"></i> November 10, 2026 &bull; Build 2026111005</div>
                 </div>
                 <ul>

@@ -217,6 +217,27 @@
                         transform: translateY(-1px);
                     }
 
+                    .theedu-lang-flag-box {
+                        display: inline-flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+                        line-height: 1;
+
+                        .theedu-flag-svg {
+                            display: inline-block;
+                            vertical-align: middle;
+                            border-radius: 2px;
+                            box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+                            flex-shrink: 0;
+                        }
+
+                        .theedu-flag-globe {
+                            color: #FFFFFF !important;
+                            box-shadow: none !important;
+                        }
+                    }
+
                     .theedu-lang-flag {
                         font-size: 1.05rem;
                         line-height: 1;
@@ -240,7 +261,9 @@
                     border: 1px solid rgba(0, 0, 0, 0.15) !important;
                     border-radius: 0.85rem !important;
                     padding: 0.45rem 0 !important;
-                    min-width: 190px !important;
+                    min-width: 220px !important;
+                    width: max-content !important;
+                    max-width: 340px !important;
                     max-height: 280px !important;
                     overflow-y: auto !important;
                     margin-bottom: 0.65rem !important;
@@ -266,6 +289,27 @@
                         background: transparent !important;
                         transition: all 0.15s ease !important;
 
+                        .theedu-lang-flag-box {
+                            display: inline-flex !important;
+                            align-items: center !important;
+                            justify-content: center !important;
+                            flex-shrink: 0 !important;
+                            line-height: 1 !important;
+
+                            .theedu-flag-svg {
+                                display: inline-block !important;
+                                vertical-align: middle !important;
+                                border-radius: 2px !important;
+                                box-shadow: 0 0 1px rgba(0, 0, 0, 0.4) !important;
+                                flex-shrink: 0 !important;
+                            }
+
+                            .theedu-flag-globe {
+                                color: var(--theedu-primary, #6C5CE7) !important;
+                                box-shadow: none !important;
+                            }
+                        }
+
                         .theedu-lang-flag {
                             font-size: 1.1rem !important;
                             line-height: 1 !important;
@@ -276,15 +320,30 @@
                             font-weight: 600 !important;
                         }
 
-                        .fa-check {
+                        .theedu-lang-check-badge {
+                            display: inline-flex !important;
+                            align-items: center !important;
+                            justify-content: center !important;
+                            width: 22px !important;
+                            height: 22px !important;
+                            border-radius: 50% !important;
+                            background-color: rgba(108, 92, 231, 0.15) !important;
                             color: var(--theedu-primary, #6C5CE7) !important;
-                            font-size: 0.85rem !important;
+                            margin-left: 0.75rem !important;
+                            flex-shrink: 0 !important;
+
+                            .theedu-check-svg {
+                                display: block !important;
+                                stroke: var(--theedu-primary, #6C5CE7) !important;
+                                stroke-width: 3 !important;
+                            }
                         }
 
                         &:hover,
                         &:focus {
                             background-color: rgba(108, 92, 231, 0.1) !important;
                             color: var(--theedu-primary, #6C5CE7) !important;
+                            text-decoration: none !important;
 
                             .theedu-lang-name {
                                 color: var(--theedu-primary, #6C5CE7) !important;
@@ -294,6 +353,7 @@
                         &.active {
                             background-color: rgba(108, 92, 231, 0.14) !important;
                             color: var(--theedu-primary, #6C5CE7) !important;
+                            text-decoration: none !important;
 
                             .theedu-lang-name {
                                 color: var(--theedu-primary, #6C5CE7) !important;
@@ -347,14 +407,24 @@ body.theedu-dark-mode #page-footer {
                     color: #F8FAFC !important;
                 }
 
-                .fa-check {
+                .theedu-lang-flag-box .theedu-flag-globe {
                     color: #A5B4FC !important;
+                }
+
+                .theedu-lang-check-badge {
+                    background-color: rgba(165, 180, 252, 0.25) !important;
+                    color: #C7D2FE !important;
+
+                    .theedu-check-svg {
+                        stroke: #C7D2FE !important;
+                    }
                 }
 
                 &:hover,
                 &:focus {
                     background-color: rgba(108, 92, 231, 0.28) !important;
                     color: #FFFFFF !important;
+                    text-decoration: none !important;
 
                     .theedu-lang-name {
                         color: #FFFFFF !important;
@@ -364,6 +434,7 @@ body.theedu-dark-mode #page-footer {
                 &.active {
                     background-color: rgba(108, 92, 231, 0.38) !important;
                     color: #C7D2FE !important;
+                    text-decoration: none !important;
 
                     .theedu-lang-name {
                         color: #C7D2FE !important;

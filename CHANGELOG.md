@@ -6,6 +6,29 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.6.4] - 2026-11-10 (Build 2026111006)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Ikon Bahasa Aktif Berbentuk Kotak Silang Rusak (`☒`):**
+   - Pada dropdown/dropup selector bahasa, penanda bahasa yang sedang aktif menggunakan tag font `<i class="fa fa-check text-primary small ms-2"></i>`. Karena ketidakcocokan font weight / glyph mapping fontawesome pada environment peramban pengguna, ikon ini ter-render sebagai karakter *tofu/missing glyph* berbentuk kotak dengan silang di dalamnya (`☒`), menyerupai tombol hapus/disabled yang membingungkan.
+2. **Bendera Bahasa Tidak Muncul di Windows (Muncul Teks Menempel Seperti `IDBahasa Indonesia` & `GBEnglish`):**
+   - Windows (Chrome/Edge) tidak mendukung emoji bendera negara (ISO 3166-1 regional indicators) dan secara bawaan merendernya sebagai dua huruf teks biasa: `ID`, `GB`, `JP`.
+   - Karena tidak ada pembungkus visual atau jarak pemisah, huruf-huruf tersebut menempel langsung ke nama bahasa (`IDBahasa Indonesia`, `GBEnglish`, `JP日本語`), membuat teks terlihat berantakan.
+3. **Pembersihan Koma Tertinggal (*Trailing Comma*) & Lebar Menu Dropup:**
+   - Menghilangkan koma tak disengaja di akhir judul tautan footer bawah serta melebarkan menu dropup (`min-width: 220px`) agar teks panjang seperti bahasa Jepang Workplace tidak terpotong atau terlipat sempit.
+
+### ✨ Perubahan & Solusi
+1. **Penggantian Ikon Aktif Menjadi Vektor SVG Asli (`templates/footer.mustache`, `scss/_footer.scss`):**
+   - Menghapus tag font `fa-check` dan menggantinya dengan ikon **vektor SVG centang mandiri** (`theedu-check-svg`) dengan `stroke-width: 3` yang diletakkan di dalam badge lingkaran aksen lembut (`theedu-lang-check-badge`).
+   - Ikon centang ini **100% vector SVG mandiri** tanpa ketergantungan pada file font eksternal, sehingga dijamin tampil tajam, presisi, dan sempurna sebagai tanda centang hijau/ungu di semua browser dan sistem operasi.
+2. **Implementasi Bendera Vektor SVG Mandiri (`lib.php`, `templates/footer.mustache`, `scss/_footer.scss`):**
+   - Menambahkan fungsi helper `theme_theedu_get_lang_flag_svg($lcode)` di `lib.php` yang menghasilkan grafis bendera SVG presisi untuk Indonesia (merah-putih), Inggris Raya (Union Jack), Amerika Serikat, Jepang (lingkaran merah), Jerman, Prancis, Spanyol, Italia, Belanda, dan Cina, serta ikon Globe SVG elegan untuk bahasa lainnya.
+   - Menggunakan pembungkus `.theedu-lang-flag-box` dengan `border-radius: 2px` dan bayangan halus, memberikan jarak yang teratur (`gap: 0.5rem`) antara bendera dan teks bahasa, sehingga tidak akan pernah menempel lagi di Windows.
+3. **Kenaikan Versi:**
+   - Versi tema dinaikkan ke **`v1.6.4`** (Build `2026111006`).
+
+---
+
 ## [v1.6.3] - 2026-11-10 (Build 2026111005)
 
 ### 🎯 Masalah yang Diselesaikan
