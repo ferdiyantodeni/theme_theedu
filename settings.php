@@ -673,6 +673,15 @@ if ($ADMIN->fulltree) {
         get_string('courses_visibility', 'theme_theedu'),
         get_string('courses_visibility_desc', 'theme_theedu'), 'all', $visoptions));
 
+    $emptybehavioropts = [
+        'empty_state' => get_string('courses_empty_state', 'theme_theedu'),
+        'hide_section' => get_string('courses_empty_hide', 'theme_theedu'),
+        'show_featured' => get_string('courses_empty_featured', 'theme_theedu'),
+    ];
+    $tab_courses->add(new admin_setting_configselect('theme_theedu/courses_empty_behavior',
+        get_string('courses_empty_behavior', 'theme_theedu'),
+        get_string('courses_empty_behavior_desc', 'theme_theedu'), 'empty_state', $emptybehavioropts));
+
     $tab_courses->add(new admin_setting_configcheckbox('theme_theedu/frontpage_hide_moodle_content',
         get_string('frontpage_hide_moodle_content', 'theme_theedu'),
         get_string('frontpage_hide_moodle_content_desc', 'theme_theedu'), 1));

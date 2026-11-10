@@ -6,6 +6,37 @@ Format dokumentasi ini disusun secara rinci dan terstruktur agar dapat dijadikan
 
 ---
 
+## [v1.5.9] - 2026-11-10 (Build 2026111001)
+
+### 🎯 Masalah yang Diselesaikan
+1. **Kursus yang Tidak Di-enrol Muncul di Bagian "My Enrolled Courses" pada Halaman Home:**
+   - Pengguna (siswa atau guru) yang login mendapati kursus yang sebenarnya **tidak mereka ikuti (*not enrolled*)** tetap muncul di daftar kartu kursus pada bagian *"My Enrolled Courses"* di halaman depan.
+   - **Penyebab Teknis:**
+     1. Pada `lib.php` sebelumnya terdapat logika *fallback* tak bersyarat: `if (empty($courseslist)) { $sitecourses = get_courses('all', ...); }`. Jika seorang siswa yang login belum terdaftar di kursus apa pun (atau baru terdaftar di sebagian kursus), tema secara keliru mengambil seluruh kursus aktif di situs (`get_courses`) dan menampilkannya di bawah judul statis *"My Enrolled Courses"*.
+     2. Pengambilan kursus terdaftar belum dilengkapi dengan validasi konteks ganda `is_enrolled($coursecontext, $USER->id, '', true)`, sehingga status keikutsertaan yang sudah kedaluwarsa, ditangguhkan (*suspended*), atau penetapan peran tanpa pendaftaran aktif (*role assignment without enrolment*) berpotensi terbawa ke daftar kursus.
+
+### ✨ Perubahan & Solusi
+1. **Filtrasi Ketat Kursus Terdaftar (*Strict Active Enrolment Enforcement*) (`lib.php`):**
+   - Memisahkan secara tegas logika pengambilan kursus antara **Pengguna Login** dan **Tamu/Pengunjung (*Guest*)**.
+   - Untuk pengguna yang login, tema kini memanggil `enrol_get_users_courses($USER->id, true)` (dengan parameter `$onlyactive = true`) dan memvalidasi setiap kursus menggunakan `is_enrolled($coursecontext, $USER->id, '', true)`.
+   - Menghapus sepenuhnya *fallback* liar ke `get_courses('all')` dan data demo sampel saat pengguna sedang login, sehingga **100% dipastikan hanya kursus yang aktif diikuti oleh pengguna bersangkutan yang akan tampil**.
+2. **Penyediaan Status Kosong Edukatif (*Friendly Empty State*) (`templates/frontpage_courses.mustache`):**
+   - Jika pengguna yang login belum terdaftar pada kursus apa pun, tema tidak lagi menampilkan kursus orang lain.
+   - Sebagai gantinya, ditampilkan kartu status kosong yang elegan dan rapi:
+     - Ikon topi toga (*graduation cap*).
+     - Judul: *"Belum ada kursus yang diikuti"* (*No enrolled courses yet*).
+     - Deskripsi informatif: *"Anda saat ini belum terdaftar di kursus apa pun. Silakan jelajahi katalog kursus kami untuk menemukan modul pembelajaran yang sesuai."*
+     - Tombol aksi utama: *"Jelajahi Kursus"* (*Explore Courses*) yang langsung mengarahkan ke direktori katalog `/course/index.php`.
+3. **Pengaturan Perilaku Fleksibel di Site Administration (`settings.php`):**
+   - Menambahkan pengaturan baru: **Tindakan Saat Siswa Belum Mengikuti Kursus** (`theme_theedu/courses_empty_behavior`) dengan opsi:
+     - `empty_state` (Direkomendasikan/Default): Tampilkan pesan informatif dengan tombol "Jelajahi Kursus".
+     - `hide_section`: Sembunyikan seksi kursus sepenuhnya jika belum ada kursus yang diikuti.
+     - `show_featured`: Tampilkan kursus publik yang tersedia di situs dengan judul otomatis berganti menjadi *"Kursus Unggulan"* (*Featured Courses*), sehingga tidak membingungkan siswa.
+4. **Sinkronisasi Statistik Header (`lib.php`):**
+   - Menambahkan filter pengecualian `SITEID` (halaman depan) pada perhitungan jumlah kursus di hero profil pengguna agar selalu sinkron dan konsisten.
+
+---
+
 ## [v1.5.8] - 2026-11-09 (Build 2026110907)
 
 ### 🎯 Masalah yang Diselesaikan

@@ -2166,6 +2166,11 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
         $context['user_role_label'] = is_siteadmin() ? 'Administrator' : 'Peserta Pembelajaran';
 
         $usercourses = function_exists('enrol_get_users_courses') ? enrol_get_users_courses($USER->id, true) : [];
+        if (!empty($usercourses)) {
+            $usercourses = array_filter($usercourses, function($c) {
+                return (int)$c->id !== SITEID;
+            });
+        }
         $enrolledcount = count($usercourses);
         $completedcount = 0;
 
@@ -2544,13 +2549,40 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
             'linear-gradient(135deg, rgba(116, 185, 255, 0.18) 0%, rgba(108, 92, 231, 0.12) 100%)',
         ];
 
-        // 1. Check if user is logged in and has enrolled courses
-        if (isloggedin() && !isguestuser() && function_exists('enrol_get_my_courses')) {
-            $mycourses = enrol_get_my_courses(['id', 'fullname', 'shortname', 'category', 'summary', 'summaryformat'], 'visible DESC, sortorder ASC', $maxcourses);
+        if ($isloggedinuser) {
+            // =========================================================================
+            // A. LOGGED-IN USERS: STRICTLY SHOW ONLY ACTIVELY ENROLLED COURSES!
+            // =========================================================================
+            $rawcourses = [];
+            if (function_exists('enrol_get_users_courses')) {
+                // $onlyactive = true enforces active user enrolment status and valid start/end dates.
+                $rawcourses = enrol_get_users_courses($USER->id, true, 'id, fullname, shortname, category, summary, summaryformat, visible, sortorder', 'visible DESC, sortorder ASC');
+            } else if (function_exists('enrol_get_my_courses')) {
+                $rawcourses = enrol_get_my_courses(['id', 'fullname', 'shortname', 'category', 'summary', 'summaryformat'], 'visible DESC, sortorder ASC');
+            }
 
-            if (!empty($mycourses)) {
+            if (!empty($rawcourses)) {
                 $idx = 0;
-                foreach ($mycourses as $c) {
+                foreach ($rawcourses as $c) {
+                    // Safety check 1: Exclude front page course (SITEID).
+                    if ((int)$c->id === SITEID) {
+                        continue;
+                    }
+
+                    // Safety check 2: Strict active enrolment verification in course context.
+                    $coursecontext = \context_course::instance($c->id, IGNORE_MISSING);
+                    if ($coursecontext && function_exists('is_enrolled')) {
+                        if (!is_enrolled($coursecontext, $USER->id, '', true)) {
+                            // User is NOT actively enrolled in this course (e.g. suspended, expired, or non-enrolled role) - SKIP!
+                            continue;
+                        }
+                    }
+
+                    // Safety check 3: Course visibility.
+                    if (!$c->visible && $coursecontext && !has_capability('moodle/course:viewhiddencourses', $coursecontext)) {
+                        continue;
+                    }
+
                     $courseobj = class_exists('\core_course_list_element') ? new \core_course_list_element($c) : null;
 
                     // Image extraction
@@ -2582,8 +2614,11 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
 
                     // Progress
                     $progress = null;
-                    if (class_exists('\core_completion\progress') && \core_completion\progress::get_course_progress_percentage($c) !== null) {
-                        $progress = round(\core_completion\progress::get_course_progress_percentage($c));
+                    if (class_exists('\core_completion\progress')) {
+                        $p = \core_completion\progress::get_course_progress_percentage($c);
+                        if ($p !== null) {
+                            $progress = round($p);
+                        }
                     }
 
                     // Teachers (Robust extraction from course contacts & role assignments)
@@ -2608,12 +2643,79 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
                         'has_avatar' => $inst['has_avatar'],
                     ];
                     $idx++;
+                    if ($idx >= $maxcourses) {
+                        break;
+                    }
                 }
             }
-        }
 
-        // 2. If user is guest or has no enrolled courses, display active site courses
-        if (empty($courseslist)) {
+            // If user has 0 enrolled courses, check the configured empty behavior.
+            $emptybehavior = theme_theedu_get_setting('courses_empty_behavior', 'empty_state');
+            if (empty($courseslist) && $emptybehavior === 'show_featured') {
+                $sitecourses = function_exists('get_courses') ? get_courses('all', 'c.sortorder ASC', 'c.id, c.fullname, c.shortname, c.category, c.summary, c.summaryformat, c.visible') : [];
+                if (!empty($sitecourses)) {
+                    unset($sitecourses[SITEID]);
+                }
+                if (!empty($sitecourses)) {
+                    $idx = 0;
+                    foreach ($sitecourses as $c) {
+                        if (!$c->visible) {
+                            continue;
+                        }
+                        $courseobj = class_exists('\core_course_list_element') ? new \core_course_list_element($c) : null;
+                        $imageurl = '';
+                        if ($courseobj) {
+                            foreach ($courseobj->get_course_overviewfiles() as $file) {
+                                if ($file->is_valid_image()) {
+                                    $imageurl = \moodle_url::make_file_url(
+                                        '/pluginfile.php',
+                                        '/' . $file->get_contextid() . '/' . $file->get_component() . '/' .
+                                        $file->get_filearea() . $file->get_filepath() . $file->get_filename(),
+                                        false
+                                    )->out(false);
+                                    break;
+                                }
+                            }
+                        }
+                        $useicon = ($thumbmode === 'always_icon') || ($thumbmode === 'image_or_icon' && empty($imageurl));
+                        $catname = '';
+                        if ($c->category && class_exists('\core_course_category')) {
+                            $cat = \core_course_category::get($c->category, IGNORE_MISSING);
+                            if ($cat) {
+                                $catname = $cat->get_formatted_name();
+                            }
+                        }
+                        $inst = theme_theedu_get_course_instructor_details($c->id, $courseobj, $page);
+                        $courseslist[] = [
+                            'fullname' => format_string($c->fullname),
+                            'url' => $CFG->wwwroot . '/course/view.php?id=' . $c->id,
+                            'summary' => format_text($c->summary, $c->summaryformat),
+                            'category_name' => $catname,
+                            'image_url' => $imageurl,
+                            'use_icon_thumb' => $useicon,
+                            'thumb_icon' => $defaulticon,
+                            'thumb_gradient' => $pastelgradients[$idx % count($pastelgradients)],
+                            'has_progress' => false,
+                            'progress' => null,
+                            'has_teacher' => $inst['has_teacher'],
+                            'teacher_name' => $inst['teacher_name'],
+                            'teacher_role' => $inst['teacher_role'],
+                            'teacher_icon' => $inst['teacher_icon'],
+                            'teacher_avatar' => $inst['teacher_avatar'],
+                            'has_avatar' => $inst['has_avatar'],
+                        ];
+                        $idx++;
+                        if ($idx >= $maxcourses) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+        } else {
+            // =========================================================================
+            // B. GUEST / ANONYMOUS USERS: DISPLAY POPULAR / FEATURED SITE COURSES
+            // =========================================================================
             $sitecourses = function_exists('get_courses') ? get_courses('all', 'c.sortorder ASC', 'c.id, c.fullname, c.shortname, c.category, c.summary, c.summaryformat, c.visible') : [];
             if (!empty($sitecourses)) {
                 unset($sitecourses[SITEID]); // Exclude frontpage course
@@ -2653,15 +2755,6 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
                         }
                     }
 
-                    // Progress (if enrolled)
-                    $progress = null;
-                    if (isloggedin() && !isguestuser() && class_exists('\core_completion\progress')) {
-                        $p = \core_completion\progress::get_course_progress_percentage($c);
-                        if ($p !== null) {
-                            $progress = round($p);
-                        }
-                    }
-
                     // Teachers (Robust extraction)
                     $inst = theme_theedu_get_course_instructor_details($c->id, $courseobj, $page);
 
@@ -2674,8 +2767,8 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
                         'use_icon_thumb' => $useicon,
                         'thumb_icon' => $defaulticon,
                         'thumb_gradient' => $pastelgradients[$idx % count($pastelgradients)],
-                        'has_progress' => ($progress !== null),
-                        'progress' => $progress,
+                        'has_progress' => false,
+                        'progress' => null,
                         'has_teacher' => $inst['has_teacher'],
                         'teacher_name' => $inst['teacher_name'],
                         'teacher_role' => $inst['teacher_role'],
@@ -2689,81 +2782,90 @@ function theme_theedu_get_template_context($page, $forcefrontpage = null) {
                     }
                 }
             }
-        }
 
-        // 3. Fallback sample demo courses if fresh install or empty
-        if (empty($courseslist)) {
-            $samplecourses = [
-                [
-                    'fullname' => get_string('sample_course1_title', 'theme_theedu'),
-                    'category_name' => get_string('sample_course1_cat', 'theme_theedu'),
-                    'summary' => get_string('sample_course1_desc', 'theme_theedu'),
-                    'thumb_icon' => 'fa-laptop-code',
-                    'progress' => 65,
-                    'teacher_name' => 'Budi Santoso, S.T.',
-                    'teacher_role' => get_string('role_teacher', 'theme_theedu'),
-                    'teacher_icon' => 'fa-chalkboard-user',
-                ],
-                [
-                    'fullname' => get_string('sample_course2_title', 'theme_theedu'),
-                    'category_name' => get_string('sample_course2_cat', 'theme_theedu'),
-                    'summary' => get_string('sample_course2_desc', 'theme_theedu'),
-                    'thumb_icon' => 'fa-database',
-                    'progress' => 40,
-                    'teacher_name' => 'Ahmad Fauzi, M.Kom.',
-                    'teacher_role' => get_string('role_noneditingteacher', 'theme_theedu'),
-                    'teacher_icon' => 'fa-user-pen',
-                ],
-                [
-                    'fullname' => get_string('sample_course3_title', 'theme_theedu'),
-                    'category_name' => get_string('sample_course3_cat', 'theme_theedu'),
-                    'summary' => get_string('sample_course3_desc', 'theme_theedu'),
-                    'thumb_icon' => 'fa-chart-pie',
-                    'progress' => 85,
-                    'teacher_name' => 'Deni Ferdiyanto, M.M.',
-                    'teacher_role' => get_string('role_manager', 'theme_theedu'),
-                    'teacher_icon' => 'fa-user-tie',
-                ],
-            ];
-
-            $idx = 0;
-            foreach ($samplecourses as $sc) {
-                $courseslist[] = [
-                    'fullname' => $sc['fullname'],
-                    'url' => $CFG->wwwroot . '/course/index.php',
-                    'summary' => $sc['summary'],
-                    'category_name' => $sc['category_name'],
-                    'image_url' => '',
-                    'use_icon_thumb' => true,
-                    'thumb_icon' => !empty($sc['thumb_icon']) ? $sc['thumb_icon'] : $defaulticon,
-                    'thumb_gradient' => $pastelgradients[$idx % count($pastelgradients)],
-                    'has_progress' => true,
-                    'progress' => $sc['progress'],
-                    'has_teacher' => true,
-                    'teacher_name' => $sc['teacher_name'],
-                    'teacher_role' => $sc['teacher_role'],
-                    'teacher_icon' => $sc['teacher_icon'],
-                    'teacher_avatar' => '',
-                    'has_avatar' => false,
+            // Fallback sample demo courses only for guests on a fresh empty install.
+            if (empty($courseslist)) {
+                $samplecourses = [
+                    [
+                        'fullname' => get_string('sample_course1_title', 'theme_theedu'),
+                        'category_name' => get_string('sample_course1_cat', 'theme_theedu'),
+                        'summary' => get_string('sample_course1_desc', 'theme_theedu'),
+                        'thumb_icon' => 'fa-laptop-code',
+                        'progress' => 65,
+                        'teacher_name' => 'Budi Santoso, S.T.',
+                        'teacher_role' => get_string('role_teacher', 'theme_theedu'),
+                        'teacher_icon' => 'fa-chalkboard-user',
+                    ],
+                    [
+                        'fullname' => get_string('sample_course2_title', 'theme_theedu'),
+                        'category_name' => get_string('sample_course2_cat', 'theme_theedu'),
+                        'summary' => get_string('sample_course2_desc', 'theme_theedu'),
+                        'thumb_icon' => 'fa-database',
+                        'progress' => 40,
+                        'teacher_name' => 'Ahmad Fauzi, M.Kom.',
+                        'teacher_role' => get_string('role_noneditingteacher', 'theme_theedu'),
+                        'teacher_icon' => 'fa-user-pen',
+                    ],
+                    [
+                        'fullname' => get_string('sample_course3_title', 'theme_theedu'),
+                        'category_name' => get_string('sample_course3_cat', 'theme_theedu'),
+                        'summary' => get_string('sample_course3_desc', 'theme_theedu'),
+                        'thumb_icon' => 'fa-chart-pie',
+                        'progress' => 85,
+                        'teacher_name' => 'Deni Ferdiyanto, M.M.',
+                        'teacher_role' => get_string('role_manager', 'theme_theedu'),
+                        'teacher_icon' => 'fa-user-tie',
+                    ],
                 ];
-                $idx++;
+
+                $idx = 0;
+                foreach ($samplecourses as $sc) {
+                    $courseslist[] = [
+                        'fullname' => $sc['fullname'],
+                        'url' => $CFG->wwwroot . '/course/index.php',
+                        'summary' => $sc['summary'],
+                        'category_name' => $sc['category_name'],
+                        'image_url' => '',
+                        'use_icon_thumb' => true,
+                        'thumb_icon' => !empty($sc['thumb_icon']) ? $sc['thumb_icon'] : $defaulticon,
+                        'thumb_gradient' => $pastelgradients[$idx % count($pastelgradients)],
+                        'has_progress' => true,
+                        'progress' => $sc['progress'],
+                        'has_teacher' => true,
+                        'teacher_name' => $sc['teacher_name'],
+                        'teacher_role' => $sc['teacher_role'],
+                        'teacher_icon' => $sc['teacher_icon'],
+                        'teacher_avatar' => '',
+                        'has_avatar' => false,
+                    ];
+                    $idx++;
+                }
             }
         }
     }
 
-    $isloggedinuser = isloggedin() && !isguestuser();
+    $emptybehavior = theme_theedu_get_setting('courses_empty_behavior', 'empty_state');
+    $isdisplayingfeatured = ($isloggedinuser && empty($rawcourses) && $emptybehavior === 'show_featured') || !$isloggedinuser;
+
     $courseheading = theme_theedu_get_setting('course_heading', '');
     if (empty($courseheading)) {
-        $courseheading = $isloggedinuser ? get_string('mycourses_heading', 'theme_theedu') : get_string('featured_courses_heading', 'theme_theedu');
+        $courseheading = $isdisplayingfeatured ? get_string('featured_courses_heading', 'theme_theedu') : get_string('mycourses_heading', 'theme_theedu');
     }
 
     $coursesubheading = theme_theedu_get_setting('course_subheading', '');
     if (empty($coursesubheading)) {
-        $coursesubheading = $isloggedinuser ? get_string('mycourses_subheading', 'theme_theedu') : get_string('featured_courses_subheading', 'theme_theedu');
+        $coursesubheading = $isdisplayingfeatured ? get_string('featured_courses_subheading', 'theme_theedu') : get_string('mycourses_subheading', 'theme_theedu');
+    }
+
+    $isenabled = $enablecourses;
+    if ($isloggedinuser && empty($courseslist) && $emptybehavior === 'hide_section') {
+        $isenabled = false;
     }
 
     $context['theedu_courses'] = [
-        'enabled' => $enablecourses && !empty($courseslist),
+        'enabled' => $isenabled,
+        'has_courses' => !empty($courseslist),
+        'is_loggedin' => $isloggedinuser,
         'heading' => $courseheading,
         'subheading' => $coursesubheading,
         'view_all_url' => $CFG->wwwroot . '/course/index.php',
